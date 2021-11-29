@@ -2,13 +2,13 @@
 
 import chalk from 'chalk'
 
-import * as Types from 'configuration'
+import { IContext } from '../../types'
 
 export function log({
 	context,
 	message,
 }: {
-	context: Types.IContext
+	context: IContext
 	message: string
 }): void {
 	console.log(chalk.bgBlue(`${context} - ${message}`))
@@ -18,7 +18,7 @@ export function warning({
 	context,
 	message,
 }: {
-	context: Types.IContext
+	context: IContext
 	message: string
 }): void {
 	console.log(chalk.bgRed(`${context} - ${message}`))
@@ -28,7 +28,7 @@ export function alert({
 	context,
 	message,
 }: {
-	context: Types.IContext
+	context: IContext
 	message: string
 }): void {
 	console.log(chalk.bgYellow(`${context} - ${message}`))
@@ -38,7 +38,7 @@ export function success({
 	context,
 	message,
 }: {
-	context: Types.IContext
+	context: IContext
 	message: string
 }): void {
 	console.log(chalk.bgGreen(`${context} - ${message}`))

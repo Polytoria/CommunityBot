@@ -1,9 +1,11 @@
 // <reference path="index.d.ts"/>
-import { IConfiguration, Icommand } from 'configuration';
 import { Client } from 'discord.js'
-import {dotenv} from 'dotenv'
-import { success } from './utils/log'
-import * as commands from './exports';
+//@ts-ignore
+import dotenv from 'dotenv'
+import { success } from './utils/log.js'
+import * as commands from './exports.js';
+import { IConfiguration, ICommand } from '../types';
+
 // Initialize .env file.
 dotenv.config()
 
@@ -42,7 +44,7 @@ bot.on('message', async (message): Promise<any | void> => {
     const argument: any[] = data.splice(1, data.length)
     
     if(commands.hasOwnProperty(command)){
-        const invoke: Icommand = commands[command];
+        const invoke: ICommand = commands[command];
 
         if(invoke.constructor.name === "AsyncFunction"){
             await invoke(message, argument )
