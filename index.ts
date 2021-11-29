@@ -1,7 +1,7 @@
 // <reference path="index.d.ts"/>
-import { IConfiguration, Icommand } from 'configuration'
+import { IConfiguration, Icommand } from 'configuration';
 import { Client } from 'discord.js'
-import dotenv from 'dotenv'
+import {dotenv} from 'dotenv'
 import { success } from './utils/log'
 import * as commands from './exports';
 // Initialize .env file.
