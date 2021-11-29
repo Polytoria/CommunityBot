@@ -16,7 +16,7 @@ const bot : Client<boolean> = new Client({
 
 // Check messages sent.
 // Soon to be deprecated.
-bot.on('message', message : void =>  {
+bot.on('message', (message): any | void =>  {
 
     if(message.author.bot) return;
     if(!message.content.startsWith(configuration.prefix)) return;
