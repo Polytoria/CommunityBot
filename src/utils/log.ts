@@ -11,7 +11,7 @@ export function log({
 	context: IContext
 	message: string
 }): void {
-	console.log(chalk.bgBlue(`${context} - ${message}`))
+	console.log(chalk.blue(`${context} - ${message}`))
 }
 
 export function warning({
@@ -21,7 +21,7 @@ export function warning({
 	context: IContext
 	message: string
 }): void {
-	console.log(chalk.bgRed(`${context} - ${message}`))
+	console.log(chalk.red(`${context} - ${message}`))
 }
 
 export function alert({
@@ -31,7 +31,7 @@ export function alert({
 	context: IContext
 	message: string
 }): void {
-	console.log(chalk.bgYellow(`${context} - ${message}`))
+	console.log(chalk.yellow(`${context} - ${message}`))
 }
 
 export function success({
@@ -41,10 +41,7 @@ export function success({
 	context: IContext
 	message: string
 }): void {
-	console.log(chalk.bgGreen(`${context} - ${message}`))
+	console.log(chalk.green(`${context} - ${message}`))
 }
 
-success({
-	context: '[Bot]',
-	message: 'Lmao',
-})
+

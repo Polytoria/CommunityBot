@@ -3,7 +3,7 @@ import { Client } from 'discord.js'
 //@ts-ignore
 import dotenv from 'dotenv'
 import { success } from './utils/log.js'
-import * as commands from './exports.js';
+import commands from './exports.js';
 import { IConfiguration, ICommand } from '../types';
 
 // Initialize .env file.
@@ -22,9 +22,9 @@ const bot: Client<boolean> | Client = new Client({
 bot.on('ready', (client) => {
     success({ context: '[Bot]', message: 'Bot succesfully connected.' })
     bot.user.setActivity({
-        type: 'WATCHING',
+        type: 'PLAYING',
         url: 'https://api.polytoria.com',
-        name: 'Watching Polytoria API',
+        name: 'Watching Polytoria API 👀',
     })
 })
 
@@ -40,19 +40,22 @@ bot.on('message', async (message): Promise<any | void> => {
         .trim()
         .split(/ +/g)
 
-    const command: string = data[0]
+    const command: any = data[0]
     const argument: any[] = data.splice(1, data.length)
-    
+
     if(commands.hasOwnProperty(command)){
-        const invoke: ICommand = commands[command];
+
+        const invoke = commands[command];
 
         if(invoke.constructor.name === "AsyncFunction"){
-            await invoke(message, argument )
+           await invoke(message, argument )
+
         } else {
             invoke(message, argument)
         }
     }
     // We will pass the message and argument, as we need the message to reply.
+    
 })
 
 bot.login(configuration.token)
