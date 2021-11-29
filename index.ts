@@ -16,7 +16,7 @@ const bot : Client<boolean> = new Client({
 
 // Check messages sent.
 // Soon to be deprecated.
-bot.on('message', message =>  {
+bot.on('message', message : void =>  {
 
     if(message.author.bot) return;
     if(!message.content.startsWith(configuration.prefix)) return;
@@ -24,8 +24,8 @@ bot.on('message', message =>  {
 
     const data = message.content.slice(configuration.prefix.length, message.content.length).trim().split(/ +/g);
    
-    const command = data[0];
-    const argument = data.splice(1, data.length);
+    const command : string = data[0];
+    const argument : any[] = data.splice(1, data.length);
 
     
 
