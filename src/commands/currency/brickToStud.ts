@@ -9,7 +9,7 @@ export function brickToStud(
 
     bricks *= 15
 
-    const Embed: Partial<MessageEmbed> = new MessageEmbed({
+    const Embed: MessageEmbed = new MessageEmbed({
         title: "Brick to Stud!",
         fields: [
             { name: "bricks", value: _arugments[0], inline: true },
@@ -17,6 +17,5 @@ export function brickToStud(
         ],
         description: `**${_arugments[0]} <:brick:905987077995376640> ↔️ ${bricks} <:stud:905987085347983411>**`
     })
-    // @ts-expect-error
-    return message.channel.send({ embeds: Embed })
+    return message.channel.send({embeds: [Embed]})
 }

@@ -18,7 +18,7 @@ export type  IConfiguration = {
     /**
     * Token of your bot.
     */
-    token: string
+    token: string | undefined
 
     /**
     * Prefix of your bot.
