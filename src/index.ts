@@ -2,7 +2,7 @@
 import { Client, ClientVoiceManager } from 'discord.js'
 //@ts-ignore
 import dotenv from 'dotenv'
-import { success } from './utils/log.js'
+import { success, alert } from './utils/log.js'
 import commands from './exports.js';
 import { IConfiguration, ICommand } from '../types';
 
@@ -17,7 +17,7 @@ const configuration: IConfiguration = {
 
 const client = new Client({
     intents: [
-      "DIRECT_MESSAGES",
+      "GUILD_MESSAGES",
       "GUILDS",
       "GUILD_MEMBERS",
     ],
@@ -37,13 +37,12 @@ client.on('ready', () => {
 })
 
 client.on('messageCreate', async (message): Promise<any | void> => {
-    console.log("OK")
     if (message.author.bot) return
-    if (!message.content.startsWith(configuration.prefix)) return alert('Invalid Prefix: ' + message.content)
-    if (!message.inGuild) return alert('Not in guild.')
+    if (!message.content.startsWith(configuration.prefix)) return alert({context: '[Server]', message: 'Invalid Prefix.'})
+    if (!message.inGuild) return alert({context: '[Server]', message: 'Not in guild.'})
     success({
         context: '[Client]',
-        message: "User sent a valid message."
+        message: "Command Registered."
     })
     const data = message.content
         .slice(configuration.prefix.length, message.content.length)
@@ -57,13 +56,15 @@ client.on('messageCreate', async (message): Promise<any | void> => {
         arguments: argument
     }))
     if(commands.hasOwnProperty(command)){
-        console.log("Found command: " + command);
-
+        success({
+            context: '[Bot]',
+            message: 'Running command ' + command
+        })
         // @ts-expect-error
         const invoke = commands[command];
 
         if(invoke.constructor.name === "AsyncFunction"){
-           console.log("Running async function")
+
             await invoke(message, argument )
             
         } else {
