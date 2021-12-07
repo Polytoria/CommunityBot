@@ -2,20 +2,22 @@ import { Message, MessageEmbed } from 'discord.js'
 
 export function studToBrick(
     message: Message,
-    _arugments: string[]
+    _arguments: string[]
 ): Promise<Message<boolean>> {
-
-    let studs: number = +_arugments[0]
+    if(_arguments.length === 0 || !_arguments[0] ) return message.reply({
+        content: 'Dont'
+    })
+    let studs: number = +_arguments[0]
 
     studs /= 15
 
     const Embed: MessageEmbed = new MessageEmbed({
         title: "Brick to Stud!",
         fields: [
-            { name: "studs", value: _arugments[0], inline: true },
-            { name: "bricks", value: studs.toString(), inline: true }
+            { name: "studs", value: _arguments[0], inline: true },
+            { name: "bricks", value: `${studs}`, inline: true }
         ],
-        description: `**${_arugments[0]} <:stud:905987085347983411> ↔️ ${studs} <:brick:905987077995376640>**`
+        description: `**${_arguments[0]} <:stud:905987085347983411> ↔️ ${studs} <:brick:905987077995376640>**`
     })
 
     return message.channel.send({ embeds: [Embed]})

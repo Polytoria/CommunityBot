@@ -2,7 +2,7 @@
 import { Client, ClientVoiceManager } from 'discord.js'
 //@ts-ignore
 import dotenv from 'dotenv'
-import { success, alert } from './utils/log.js'
+import { success, alert, warning } from './utils/log.js'
 import commands from './exports.js';
 import { IConfiguration, ICommand } from '../types';
 
@@ -17,12 +17,12 @@ const configuration: IConfiguration = {
 
 const client = new Client({
     intents: [
-      "GUILD_MESSAGES",
-      "GUILDS",
-      "GUILD_MEMBERS",
+        "GUILD_MESSAGES",
+        "GUILDS",
+        "GUILD_MEMBERS",
     ],
-  });
-  
+});
+
 
 client.on('ready', () => {
     success({ context: '[Bot]', message: 'Bot succesfully connected.' })
@@ -38,8 +38,8 @@ client.on('ready', () => {
 
 client.on('messageCreate', async (message): Promise<any | void> => {
     if (message.author.bot) return
-    if (!message.content.startsWith(configuration.prefix)) return alert({context: '[Server]', message: 'Invalid Prefix.'})
-    if (!message.inGuild) return alert({context: '[Server]', message: 'Not in guild.'})
+    if (!message.content.startsWith(configuration.prefix)) return alert({ context: '[Server]', message: 'Invalid Prefix.' })
+    if (!message.inGuild) return alert({ context: '[Server]', message: 'Not in guild.' })
     success({
         context: '[Client]',
         message: "Command Registered."
@@ -51,30 +51,43 @@ client.on('messageCreate', async (message): Promise<any | void> => {
 
     const command: any = data[0]
     const argument: any[] = data.splice(1, data.length)
-    console.log("User sent: " + JSON.stringify({
-        command: command,
-        arguments: argument
-    }))
-    if(commands.hasOwnProperty(command)){
+    console.log(argument)
+    if (commands.hasOwnProperty(command)) {
         success({
             context: '[Bot]',
             message: 'Running command ' + command
         })
-        // @ts-expect-error
+        //@ts-expect-error
         const invoke = commands[command];
 
-        if(invoke.constructor.name === "AsyncFunction"){
+        if (invoke.constructor.name === "AsyncFunction") {
+            try {
+                await invoke(message, argument)
+            } catch (err) {
+                warning({
+                    context: '[Bot]',
+                    //@ts-expect-error
+                    message: err
+                })
+            }
 
-            await invoke(message, argument )
-            
+
         } else {
             console.log("Running function")
 
-            invoke(message, argument)
+            try {
+                await invoke(message, argument)
+            } catch (err) {
+                warning({
+                    context: '[Bot]',
+                    //@ts-expect-error
+                    message: err
+                })
+            }
         }
     }
     // We will pass the message and argument, as we need the message to reply.
-    
+
 })
 success({ context: '[Bot]', message: 'Bot succesfully logged in.' })
 
