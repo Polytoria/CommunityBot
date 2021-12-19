@@ -7,5 +7,7 @@ export function lookUp(
 	_arguments: any[]
 ): void | Promise<Message<boolean>> {
 	if (!_arguments)
-		return message.channel.send('We require the username argument!')
+		return message.channel.send('We require the username argument!');
+	
+	
 }
