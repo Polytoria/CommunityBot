@@ -8,8 +8,8 @@ const commands = {
     brickToStud: currencyCommands.brickToStud,
     b2s:         currencyCommands.brickToStud,
     studToBrick: currencyCommands.studToBrick,
-    s2b: currencyCommands.studToBrick,
-    game: game
+    s2b:         currencyCommands.studToBrick,
+    game:        game
 }
 
 export default commands
