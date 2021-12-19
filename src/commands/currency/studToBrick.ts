@@ -4,9 +4,6 @@ export function studToBrick(
     message: Message,
     _arguments: string[]
 ): Promise<Message<boolean>> {
-    if(_arguments.length === 0 || !_arguments[0] ) return message.reply({
-        content: 'Dont'
-    })
     let studs: number = +_arguments[0]
 
     studs /= 15

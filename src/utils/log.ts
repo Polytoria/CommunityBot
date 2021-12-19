@@ -11,7 +11,7 @@ export function log({
 	context: IContext
 	message: string
 }): void {
-	console.log(chalk.blue(`${context} - ${message}`))
+	console.log(chalk.blue(`👷 ${context} - ${message}`))
 }
 
 export function warning({
@@ -41,7 +41,7 @@ export function success({
 	context: IContext
 	message: string
 }): void {
-	console.log(chalk.green(`${context} - ${message}`))
+	console.log(chalk.green(`📦 ${context} - ${message}`))
 }
 
 

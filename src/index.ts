@@ -38,7 +38,7 @@ client.on('ready', () => {
 
 client.on('messageCreate', async (message): Promise<any | void> => {
     if (message.author.bot) return
-    if (!message.content.startsWith(configuration.prefix)) return alert({ context: '[Server]', message: 'Invalid Prefix.' })
+    if (!message.content.startsWith(configuration.prefix)) return success({ context: '[Server]', message: 'Message logged.' })
     if (!message.inGuild) return alert({ context: '[Server]', message: 'Not in guild.' })
     success({
         context: '[Client]',

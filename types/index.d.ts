@@ -13,6 +13,22 @@ export type IContext = '[Bot]' | '[Client]' | '[Server]'
 /**
 * Configuration of your bot.
 */
+
+export type IGame = {
+    Success: boolean,
+    ID?: number,
+    Name?: string,
+    Description?: string,
+    Thumbnail?: string,
+    CreatorID?: number,
+    IsActive?: true,
+    Visits?: number,
+    Likes?: number,
+    Dislikes?: number,
+    CreatedAt?: string,
+    UpdatedAt?: string,
+}
+
 export type  IConfiguration = {
 
     /**
