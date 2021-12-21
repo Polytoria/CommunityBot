@@ -2,7 +2,8 @@ import fetch from 'node-fetch';
 import { Message, MessageEmbed, MessageSelectMenu } from 'discord.js'
 import { userUtils } from '../utils/userUtils.js'
 export async function game(message: Message, _arguments: string[]) {
-	const apiURL = `https://api.polytoria.com/v1/games/info?id=${_arguments[0]}`;
+	const parsed = _arguments[0].replace(/[^0-9]/g,'')
+	const apiURL = `https://api.polytoria.com/v1/games/info?id=${parsed}`;
 
 	const response = await fetch(apiURL);
 	const data: any = await response.json();
