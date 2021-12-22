@@ -49,7 +49,7 @@ client.on('messageCreate', async (message): Promise<any | void> => {
         .trim()
         .split(/ +/g)
 
-    const command: any = data[0].toLowerCase()
+    const command: any = data[0]
     const argument: any[] = data.splice(1, data.length)
     console.log(argument)
     if (commands.hasOwnProperty(command)) {

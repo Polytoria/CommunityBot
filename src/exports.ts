@@ -7,9 +7,9 @@ import { guild } from './commands/guild.js'
 const commands = {
     lookup:      userCommands.lookUp,
     ping:        ping,
-    bricktostud: currencyCommands.brickToStud,
+    brickToStud: currencyCommands.brickToStud,
     b2s:         currencyCommands.brickToStud,
-    studtobrick: currencyCommands.studToBrick,
+    studToBrick: currencyCommands.studToBrick,
     s2b:         currencyCommands.studToBrick,
     game:        game,
     cookie:      cookie,
