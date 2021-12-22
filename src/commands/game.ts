@@ -17,6 +17,7 @@ export async function game(message: Message, _arguments: string[]) {
 		thumbnail: {
 			url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
 		},
+		color: "#ff5454",
 		image: {
 			url: `https://polytoria.com//assets//thumbnails//games//${_arguments[0]}.png`
 		},

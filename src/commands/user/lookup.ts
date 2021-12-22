@@ -29,7 +29,9 @@ export async function lookUp(message: Message, _arguments: string[]) {
 
 	const Embed = new MessageEmbed({
 		title: data.Username,
+		url: `https://polytoria.com/user/${data.ID}`,
 		description: data.Description,
+		color: "#ff5454",
 		thumbnail: {
 			url: `https://polytoria.com/assets/thumbnails/avatars/${data.AvatarHash}.png`
 		},
@@ -53,7 +55,13 @@ export async function lookUp(message: Message, _arguments: string[]) {
 				name: '💬 Forum Posts 💬', value: `${data.ForumPosts}`, inline: false,
 			},
 			{
-				name: '💲 Trade value 💲', value: `${data.TradeValue}`, inline: false
+				name: '💰 Trade value 💰', value: `${data.TradeValue}`, inline: false
+			},
+			{
+				name: '🔥 Joined At 🔥', value: `${data.JoinedAt}`, inline: false,
+			},
+			{
+				name: '🟢 Last seen at 🟢', value: `${data.LastSeenAt}`, inline: false
 			},
 
 		]

@@ -11,6 +11,7 @@ export function brickToStud(
 
     const Embed: MessageEmbed = new MessageEmbed({
         title: "Brick to Stud!",
+        color: "#ff5454",
         fields: [
             { name: "bricks", value: _arugments[0], inline: true },
             { name: "studs", value: bricks.toString(), inline: true }
