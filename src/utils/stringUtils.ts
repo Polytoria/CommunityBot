@@ -1,4 +1,4 @@
-class stringUtils {
+export class stringUtils {
     /**
      * ### Transforms number periods to comas. *Formatting*
      * @example 2.320 => "2,320"
@@ -30,7 +30,7 @@ class stringUtils {
      * }
     */
 
-    public static async URLParse(string: string) {
+    public static URLParse(string: string) {
         let url = new URL(string);
         let searchParams_url = url.searchParams
         let spitted_url:Array<any> = string.split("/")
@@ -47,8 +47,8 @@ class stringUtils {
      * @param string URL that want to be parsed
      * @returns array Numbers that has been found in URL
     */
-    public static async GetNumbersFromURL(string: string) {
-        let result = await stringUtils.URLParse(string)
+    public static GetNumbersFromURL(string: string) {
+        let result = stringUtils.URLParse(string)
         let splitted = result.spitted
 
         let returnresult:Array<any> = []
@@ -61,5 +61,23 @@ class stringUtils {
 
         return returnresult
 
+    }
+
+    /**
+     * ### Is URL
+     * @param string string that you want to checks that's url or not
+     * @returns bool returns if it were url or not
+     */
+    public static IsURL(string: string) {
+        let test_url;
+
+        // Try stuff, If URL fail to parse, that means it's not vaild URL.
+        try {
+            test_url = new URL(string)
+        } catch(_) {
+            return false
+        }
+
+        return test_url.protocol === "http:" || test_url.protocol === "https:"; // Allow only site protocols. filter out something like javascript:void(0)
     }
 }

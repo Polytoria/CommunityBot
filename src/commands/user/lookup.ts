@@ -1,19 +1,13 @@
 import fetch from 'node-fetch';
 import { Message, MessageEmbed, MessageSelectMenu } from 'discord.js'
-
-var URLPattern = new RegExp('^(https?:\\/\\/)?'+
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
-    '((\\d{1,3}\\.){3}\\d{1,3}))'+
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
-    '(\\?[;&a-z\\d%_.~+=-]*)?'+
-    '(\\#[-a-z\\d_]*)?$','i');
+import { stringUtils } from '../../utils/stringUtils.js'
 
 export async function lookUp(message: Message, _arguments: string[]) {
 
 	let apiURL = `https://api.polytoria.com/v1/games/info?id`;
 
 	if (isNaN(parseInt(_arguments[0]))) {
-		if (URLPattern.test(_arguments[0])) { // Check if it were profile URL
+		if (stringUtils.IsURL(_arguments[0])) { // Check if it were profile URL
 			apiURL = "https://api.polytoria.com/v1/users/user?id=" + _arguments[0].replace(/\D/g,'') // Cut string out, we need only ID.
 		} else { // If it's not URL, It would be username
 			apiURL = "https://api.polytoria.com/v1/users/getbyusername?username=" + _arguments[0]
