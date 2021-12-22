@@ -4,8 +4,9 @@
 	"type": "module",
 	"typings": "./types",
 	"scripts": {
+		"start": "node dist/index.js",
 		"build": "tsc",
-		"start": "node dist/index.js"
+		"format": "prettier --write ."
 	},
 	"dependencies": {
 		"canvas": "^2.8.0",
