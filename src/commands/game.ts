@@ -1,11 +1,11 @@
-import fetch from 'node-fetch';
-import { Message, MessageEmbed, MessageSelectMenu } from 'discord.js'
-import { userUtils } from '../utils/userUtils.js'
+import fetch from 'node-fetch'
+import {Message, MessageEmbed, MessageSelectMenu} from 'discord.js'
+import {userUtils} from '../utils/userUtils.js'
 export async function game(message: Message, _arguments: string[]) {
-	const apiURL = `https://api.polytoria.com/v1/games/info?id=${_arguments[0]}`;
+	const apiURL = `https://api.polytoria.com/v1/games/info?id=${_arguments[0]}`
 
-	const response = await fetch(apiURL);
-	const data: any = await response.json();
+	const response = await fetch(apiURL)
+	const data: any = await response.json()
 	if (data.Success !== true) return message.channel.send('There was an unexpected error.')
 
 	const userData = await userUtils.getUserData(data.CreatorID)
@@ -21,35 +21,49 @@ export async function game(message: Message, _arguments: string[]) {
 		},
 		fields: [
 			{
-				name: '🗂️ Creator ID 🗂️', value: `${data.CreatorID}`, inline: true
+				name: '🗂️ Creator ID 🗂️',
+				value: `${data.CreatorID}`,
+				inline: true
 			},
 			{
-				name: '👷 Creator Name 👷', value: `${userData.Username}`, inline: true
+				name: '👷 Creator Name 👷',
+				value: `${userData.Username}`,
+				inline: true
 			},
 			{
-				name: '🎉 Visits 🎉', value: `${data.Visits}`, inline: false
+				name: '🎉 Visits 🎉',
+				value: `${data.Visits}`,
+				inline: false
 			},
 			{
-				name: '🔼 Likes 🔼', value: `${data.Likes}`, inline: true,
+				name: '🔼 Likes 🔼',
+				value: `${data.Likes}`,
+				inline: true
 			},
 			{
-				name: '🔽 Dislikes 🔽', value: `${data.Dislikes}`, inline: true
+				name: '🔽 Dislikes 🔽',
+				value: `${data.Dislikes}`,
+				inline: true
 			},
 			{
-				name: '🔥 Created At 🔥', value: `${data.CreatedAt}`, inline: false,
+				name: '🔥 Created At 🔥',
+				value: `${data.CreatedAt}`,
+				inline: false
 			},
 			{
-				name: '📦 Updated At 📦', value: `${data.UpdatedAt}`, inline: false
+				name: '📦 Updated At 📦',
+				value: `${data.UpdatedAt}`,
+				inline: false
 			},
 			{
-				name: '🟢 Is Active 🟢', value: `${data.IsActive}`, inline: false
+				name: '🟢 Is Active 🟢',
+				value: `${data.IsActive}`,
+				inline: false
 			}
-
 		]
 	})
 
 	return message.channel.send({
 		embeds: [Embed]
 	})
-
 }
