@@ -1,20 +1,20 @@
 import fetch from 'node-fetch';
 import { Message, MessageEmbed, MessageSelectMenu } from 'discord.js'
-import { stringUtils } from '../../utils/stringUtils.js'
 
 export async function lookUp(message: Message, _arguments: string[]) {
 
 	let apiURL = `https://api.polytoria.com/v1/games/info?id`;
 
-	if (isNaN(parseInt(_arguments[0]))) {
-		if (stringUtils.IsURL(_arguments[0])) { // Check if it were profile URL
-			apiURL = "https://api.polytoria.com/v1/users/user?id=" + _arguments[0].replace(/\D/g,'') // Cut string out, we need only ID.
-		} else { // If it's not URL, It would be username
-			apiURL = "https://api.polytoria.com/v1/users/getbyusername?username=" + _arguments[0]
-
-		}
-	} else { // If it's numberic, It would be ID
-		apiURL = "https://api.polytoria.com/v1/users/user?id=" + _arguments[0]
+	switch (_arguments[1]) {
+		case "user":
+			apiURL = `https://api.polytoria.com/v1/users/getbyusername?username=${_arguments[0]}`;
+			break;
+		case "id":
+			apiURL = `https://api.polytoria.com/v1/users/user?id=${_arguments[0]}`;
+			break;
+		default:
+			apiURL = `https://api.polytoria.com/v1/users/getbyusername?username=${_arguments[0]}`;
+			break;
 	}
 
 	const response = await fetch(apiURL);
