@@ -1,3 +1,10 @@
+var url_pattern = new RegExp('^(https?:\\/\\/)?'+
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ 
+    '(\\#[-a-z\\d_]*)?$','i');
+
 export class stringUtils {
     /**
      * ### Transforms number periods to comas. *Formatting*
@@ -30,7 +37,7 @@ export class stringUtils {
      * }
     */
 
-    public static URLParse(string: string) {
+    public static urlParse(string: string) {
         let url = new URL(string);
         let searchParams_url = url.searchParams
         let spitted_url:Array<any> = string.split("/")
@@ -48,7 +55,7 @@ export class stringUtils {
      * @returns array Numbers that has been found in URL
     */
     public static GetNumbersFromURL(string: string) {
-        let result = stringUtils.URLParse(string)
+        let result = stringUtils.urlParse(string)
         let splitted = result.spitted
 
         let returnresult:Array<any> = []
@@ -68,16 +75,7 @@ export class stringUtils {
      * @param string string that you want to checks that's url or not
      * @returns bool returns if it were url or not
      */
-    public static IsURL(string: string) {
-        let test_url;
-
-        // Try stuff, If URL fail to parse, that means it's not vaild URL.
-        try {
-            test_url = new URL(string)
-        } catch(_) {
-            return false
-        }
-
-        return test_url.protocol === "http:" || test_url.protocol === "https:"; // Allow only site protocols. filter out something like javascript:void(0)
+    public static isURL(string: string) {
+        return !!url_pattern.test(string);
     }
 }
