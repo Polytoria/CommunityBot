@@ -75,7 +75,7 @@ export class stringUtils {
      * @param string string that you want to checks that's url or not
      * @returns bool returns if it were url or not
      */
-    public static isURL(string: string) {
+    public static StrisURL(string: string) {
         return !!url_pattern.test(string);
     }
 }
