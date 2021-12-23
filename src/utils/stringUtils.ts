@@ -54,7 +54,7 @@ export class stringUtils {
      * @param string URL that want to be parsed
      * @returns array Numbers that has been found in URL
     */
-    public static GetNumbersFromURL(string: string) {
+    public static getNumbersFromURL(string: string) {
         let result = stringUtils.urlParse(string)
         let splitted = result.spitted
 
