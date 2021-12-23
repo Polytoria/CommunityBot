@@ -12,6 +12,5 @@ export async function info(message: Message) {
 	embed.addField('Rewritten by', 'Shiggy')
 	embed.setFooter('Thanks to all the collaborators of the project!')
 
-	//@ts-expect-error
-	await message.channel.send({embed: [embed]})
+	await message.channel.send({embeds: [embed]})
 }
