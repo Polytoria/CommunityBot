@@ -1,13 +1,9 @@
-import { Message, MessageEmbed } from 'discord.js'
+import {Message, MessageEmbed} from 'discord.js'
 
-export function brickToStud(
-    message: Message,
-    _arugments: string[]
-): Promise<Message<boolean>> {
+export function brickToStud(message: Message, _arugments: string[]): Promise<Message<boolean>> {
+	let bricks: number = +_arugments[0]
 
-    let bricks: number = +_arugments[0]
-
-    bricks *= 15
+	bricks *= 15
 
     const Embed: MessageEmbed = new MessageEmbed({
         title: "Brick to Stud!",

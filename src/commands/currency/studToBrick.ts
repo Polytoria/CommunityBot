@@ -1,10 +1,7 @@
-import { Message, MessageEmbed } from 'discord.js'
+import {Message, MessageEmbed} from 'discord.js'
 
-export function studToBrick(
-    message: Message,
-    _arguments: string[]
-): Promise<Message<boolean>> {
-    let studs: number = +_arguments[0]
+export function studToBrick(message: Message, _arguments: string[]): Promise<Message<boolean>> {
+	let studs: number = +_arguments[0]
 
     studs /= 15
     studs = Math.round(studs)
@@ -23,6 +20,5 @@ export function studToBrick(
             text: studremoved == 0 ? "No warnings" : `⚠ ${studremoved} studs will be removed while converting.`
         }
     })
-
-    return message.channel.send({ embeds: [Embed]})
+	return message.channel.send({embeds: [Embed]})
 }
