@@ -3,7 +3,7 @@ let DisplayTexts: any = {
     "Invalid user ID.": "I don't see the player with that id, maybe try again.. or If you're searching using username, Try type \" username\" after your targetted user s' username!"
 }
 
-export class apiErrorHandler {
+export class responseHandler {
     /**
      * Check Error
      * @param response Gets request type from node-fetch
@@ -16,7 +16,7 @@ export class apiErrorHandler {
             ActualError: "Actual Error from server"
         }
      */
-    public static CheckError(response: any,data: any) {
+    public static checkError(response: any,data: any) {
 
         let result: any = {
             HasError: false,
