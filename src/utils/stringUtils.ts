@@ -1,7 +1,7 @@
 export class stringUtils {
 	/**
      * ### URL Parse
-     * @param string URL that want to be parsed
+     * @param {string} URL that want to be parsed.
      * @returns {urlData: string, searchParams: URLSearchParams, splitted: string[]}
      */
 	public static urlParse(url: string): {urlData: URL; searchParams: URLSearchParams; splitted: string[]} {
@@ -16,8 +16,8 @@ export class stringUtils {
 
 	/**
 	 * ### Get Numbers From URL
-	 * @param string URL that want to be parsed
-	 * @returns array Numbers that has been found in URL
+	 * @param {string} URL that want to be parsed
+	 * @returns {number[]} Numbers that has been found in URL
 	 */
 	public static getNumbersFromURL(string: string): number[] {
 		const parsed = stringUtils.urlParse(string)

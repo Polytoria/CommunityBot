@@ -1,19 +1,18 @@
-import * as userCommands from './commands/user.js'
+import {lookUp} from './commands/user.js'
 import {ping} from './commands/ping.js'
-import * as currencyCommands from './commands/currency.js'
+import {brickToStud, studToBrick} from './commands/currency.js'
 import {game} from './commands/game.js'
 import {cookie} from './commands/cookie.js'
 import {guild} from './commands/guild.js'
-const commands = {
-	lookup: userCommands.lookUp,
+
+export default {
+	lookup: lookUp,
 	ping: ping,
-	brickToStud: currencyCommands.brickToStud,
-	b2s: currencyCommands.brickToStud,
-	studToBrick: currencyCommands.studToBrick,
-	s2b: currencyCommands.studToBrick,
+	brickToStud: brickToStud,
+	b2s: brickToStud,
+	studToBrick: studToBrick,
+	s2b: studToBrick,
 	game: game,
 	cookie: cookie,
 	guild: guild
 }
-
-export default commands

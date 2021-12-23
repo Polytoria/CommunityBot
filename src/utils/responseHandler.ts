@@ -8,22 +8,15 @@ const displayTexts: Record<string, string> = {
 export class responseHandler {
 	/**
      * Check Error
-     * @param response Gets request type from Axios
-     * @param data Gets request.json from Axios
-     * @returns
-     * {
-            HasError: boolean,
-            StatusCode: number,
-            DisplayText: string,
-            ActualError: string
-        }
+     * @param {AxiosResponse} The response from Axios request.
+     * @returns {HasError: boolean, StatusCode: number, DisplayText: string, ActualError: string}
      */
 	public static checkError(response: AxiosResponse) {
 		const result: {HasError: boolean; StatusCode: number; DisplayText: string; ActualError: string} = {
 			HasError: false,
 			StatusCode: 0,
-			DisplayText: 'Unknown Error.',
-			ActualError: 'Unknown Error.'
+			DisplayText: 'Unknown error.',
+			ActualError: 'Unknown error.'
 		}
 
 		result.StatusCode = response.status
@@ -31,7 +24,7 @@ export class responseHandler {
 		if (response.status >= 500) {
 			result.HasError = true
 			result.DisplayText = 'An unexpected error happen while sending request to Polytoria API. Please try again in a few minutes.'
-			result.ActualError = 'API Error.'
+			result.ActualError = 'API error.'
 		} else {
 			if (response.data.Success === false) {
 				result.HasError = true
