@@ -21,7 +21,7 @@ export async function guild(message: Message, args: string[]) {
 		title: data.Name,
 		description: data.Description,
 		thumbnail: {
-			url: data.thumbnail
+			url: data.Thumbnail
 		},
 		color: '#ff5454',
 		fields: [
