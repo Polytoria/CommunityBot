@@ -1,16 +1,15 @@
 import {Message, MessageEmbed} from 'discord.js'
-import fetch from 'node-fetch'
+import axios from 'axios'
 import {responseHandler} from '../utils/responseHandler.js'
 import {userUtils} from '../utils/userUtils.js'
 
 export async function game(message: Message, args: string[]) {
-	const parsed = args[0].replace(/[^0-9]/g, '')
-	const apiURL = `https://api.polytoria.com/v1/games/info?id=${parsed}`
+	const gameID = parseInt(args[0])
 
-	const response = await fetch(apiURL)
-	const data: any = await response.json()
+	const response = await axios.get('https://api.polytoria.com/v1/games/info', {params: {id: gameID}})
+	const data = response.data
 
-	const errResult = responseHandler.checkError(response, data)
+	const errResult = responseHandler.checkError(response)
 
 	if (errResult.HasError == true) {
 		return message.channel.send(errResult.DisplayText)

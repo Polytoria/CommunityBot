@@ -1,6 +1,6 @@
 import {Message, MessageEmbed} from 'discord.js'
+import axios from 'axios'
 import {responseHandler} from '../../utils/responseHandler.js'
-import fetch from 'node-fetch'
 
 export async function lookUp(message: Message, args: string[]) {
 	let apiURL
@@ -17,10 +17,10 @@ export async function lookUp(message: Message, args: string[]) {
 			break
 	}
 
-	const response = await fetch(apiURL)
-	const data: any = await response.json()
+	const response = await axios.get(apiURL)
+	const data = response.data
 
-	const errResult = responseHandler.checkError(response, data)
+	const errResult = responseHandler.checkError(response)
 
 	if (errResult.HasError == true){
 		return message.channel.send(errResult.DisplayText)
