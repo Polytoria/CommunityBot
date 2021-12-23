@@ -1,12 +1,17 @@
 import fetch from 'node-fetch';
 import { Message, MessageEmbed, MessageSelectMenu } from 'discord.js'
 import { userUtils } from '../utils/userUtils.js'
+import { apiErrorHandler } from '../utils/apiErrorHandler.js'
+
 export async function game(message: Message, _arguments: string[]) {
 	const parsed = _arguments[0].replace(/[^0-9]/g,'')
 	const apiURL = `https://api.polytoria.com/v1/games/info?id=${parsed}`;
 
 	const response = await fetch(apiURL);
 	const data: any = await response.json();
+	const errresult = apiErrorHandler.CheckError(response,data)
+	if (errresult.HasError == true) return message.channel.send(`${errresult.DisplayText}`)
+	
 	if (data.Success !== true) return message.channel.send('There was an unexpected error.')
 
 	const userData = await userUtils.getUserData(data.CreatorID)

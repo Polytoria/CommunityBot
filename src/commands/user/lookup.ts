@@ -1,9 +1,10 @@
 import fetch from 'node-fetch';
 import { Message, MessageEmbed, MessageSelectMenu } from 'discord.js'
+import { apiErrorHandler } from '../../utils/apiErrorHandler.js'
 
 export async function lookUp(message: Message, _arguments: string[]) {
 
-	let apiURL = `https://api.polytoria.com/v1/games/info?id`;
+	let apiURL;
 
 	switch (_arguments[1]) {
 		case "user":
@@ -19,7 +20,10 @@ export async function lookUp(message: Message, _arguments: string[]) {
 
 	const response = await fetch(apiURL);
 	const data: any = await response.json();
-	if (data.Success !== true) return message.channel.send('There was an unexpected error.')
+	const errresult = apiErrorHandler.CheckError(response,data)
+	if (errresult.HasError == true) return message.channel.send(`${errresult.DisplayText}`)
+
+	if (data.Success !== true) return message.channel.send(`There was an unexpected error. ${(data.Errors[0]) ? `(${data.Errors[0]})` : "" }`)
 
 	const Embed = new MessageEmbed({
 		title: data.Username,
