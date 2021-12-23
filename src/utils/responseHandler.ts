@@ -1,3 +1,5 @@
+import { Response } from "node-fetch"
+
 const DisplayTexts: any = {
     "Invalid username.": "I don't see the player with that username, maybe try again.. or If you're searching using ID, Try type \" id\" after your targetted user id!",
     "Invalid user ID.": "I don't see the player with that id, maybe try again.. or If you're searching using username, Try type \" username\" after your targetted user s' username!"
@@ -8,17 +10,17 @@ export class responseHandler {
      * Check Error
      * @param response Gets request type from node-fetch
      * @param data Gets request.json from node-fetch
-     * @returns Dictionary
+     * @returns
      * {
-            HasError: false,
-            StatusCode: 0,
-            DisplayText: "Error message visibles to user",
-            ActualError: "Actual Error from server"
+            HasError: boolean,
+            StatusCode: number,
+            DisplayText: string,
+            ActualError: string
         }
      */
-    public static checkError(response: any,data: any) {
+    public static checkError(response: Response,data: any) {
 
-        const result: any = {
+        const result: {HasError: boolean, StatusCode: number, DisplayText: string, ActualError: string} = {
             HasError: false,
             StatusCode: 0,
             DisplayText: "Unknown Error.",

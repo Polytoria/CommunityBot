@@ -29,24 +29,26 @@ export class stringUtils {
     /**
      * ### URL Parse
      * @param string URL that want to be parsed
-     * @returns Dictionary
+     * @returns 
      * {
-     *  URLData: origin URL result,
-        searchParams: Search parms, (To get parms, use .get("key") method)
-        spitted: Splitted URL (['https://','','polytoria.com'])
+     *  URLData: string,
+        searchParams: URLSearchParams,
+        spitted: Array<string>
      * }
     */
 
-    public static urlParse(string: string) {
-        let url = new URL(string);
-        let searchParams_url = url.searchParams
-        let spitted_url:Array<any> = string.split("/")
+    public static urlParse(url: string) {
+        let urlConstruct = new URL(url);
+        let searchParams_url = urlConstruct.searchParams
+        let spitted_url: Array<string> = url.split("/")
 
-        return {
-            URLData: url,
+        let returnResult: {URLData: URL, searchParams: URLSearchParams, spitted: Array<string>} = {
+            URLData: urlConstruct,
             searchParams: searchParams_url,
             spitted: spitted_url
         }
+
+        return returnResult
     }
 
     /**
@@ -58,7 +60,7 @@ export class stringUtils {
         let result = stringUtils.urlParse(string)
         let splitted = result.spitted
 
-        let returnresult:Array<any> = []
+        let returnresult: Array<string> = []
 
         splitted.forEach(function (item:string) {
             if (isNaN(parseInt(item)) == false) {
