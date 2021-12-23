@@ -1,4 +1,4 @@
-let DisplayTexts: any = {
+const DisplayTexts: any = {
     "Invalid username.": "I don't see the player with that username, maybe try again.. or If you're searching using ID, Try type \" id\" after your targetted user id!",
     "Invalid user ID.": "I don't see the player with that id, maybe try again.. or If you're searching using username, Try type \" username\" after your targetted user s' username!"
 }
