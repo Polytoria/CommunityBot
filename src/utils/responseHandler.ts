@@ -18,7 +18,7 @@ export class responseHandler {
      */
     public static checkError(response: any,data: any) {
 
-        let result: any = {
+        const result: any = {
             HasError: false,
             StatusCode: 0,
             DisplayText: "Unknown Error.",
