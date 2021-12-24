@@ -19,8 +19,8 @@ export class stringUtils {
 	 * @param {string} URL that want to be parsed
 	 * @returns {number[]} Numbers that has been found in URL
 	 */
-	public static getNumbersFromURL(string: string): number[] {
-		const parsed = stringUtils.urlParse(string)
+	public static getNumbersFromURL(url: string): number[] {
+		const parsed = stringUtils.urlParse(url)
 		const result: number[] = []
 
 		parsed.splitted.forEach(function (item: string) {

@@ -45,3 +45,14 @@ export type IConfiguration = {
 	 */
 	coolDown: number
 }
+
+export type IapiEndpoints = {
+	/**
+	 * URL of request
+	 */
+	url: string | undefined
+	/**
+	 * Request Method(Exmaple GET POST)
+	 */
+	method?: string | undefined
+}

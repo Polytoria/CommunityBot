@@ -9,29 +9,29 @@ export class responseHandler {
 	/**
      * Check Error
      * @param {AxiosResponse} The response from Axios request.
-     * @returns {HasError: boolean, StatusCode: number, DisplayText: string, ActualError: string}
+     * @returns {hasError: boolean, statusCode: number, displayText: string, actualError: string}
      */
 	public static checkError(response: AxiosResponse) {
-		const result: {HasError: boolean; StatusCode: number; DisplayText: string; ActualError: string} = {
-			HasError: false,
-			StatusCode: 0,
-			DisplayText: 'Unknown error.',
-			ActualError: 'Unknown error.'
+		const result: {hasError: boolean; statusCode: number; displayText: string; actualError: string} = {
+			hasError: false,
+			statusCode: 0,
+			displayText: 'Unknown error.',
+			actualError: 'Unknown error.'
 		}
 
-		result.StatusCode = response.status
+		result.statusCode = response.status
 
 		if (response.status >= 500) {
-			result.HasError = true
-			result.DisplayText = 'An unexpected error happen while sending request to Polytoria API. Please try again in a few minutes.'
-			result.ActualError = 'API error.'
+			result.hasError = true
+			result.displayText = 'An unexpected error happen while sending request to Polytoria API. Please try again in a few minutes.'
+			result.actualError = 'API error.'
 		} else {
 			if (response.data.Success === false) {
-				result.HasError = true
-				result.ActualError = response.data.Errors[0]
+				result.hasError = true
+				result.actualError = response.data.Errors[0]
 
-				if (displayTexts[result.ActualError]) {
-					result.DisplayText = displayTexts[result.ActualError]
+				if (displayTexts[result.actualError]) {
+					result.displayText = displayTexts[result.actualError]
 				}
 			}
 		}
