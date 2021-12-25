@@ -1,4 +1,4 @@
-import {Message} from 'discord.js'
+import { Message } from 'discord.js'
 
 /**
  * Type for the commands
@@ -14,7 +14,7 @@ export type IContext = '[Bot]' | '[Client]' | '[Server]'
  * Configuration of your bot.
  */
 
-export type IGame = {
+export type IGame = { 
 	Success: boolean
 	ID?: number
 	Name?: string
@@ -27,9 +27,9 @@ export type IGame = {
 	Dislikes?: number
 	CreatedAt?: string
 	UpdatedAt?: string
-}
+ }
 
-export type IConfiguration = {
+export type IConfiguration = { 
 	/**
 	 * Token of your bot.
 	 */
@@ -44,9 +44,9 @@ export type IConfiguration = {
 	 * Time to cool down the bot commands.
 	 */
 	coolDown: number
-}
+ }
 
-export type IapiEndpoints = {
+export type IapiEndpoints = { 
 	/**
 	 * URL of request
 	 */
@@ -55,4 +55,4 @@ export type IapiEndpoints = {
 	 * Request Method(Exmaple GET POST)
 	 */
 	method?: string | undefined
-}
+ }

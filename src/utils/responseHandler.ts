@@ -7,10 +7,10 @@ const displayTexts: Record<string, string> = {
 
 export class responseHandler {
 	/**
-     * Check Error
-     * @param {AxiosResponse} The response from Axios request.
-     * @returns {hasError: boolean, statusCode: number, displayText: string, actualError: string}
-     */
+	 * Check Error
+	 * @param { AxiosResponse } The response from Axios request.
+	 * @returns { hasError: boolean, statusCode: number, displayText: string, actualError: string }
+	 */
 	public static checkError(response: AxiosResponse) {
 		const result: {hasError: boolean; statusCode: number; displayText: string; actualError: string} = {
 			hasError: false,
