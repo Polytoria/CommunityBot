@@ -56,3 +56,22 @@ export type IapiEndpoints = {
 	 */
 	method?: string | undefined
 }
+
+export type IApiResponse = {
+	/**
+	 * Check if the request was success
+	 */
+	hasError: boolean,
+	/**
+	 * Response s' Status Code
+	 */
+	statusCode: number,
+	/**
+	 * String that will be display to user
+	 */
+	displayText: string,
+	/**
+	 * Actual error that api response
+	 */
+	actualError: string
+}

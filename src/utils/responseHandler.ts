@@ -1,4 +1,5 @@
 import {AxiosResponse} from 'axios'
+import {IApiResponse} from '../../types/index.d.js'
 
 const displayTexts: Record<string, string> = {
 	'Invalid username.': 'I don\'t see the player with that username, maybe try again.. or If you\'re searching using ID, Try type " id" after your targetted user id!',
@@ -9,10 +10,10 @@ export class responseHandler {
 	/**
 	 * Check Error
 	 * @param { AxiosResponse } The response from Axios request.
-	 * @returns { hasError: boolean, statusCode: number, displayText: string, actualError: string }
+	 * @returns { IApiResponse }
 	 */
 	public static checkError(response: AxiosResponse) {
-		const result: {hasError: boolean; statusCode: number; displayText: string; actualError: string} = {
+		const result: IApiResponse = {
 			hasError: false,
 			statusCode: 0,
 			displayText: 'Unknown error.',
