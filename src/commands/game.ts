@@ -1,69 +1,76 @@
-import fetch from 'node-fetch'
-import {Message, MessageEmbed, MessageSelectMenu} from 'discord.js'
+import {Message, MessageEmbed} from 'discord.js'
+import axios from 'axios'
+import {responseHandler} from '../utils/responseHandler.js'
 import {userUtils} from '../utils/userUtils.js'
-export async function game(message: Message, _arguments: string[]) {
-	const apiURL = `https://api.polytoria.com/v1/games/info?id=${_arguments[0]}`
+import {dateUtils} from '../utils/dateUtils.js'
 
-	const response = await fetch(apiURL)
-	const data: any = await response.json()
-	if (data.Success !== true) return message.channel.send('There was an unexpected error.')
+export async function game(message: Message, args: string[]) {
+	const gameID = parseInt(args[0])
+
+	const response = await axios.get('https://api.polytoria.com/v1/games/info', {params: {id: gameID}})
+	const data = response.data
+
+	const errResult = responseHandler.checkError(response)
+
+	if (errResult.hasError === true) {
+		return message.channel.send(errResult.displayText)
+	}
 
 	const userData = await userUtils.getUserData(data.CreatorID)
 
-	const Embed = new MessageEmbed({
+	const embed = new MessageEmbed({
 		title: data.Name,
 		description: data.Description,
 		thumbnail: {
 			url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
 		},
+		color: '#ff5454',
 		image: {
-			url: `https://polytoria.com//assets//thumbnails//games//${_arguments[0]}.png`
+			url: `https://polytoria.com//assets//thumbnails//games//${args[0]}.png`
 		},
 		fields: [
 			{
 				name: '🗂️ Creator ID 🗂️',
-				value: `${data.CreatorID}`,
+				value: data.CreatorID.toLocaleString(),
 				inline: true
 			},
 			{
 				name: '👷 Creator Name 👷',
-				value: `${userData.Username}`,
+				value: userData.Username,
 				inline: true
 			},
 			{
 				name: '🎉 Visits 🎉',
-				value: `${data.Visits}`,
+				value: data.Visits.toLocaleString(),
 				inline: false
 			},
 			{
 				name: '🔼 Likes 🔼',
-				value: `${data.Likes}`,
+				value: data.Likes.toLocaleString(),
 				inline: true
 			},
 			{
 				name: '🔽 Dislikes 🔽',
-				value: `${data.Dislikes}`,
+				value: data.Dislikes.toLocaleString(),
 				inline: true
 			},
 			{
 				name: '🔥 Created At 🔥',
-				value: `${data.CreatedAt}`,
+				value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
 				inline: false
 			},
 			{
 				name: '📦 Updated At 📦',
-				value: `${data.UpdatedAt}`,
+				value: dateUtils.atomTimeToDisplayTime(data.UpdatedAt),
 				inline: false
 			},
 			{
 				name: '🟢 Is Active 🟢',
-				value: `${data.IsActive}`,
+				value: data.IsActive.toString(),
 				inline: false
 			}
 		]
 	})
 
-	return message.channel.send({
-		embeds: [Embed]
-	})
+	return message.channel.send({embeds: [embed]})
 }

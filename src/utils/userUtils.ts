@@ -1,12 +1,10 @@
-import fetch from 'node-fetch'
+import axios from 'axios'
 
 export class userUtils {
-	public static async getUserData(id: number) {
-		const url = `https://api.polytoria.com/v1/users/user?id=${id}`
-		const response = await fetch(url)
-		const data: any = await response.json()
+	public static async getUserData(id: number): Promise<any> {
+		const response = await axios.get('https://api.polytoria.com/v1/users/user', {params: {id}})
+		const data = response.data
 
-		const finalURL = `https://polytoria.com/assets/thumbnails/avatars/${data.AvatarHash}.png`
 		return data
 	}
 }

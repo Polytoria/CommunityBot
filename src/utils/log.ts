@@ -1,8 +1,6 @@
 // <reference path="index.d.ts"/>
-
-import chalk from 'chalk'
-
 import {IContext} from '../../types'
+import chalk from 'chalk'
 
 export function log({context, message}: {context: IContext; message: string}): void {
 	console.log(chalk.blue(`👷 ${context} - ${message}`))
