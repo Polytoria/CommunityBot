@@ -1,24 +1,25 @@
 import {Message, MessageEmbed} from 'discord.js'
 import axios from 'axios'
 import {responseHandler} from '../../utils/responseHandler.js'
-import {IapiEndpoints} from '../../../types'
+import {dateUtils} from '../../utils/dateUtils.js'
+import {stringUtils} from '../../utils/stringUtils.js'
 
 export async function lookUp(message: Message, args: string[]) {
-	const apiURL: IapiEndpoints = undefined!
+	let apiURL: string = ''
 
 	switch (args[1]) {
 		case 'user':
-			apiURL.url = `https://api.polytoria.com/v1/users/getbyusername?username=${args[0]}`
+			apiURL = `https://api.polytoria.com/v1/users/getbyusername?username=${args[0]}`
 			break
 		case 'id':
-			apiURL.url = `https://api.polytoria.com/v1/users/user?id=${args[0]}`
+			apiURL = `https://api.polytoria.com/v1/users/user?id=${args[0]}`
 			break
 		default:
-			apiURL.url = `https://api.polytoria.com/v1/users/getbyusername?username=${args[0]}`
+			apiURL = `https://api.polytoria.com/v1/users/getbyusername?username=${args[0]}`
 			break
 	}
 
-	const response = await axios.get(apiURL.url)
+	const response = await axios.get(apiURL)
 	const data = response.data
 
 	const errResult = responseHandler.checkError(response)
@@ -43,12 +44,12 @@ export async function lookUp(message: Message, args: string[]) {
 			},
 			{
 				name: '🙎‍♂️ Rank 🙎‍♂️',
-				value: data.Rank,
+				value: stringUtils.capitalizeString(data.Rank),
 				inline: true
 			},
 			{
 				name: '❤ Membership Type ❤',
-				value: data.MembershipType,
+				value: stringUtils.capitalizeString(data.MembershipType),
 				inline: false
 			},
 			{
@@ -68,17 +69,17 @@ export async function lookUp(message: Message, args: string[]) {
 			},
 			{
 				name: '💰 Trade value 💰',
-				value: data.TradeValue,
+				value: data.TradeValue.toLocaleString(),
 				inline: false
 			},
 			{
 				name: '🔥 Joined At 🔥',
-				value: data.JoinedAt,
+				value: dateUtils.atomTimeToDisplayTime(data.JoinedAt),
 				inline: false
 			},
 			{
 				name: '🟢 Last seen at 🟢',
-				value: data.LastSeenAt,
+				value: dateUtils.atomTimeToDisplayTime(data.LastSeenAt),
 				inline: false
 			}
 		]

@@ -2,6 +2,7 @@ import {Message, MessageEmbed} from 'discord.js'
 import axios from 'axios'
 import {responseHandler} from '../utils/responseHandler.js'
 import {userUtils} from '../utils/userUtils.js'
+import {dateUtils} from '../utils/dateUtils.js'
 
 export async function game(message: Message, args: string[]) {
 	const gameID = parseInt(args[0])
@@ -30,7 +31,7 @@ export async function game(message: Message, args: string[]) {
 		fields: [
 			{
 				name: '🗂️ Creator ID 🗂️',
-				value: data.CreatorID,
+				value: data.CreatorID.toLocaleString(),
 				inline: true
 			},
 			{
@@ -55,12 +56,12 @@ export async function game(message: Message, args: string[]) {
 			},
 			{
 				name: '🔥 Created At 🔥',
-				value: data.CreatedAt,
+				value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
 				inline: false
 			},
 			{
 				name: '📦 Updated At 📦',
-				value: data.UpdatedAt,
+				value: dateUtils.atomTimeToDisplayTime(data.UpdatedAt),
 				inline: false
 			},
 			{

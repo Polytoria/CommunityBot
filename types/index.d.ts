@@ -55,4 +55,4 @@ export type IapiEndpoints = {
 	 * Request Method(Exmaple GET POST)
 	 */
 	method?: string | undefined
- }
+}
