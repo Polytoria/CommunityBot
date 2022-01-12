@@ -15,14 +15,14 @@ export class dateUtils {
 	public static atomTimeToDisplayTime(atomTime: string): string {
 		const date = new Date(atomTime)
 
-		let day: string | number = date.getDate()
-		if (day < 10) {
+		let day: string | number = date.getDate();
+        if (day < 10) {
 			day = day.toString()
 			day = '0' + day
-		}
+		};
 
-		let month: string | number = date.getMonth() + 1
-		if (month < 10) {
+		let month: string | number = date.getMonth() + 1;
+		if (month < 10) { 
 			month = month.toString()
 			month = '0' + month
 		}

@@ -28,7 +28,6 @@ export async function game(message: Message, args: string[]) {
 		image: {
 			url: `https://polytoria.com//assets//thumbnails//games//${args[0]}.png`
 		},
-		url: `https://polytoria.com/game/${data.ID}`,
 		fields: [
 			{
 				name: '🗂️ Creator ID 🗂️',
