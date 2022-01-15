@@ -8,7 +8,7 @@ import {ICreator} from '../../types'
 export async function catalog(message: Message, args: string[]) {
 	const assetID = parseInt(args[0])
 
-	const response = await axios.get('https://api.polytoria.com/v1/asset/info', {params: {id: assetID}})
+	const response = await axios.get('https://api.polytoria.com/v1/asset/info', {params: {id: assetID}, validateStatus: () => true})
 	const data = response.data
 
 	const errResult = responseHandler.checkError(response)

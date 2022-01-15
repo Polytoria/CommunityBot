@@ -19,7 +19,7 @@ export async function lookUp(message: Message, args: string[]) {
 			break
 	}
 
-	const response = await axios.get(apiURL)
+	const response = await axios.get(apiURL,{validateStatus: () => true})
 	const data = response.data
 
 	const errResult = responseHandler.checkError(response)
