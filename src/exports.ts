@@ -4,6 +4,7 @@ import {brickToStud, studToBrick} from './commands/currency.js'
 import {game} from './commands/game.js'
 import {cookie} from './commands/cookie.js'
 import {guild} from './commands/guild.js'
+import {catalog} from './commands/catalog.js'
 
 export default {
 	lookup: lookUp,
@@ -14,5 +15,6 @@ export default {
 	s2b: studToBrick,
 	game: game,
 	cookie: cookie,
-	guild: guild
+	guild: guild,
+	catalog: catalog
 }
