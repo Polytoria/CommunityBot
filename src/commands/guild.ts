@@ -7,7 +7,7 @@ import {dateUtils} from '../utils/dateUtils.js'
 export async function guild(message: Message, args: string[]) {
 	const guildID = parseInt(args[0])
 
-	const response = await axios.get('https://api.polytoria.com/v1/guild/info', {params: {id: guildID}})
+	const response = await axios.get('https://api.polytoria.com/v1/guild/info', {params: {id: guildID}, validateStatus: () => true})
 	const data = response.data
 
 	const errResult = responseHandler.checkError(response)

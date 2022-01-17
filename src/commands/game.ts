@@ -7,7 +7,7 @@ import {dateUtils} from '../utils/dateUtils.js'
 export async function game(message: Message, args: string[]) {
 	const gameID = parseInt(args[0])
 
-	const response = await axios.get('https://api.polytoria.com/v1/games/info', {params: {id: gameID}})
+	const response = await axios.get('https://api.polytoria.com/v1/games/info', {params: {id: gameID}, validateStatus: () => true})
 	const data = response.data
 
 	const errResult = responseHandler.checkError(response)
