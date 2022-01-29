@@ -1,4 +1,4 @@
-import {lookUp} from './commands/user.js'
+import {lookUp, inventory} from './commands/user.js'
 import {ping} from './commands/ping.js'
 import {brickToStud, studToBrick} from './commands/currency.js'
 import {game} from './commands/game.js'
@@ -8,6 +8,7 @@ import {catalog} from './commands/catalog.js'
 
 export default {
 	lookup: lookUp,
+	inventory: inventory,
 	ping: ping,
 	brickToStud: brickToStud,
 	b2s: brickToStud,
