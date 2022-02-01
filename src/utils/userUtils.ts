@@ -25,7 +25,12 @@ export class userUtils {
 	 * @returns {Promise<any>} Return User Data
 	 */
 	public static async getUserDataFromUsername(username: string): Promise<any> {
-		const response = await axios.get('https://api.polytoria.com/v1/users/getbyusername', {params: {username}, validateStatus: () => true})
+		const response = await axios.get('https://api.polytoria.com/v1/users/getbyusername', {
+			params: {username},
+			validateStatus: function (status) {
+				return status >= 200 && status < 300; // default
+			}
+		})
 		const data = response.data
 
 		return data
