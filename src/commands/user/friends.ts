@@ -2,39 +2,38 @@ import {Message, MessageEmbed, MessageActionRow, MessageButton} from 'discord.js
 import axios from 'axios'
 import {userUtils} from '../../utils/userUtils.js'
 
-export async function inventory(message: Message, args: string[]) {
+export async function friends(message: Message, args: string[]) {
 	const userData = await userUtils.getUserDataFromUsername(args[0])
 
 	if (!userData.ID) {
 		return message.reply("User not found!")
 	}
 
-
 	let currentPage = 1
 
-	const apiURL = 'https://api.polytoria.com/v1/users/inventory?id=' + userData.ID.toString()
+	const apiURL = 'https://api.polytoria.com/v1/users/friends?id=' + userData.ID.toString()
 
 	const response = await axios.get(apiURL, {validateStatus: () => true})
 	const data = response.data
 
 	// Change Page Function, Fetch current page
 	async function changePage(): Promise<string> {
-		const apiURL = 'https://api.polytoria.com/v1/users/inventory?id=' + userData.ID.toString() + '&page=' + currentPage
+		const apiURL = 'https://api.polytoria.com/v1/users/friends?id=' + userData.ID.toString() + '&page=' + currentPage
 
 		const response = await axios.get(apiURL, {validateStatus: () => true})
 		let resultString: string = ''
 
 		//@ts-expect-error
-		response.data.Inventory.forEach((item) => {
-			resultString += `[${item.Name}](https://polytoria.com/shop/${item.ID})\n`
+		response.data.Friends.forEach((item) => {
+			resultString += `[${item.Username}](https://polytoria.com/user/${item.ID})\n`
 		})
 
 		return resultString
 	}
 
 	const embed = new MessageEmbed({
-		title: userData.Username + "'s Inventory.",
-		url: `https://polytoria.com/user/${userData.ID}/inventory`,
+		title: userData.Username + "'s Friends.",
+		url: `https://polytoria.com/user/${userData.ID}/friends`,
 		color: '#ff5454',
 		thumbnail: {
 			url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
@@ -42,9 +41,9 @@ export async function inventory(message: Message, args: string[]) {
 		description: ''
 	})
 
-	// Fetch Inventory
-	const inventoryData: string = await changePage()
-	embed.description = inventoryData
+	// Fetch Friends
+	const friendsData: string = await changePage()
+	embed.description = friendsData
 
 	// Generate Button ID base on current time
 	const buttonID: string = new Date().toString()
@@ -96,9 +95,9 @@ export async function inventory(message: Message, args: string[]) {
 		// Set Page
 		pageNumBtn.setLabel(`Page ${currentPage.toString()} of ${data.Pages.toString()}`)
 
-		// Fetch Inventory
-		const inventoryData: string = await changePage()
-		embed.description = inventoryData
+		// Fetch Friends
+		const friendsData: string = await changePage()
+		embed.description = friendsData
 
 		// Update Embed and Button
 		await i.update({embeds: [embed], components: [row]})
