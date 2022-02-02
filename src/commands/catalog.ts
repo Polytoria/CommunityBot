@@ -57,6 +57,11 @@ export async function catalog(message: Message, args: string[]) {
 				name: '🔥 Created At 🔥',
 				value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
 				inline: false
+			},
+			{
+				name: '✏️ Updated At ✏️',
+				value: dateUtils.atomTimeToDisplayTime(data.UpdatedAt),
+				inline: false
 			}
 		]
 	})
