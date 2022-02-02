@@ -5,6 +5,7 @@ import {game} from './commands/game.js'
 import {cookie} from './commands/cookie.js'
 import {guild} from './commands/guild.js'
 import {catalog} from './commands/catalog.js'
+import {leaderboard} from './commands/leaderboard.js'
 
 export default {
 	lookup: lookUp,
@@ -20,4 +21,5 @@ export default {
 	catalog: catalog,
 	friends: friends,
 	avatar: avatar,
+	leaderboard: leaderboard,
 }

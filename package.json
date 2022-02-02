@@ -14,10 +14,12 @@
 		"chalk": "^5.0.0",
 		"discord.js": "^13.3.1",
 		"dotenv": "^10.0.0",
+		"text-table": "^0.2.0",
 		"timestamp-conv": "^2.2.0"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.4",
+		"@types/text-table": "^0.2.2",
 		"@typescript-eslint/eslint-plugin": "^5.8.0",
 		"@typescript-eslint/parser": "^5.8.0",
 		"eslint": "^7.32.0",
