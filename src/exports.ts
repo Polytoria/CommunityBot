@@ -1,4 +1,4 @@
-import {lookUp, inventory, friends} from './commands/user.js'
+import {lookUp, inventory, friends, avatar} from './commands/user.js'
 import {ping} from './commands/ping.js'
 import {brickToStud, studToBrick} from './commands/currency.js'
 import {game} from './commands/game.js'
@@ -18,5 +18,6 @@ export default {
 	cookie: cookie,
 	guild: guild,
 	catalog: catalog,
-	friends: friends
+	friends: friends,
+	avatar: avatar,
 }
