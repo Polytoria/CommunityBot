@@ -75,6 +75,16 @@ client.on('messageCreate', async (message): Promise<any | void> => {
 	}
 })
 
+// Handle Promise Rejection
+process.on('unhandledRejection', (reason, p) => {
+    console.error(reason, 'Unhandled Rejection at Promise', p);
+})
+
+process.on('uncaughtException', err => {
+    console.error(err);
+    process.exit(1);
+});
+
 success({context: '[Bot]', message: 'Bot succesfully logged in.'})
 
 client.login(configuration.token)
