@@ -42,7 +42,7 @@ export async function leaderboard(message: Message, args: string[]) {
 	embed.description = leaderboardData
 
 	// Generate Button ID base on current time
-	const buttonID: string = new Date().toString()
+	const buttonID: string = Date.now().toString()
 	const selectorID: string = 'selector' + buttonID
 
 	// Create Buttons

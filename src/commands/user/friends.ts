@@ -46,7 +46,7 @@ export async function friends(message: Message, args: string[]) {
 	embed.description = friendsData
 
 	// Generate Button ID base on current time
-	const buttonID: string = new Date().toString()
+	const buttonID: string = Date.now().toString()
 	const leftBtnID: string = 'left' + buttonID
 	const pageNum: string = 'page' + buttonID
 	const rightBtnID: string = 'right' + buttonID
