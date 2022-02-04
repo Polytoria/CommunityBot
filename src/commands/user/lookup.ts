@@ -38,49 +38,49 @@ export async function lookUp(message: Message, args: string[]) {
 		},
 		fields: [
 			{
-				name: '🗂️ User ID 🗂️',
+				name: 'User ID',
 				value: data.ID.toString(),
 				inline: true
 			},
 			{
-				name: '🙎‍♂️ Rank 🙎‍♂️',
+				name: 'Rank',
 				value: stringUtils.capitalizeString(data.Rank),
 				inline: true
 			},
 			{
-				name: '❤ Membership Type ❤',
+				name: 'Membership Type',
 				value: stringUtils.capitalizeString(data.MembershipType),
-				inline: false
+				inline: true
 			},
 			{
-				name: '📈 Profile Views 📈',
+				name: 'Profile Views',
 				value: data.ProfileViews.toLocaleString(),
 				inline: true
 			},
 			{
-				name: '📦 Item Sales 📦',
+				name: 'Item Sales',
 				value: data.ItemSales.toLocaleString(),
 				inline: true
 			},
 			{
-				name: '💬 Forum Posts 💬',
+				name: 'Forum Posts',
 				value: data.ForumPosts.toLocaleString(),
-				inline: false
+				inline: true
 			},
 			{
-				name: '💰 Trade value 💰',
+				name: 'Trade value',
 				value: data.TradeValue.toLocaleString(),
-				inline: false
+				inline: true
 			},
 			{
-				name: '🔥 Joined At 🔥',
+				name: 'Joined At',
 				value: dateUtils.atomTimeToDisplayTime(data.JoinedAt),
-				inline: false
+				inline: true
 			},
 			{
-				name: '🟢 Last seen at 🟢',
+				name: 'Last seen at',
 				value: dateUtils.atomTimeToDisplayTime(data.LastSeenAt),
-				inline: false
+				inline: true
 			}
 		]
 	})
