@@ -28,27 +28,27 @@ export async function guild(message: Message, args: string[]) {
 		color: '#ff5454',
 		fields: [
 			{
-				name: 'Creator ID',
+				name: '🗂️ Creator ID 🗂️',
 				value: data.CreatorID.toString(),
 				inline: true
 			},
 			{
-				name: 'Creator Name',
+				name: '👷 Creator Name 👷',
 				value: userData.Username,
 				inline: true
 			},
 			{
-				name: 'Members',
+				name: '🎉 Members 🎉',
 				value: data.Members.toLocaleString(),
 				inline: true
 			},
 			{
-				name: 'Is Verified',
+				name: '✅ Is Verified ✅',
 				value: data.IsVerified.toString(),
 				inline: true
 			},
 			{
-				name: 'Created At',
+				name: '🔥 Created At 🔥',
 				value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
 				inline: true
 			}
