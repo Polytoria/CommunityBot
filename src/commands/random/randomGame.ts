@@ -32,42 +32,42 @@ export async function randomGame(message: Message, args: string[]) {
 		},
 		fields: [
 			{
-				name: 'Creator ID',
+				name: '🗂️ Creator ID 🗂️',
 				value: data.CreatorID.toLocaleString(),
 				inline: true
 			},
 			{
-				name: 'Creator Name',
+				name: '👷 Creator Name 👷',
 				value: userData.Username,
 				inline: true
 			},
 			{
-				name: 'Visits',
+				name: '🎉 Visits 🎉',
 				value: data.Visits.toLocaleString(),
 				inline: true
 			},
 			{
-				name: 'Likes',
+				name: '🔼 Likes 🔼',
 				value: data.Likes.toLocaleString(),
 				inline: true
 			},
 			{
-				name: 'Dislikes',
+				name: '🔽 Dislikes 🔽',
 				value: data.Dislikes.toLocaleString(),
 				inline: true
 			},
 			{
-				name: 'Created At',
+				name: '🔥 Created At 🔥',
 				value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
 				inline: true
 			},
 			{
-				name: 'Updated At',
+				name: '📦 Updated At 📦',
 				value: dateUtils.atomTimeToDisplayTime(data.UpdatedAt),
 				inline: true
 			},
 			{
-				name: 'Is Active',
+				name: '🟢 Is Active 🟢',
 				value: data.IsActive.toString(),
 				inline: true
 			}
