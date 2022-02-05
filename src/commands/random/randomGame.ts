@@ -1,22 +1,23 @@
 import {Message, MessageEmbed} from 'discord.js'
-import axios from 'axios'
-import {responseHandler} from '../utils/responseHandler.js'
-import {userUtils} from '../utils/userUtils.js'
-import {dateUtils} from '../utils/dateUtils.js'
+import {dateUtils} from '../../utils/dateUtils.js'
+import {userUtils} from '../../utils/userUtils.js'
+import {randomUtils} from '../../utils/randomUtils.js'
 
-export async function game(message: Message, args: string[]) {
-	const gameID = parseInt(args[0])
+export async function randomGame(message: Message, args: string[]) {
 
-	const response = await axios.get('https://api.polytoria.com/v1/games/info', {params: {id: gameID}, validateStatus: () => true})
-	const data = response.data
+    const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/games/info',function(response: any) {
+        return response.data.IsActive
+    },function() {
+        return {id: randomUtils.randomInt(1,2500)}
+    },20)
 
-	const errResult = responseHandler.checkError(response)
 
-	if (errResult.hasError === true) {
-		return message.channel.send(errResult.displayText)
+	if (randomData == null) {
+		return message.channel.send("Game not found, Please try again..")
 	}
 
-	const userData = await userUtils.getUserData(data.CreatorID)
+    const data = randomData.data
+	const userData = await userUtils.getUserData(randomData.data.CreatorID)
 
 	const embed = new MessageEmbed({
 		title: data.Name,
@@ -24,9 +25,10 @@ export async function game(message: Message, args: string[]) {
 		thumbnail: {
 			url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
 		},
+        url: `https://polytoria.com/games/${randomData.data.ID}`,
 		color: '#ff5454',
 		image: {
-			url: `https://polytoria.com/assets/thumbnails/games/${args[0]}.png`
+			url: `https://polytoria.com/assets/thumbnails/games/${data.ID}.png`
 		},
 		fields: [
 			{
@@ -42,7 +44,7 @@ export async function game(message: Message, args: string[]) {
 			{
 				name: 'Visits',
 				value: data.Visits.toLocaleString(),
-				inline: false
+				inline: true
 			},
 			{
 				name: 'Likes',
@@ -57,17 +59,17 @@ export async function game(message: Message, args: string[]) {
 			{
 				name: 'Created At',
 				value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
-				inline: false
+				inline: true
 			},
 			{
 				name: 'Updated At',
 				value: dateUtils.atomTimeToDisplayTime(data.UpdatedAt),
-				inline: false
+				inline: true
 			},
 			{
 				name: 'Is Active',
 				value: data.IsActive.toString(),
-				inline: false
+				inline: true
 			}
 		]
 	})
