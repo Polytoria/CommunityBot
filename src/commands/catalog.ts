@@ -34,27 +34,27 @@ export async function catalog(message: Message, args: string[]) {
 		color: '#ff5454',
 		fields: [
 			{
-				name: 'Creator Name',
+				name: '👷 Creator Name 👷',
 				value: creatorDisplay,
 				inline: true
 			},
 			{
-				name: 'Type',
+				name: '👕 Type 👕',
 				value: data.Type,
 				inline: true
 			},
 			{
-				name: 'Price',
+				name: '💰 Price 💰',
 				value: data.Price.toString(),
 				inline: true
 			},
 			{
-				name: 'Currency',
+				name: '💵 Currency 💵',
 				value: data.Currency,
 				inline: false
 			},
 			{
-				name: 'Created At',
+				name: '✏️ Created At ✏️',
 				value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
 				inline: true
 			},
