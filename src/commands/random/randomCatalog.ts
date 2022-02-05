@@ -1,21 +1,23 @@
 import {Message, MessageEmbed} from 'discord.js'
-import axios from 'axios'
-import {responseHandler} from '../utils/responseHandler.js'
-import {dateUtils} from '../utils/dateUtils.js'
-import {creatorUtils} from '../utils/creatorUtils.js'
-import {ICreator} from '../../types'
+import {dateUtils} from '../../utils/dateUtils.js'
+import {randomUtils} from '../../utils/randomUtils.js'
+import {creatorUtils} from '../../utils/creatorUtils.js'
+import {ICreator} from '../../../types'
 
-export async function catalog(message: Message, args: string[]) {
-	const assetID = parseInt(args[0])
+export async function randomCatalog(message: Message, args: string[]) {
 
-	const response = await axios.get('https://api.polytoria.com/v1/asset/info', {params: {id: assetID}, validateStatus: () => true})
-	const data = response.data
+    const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/asset/info',function() {
+        return true
+    },function() {
+        return {id: randomUtils.randomInt(1,20000)}
+    },20)
 
-	const errResult = responseHandler.checkError(response)
 
-	if (errResult.hasError === true) {
-		return message.channel.send(errResult.displayText)
+	if (randomData == null) {
+		return message.channel.send("Catalog item not found, Please try again..")
 	}
+
+    const data = randomData.data
 
 	const creator: ICreator = {
 		creatorID: data.CreatorID,
@@ -57,12 +59,9 @@ export async function catalog(message: Message, args: string[]) {
 				name: 'Created At',
 				value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
 				inline: true
-			},
 			}
 		]
 	})
 
-	return message.channel.send({
-		embeds: [embed]
-	})
+	return await message.channel.send({embeds: [embed]})
 }

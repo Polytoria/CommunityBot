@@ -86,3 +86,14 @@ export type ICreator = {
 	 */
 	creatorID: number
 }
+
+export type RandomResult = {
+	/**
+	 * How many time the function tried
+	 */
+	tried: number
+	/**
+	 * Response data
+	 */
+	data: any
+}

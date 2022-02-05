@@ -1,30 +1,32 @@
 import {Message, MessageEmbed} from 'discord.js'
-import axios from 'axios'
-import {responseHandler} from '../utils/responseHandler.js'
-import {userUtils} from '../utils/userUtils.js'
-import {dateUtils} from '../utils/dateUtils.js'
+import {dateUtils} from '../../utils/dateUtils.js'
+import {randomUtils} from '../../utils/randomUtils.js'
+import {userUtils} from '../../utils/userUtils.js'
 
-export async function guild(message: Message, args: string[]) {
-	const guildID = parseInt(args[0])
+export async function randomGuild(message: Message, args: string[]) {
 
-	const response = await axios.get('https://api.polytoria.com/v1/guild/info', {params: {id: guildID}, validateStatus: () => true})
-	const data = response.data
+    const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/guild/info',function() {
+        return true
+    },function() {
+        return {id: randomUtils.randomInt(1,2000)}
+    },20)
 
-	const errResult = responseHandler.checkError(response)
 
-	if (errResult.hasError === true) {
-		return message.channel.send(errResult.displayText)
+	if (randomData == null) {
+		return message.channel.send("Guild not found, Please try again..")
 	}
 
-	const userData = await userUtils.getUserData(data.CreatorID)
+    const data = randomData.data
+
+	const userData = await userUtils.getUserData(randomData.data.CreatorID)
 
 	const Embed = new MessageEmbed({
 		title: data.Name,
 		description: data.Description,
-		url: 'https://polytoria.com/guilds/' + data.ID.toString(),
 		thumbnail: {
 			url: data.Thumbnail
 		},
+		url: 'https://polytoria.com/guilds/' + data.ID.toString(),
 		color: '#ff5454',
 		fields: [
 			{
