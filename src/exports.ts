@@ -1,5 +1,5 @@
 import {lookUp, inventory, friends, avatar} from './commands/user.js'
-import {randomGame, randomUser, randomGuild, randomCatalog} from './commands/random.js'
+import {randomGame, randomUser, randomGuild, randomCatalog, deletedRandomCatalog, randomBanner} from './commands/random.js'
 import {ping} from './commands/ping.js'
 import {brickToStud, studToBrick} from './commands/currency.js'
 import {game} from './commands/game.js'
@@ -27,4 +27,6 @@ export default {
 	"random-user": randomUser,
 	"random-guild": randomGuild,
 	"random-catalog": randomCatalog,
+	"404-random-catalog": deletedRandomCatalog,
+	"random-banner": randomBanner
 }

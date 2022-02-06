@@ -1,6 +1,7 @@
 import {Message, MessageEmbed, MessageActionRow, MessageButton} from 'discord.js'
 import axios from 'axios'
 import {userUtils} from '../../utils/userUtils.js'
+import {v4} from 'uuid'
 
 export async function inventory(message: Message, args: string[]) {
 	const userData = await userUtils.getUserDataFromUsername(args[0])
@@ -47,7 +48,7 @@ export async function inventory(message: Message, args: string[]) {
 	embed.description = inventoryData
 
 	// Generate Button ID base on current time
-	const buttonID: string = Date.now().toString()
+	const buttonID: string = v4()
 	const leftBtnID: string = 'left' + buttonID
 	const pageNum: string = 'page' + buttonID
 	const rightBtnID: string = 'right' + buttonID

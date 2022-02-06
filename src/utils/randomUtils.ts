@@ -30,7 +30,12 @@ export class randomUtils {
 
 			if (response.status != 404) {	
 				if (response.status != 400) {
-					const testResult = vaildFunction(response)
+					let testResult = null
+					if (vaildFunction.constructor.name === 'AsyncFunction') {
+						testResult = await vaildFunction(response)
+					} else {
+						testResult = vaildFunction(response)
+					}
 
 					if (testResult == true) {
 						const data = response.data

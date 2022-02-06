@@ -1,6 +1,7 @@
 import {Message, MessageEmbed, MessageActionRow, MessageSelectMenu} from 'discord.js'
 import axios from 'axios'
 import textTable from 'text-table'
+import {v4} from 'uuid'
 
 export async function leaderboard(message: Message, args: string[]) {
 	let currentType = 'networth'
@@ -42,7 +43,7 @@ export async function leaderboard(message: Message, args: string[]) {
 	embed.description = leaderboardData
 
 	// Generate Button ID base on current time
-	const buttonID: string = Date.now().toString()
+	const buttonID: string = v4()
 	const selectorID: string = 'selector' + buttonID
 
 	// Create Buttons

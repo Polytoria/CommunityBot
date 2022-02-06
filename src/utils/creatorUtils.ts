@@ -16,8 +16,11 @@ export class creatorUtils {
 
 		if (creator.creatorType == 'User') {
 			const userData = await userUtils.getUserData(creator.creatorID)
-
+			if (userData.Success == false) {
+				return 'Invaild user.'
+			}
 			result = userData.Username
+
 		} else {
 			const response = await axios.get('https://api.polytoria.com/v1/guild/info', {params: {id: creator.creatorID}})
 			const data = response.data
