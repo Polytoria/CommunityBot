@@ -12,7 +12,8 @@
 		"baseUrl": "src", // This must be specified if "paths" is.
 		"paths": {
 			"tslib": ["./../node_modules/tslib/tslib.d.ts"],
-			"@utils/*" : ["utils/*"]
+			"@utils/*" : ["utils/*"],
+			"@types/*" : ["types/*"]
 		},
 		"moduleResolution": "node",
 		// TBD it is desired to enabled strict type checking at some point:

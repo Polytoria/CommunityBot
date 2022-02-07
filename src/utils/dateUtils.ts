@@ -1,36 +1,36 @@
 export class dateUtils {
-	public static monthDifference(date1: Date, date2: Date): number {
-		let months = (date1.getFullYear() - date2.getFullYear()) * 12
-		months -= date1.getMonth()
-		months += date2.getMonth()
+  public static monthDifference (date1: Date, date2: Date): number {
+    let months = (date1.getFullYear() - date2.getFullYear()) * 12
+    months -= date1.getMonth()
+    months += date2.getMonth()
 
-		return months <= 0 ? 0 : months
-	}
+    return months <= 0 ? 0 : months
+  }
 
-	/**
-	 * atom Time To Display Time
-	 * @param atomTime Atom time format
-	 * @returns {string} formatted date as string
-	 */
-	public static atomTimeToDisplayTime(atomTime: string): string {
-		const date = new Date(atomTime)
+  /**
+   * atom Time To Display Time
+   * @param atomTime Atom time format
+   * @returns {string} formatted date as string
+   */
+  public static atomTimeToDisplayTime (atomTime: string): string {
+    const date = new Date(atomTime)
 
-		let day: string | number = date.getDate();
-        if (day < 10) {
-			day = day.toString()
-			day = '0' + day
-		};
+    let day: string | number = date.getDate()
+    if (day < 10) {
+      day = day.toString()
+      day = '0' + day
+    }
 
-		let month: string | number = date.getMonth() + 1;
-		if (month < 10) { 
-			month = month.toString()
-			month = '0' + month
-		}
+    let month: string | number = date.getMonth() + 1
+    if (month < 10) {
+      month = month.toString()
+      month = '0' + month
+    }
 
-		let year: string | number = date.getFullYear()
+    const year: string | number = date.getFullYear()
 
-		const formatted = `${day}/${month}/${year}`
+    const formatted = `${day}/${month}/${year}`
 
-		return formatted
-	}
+    return formatted
+  }
 }
