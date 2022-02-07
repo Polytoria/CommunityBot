@@ -9,8 +9,10 @@
 		"module": "es6",
 		"esModuleInterop": true,
 		"outDir": "dist",
+		"baseUrl": "src", // This must be specified if "paths" is.
 		"paths": {
-			"tslib": ["/node_modules/tslib/tslib.d.ts"]
+			"tslib": ["./../node_modules/tslib/tslib.d.ts"],
+			"@utils/*" : ["utils/*"]
 		},
 		"moduleResolution": "node",
 		// TBD it is desired to enabled strict type checking at some point:
