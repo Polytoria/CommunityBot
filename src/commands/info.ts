@@ -4,12 +4,13 @@ export async function info (message: Message) {
   const embed: MessageEmbed = new MessageEmbed()
 
   embed.setThumbnail('https://polytoria.com/assets/thumbnails/guilds/1.png')
-  embed.setAuthor('Polytoria Community Bot')
   embed.setColor('#fe5953')
   embed.setTitle('Polytoria Community Bot')
-  embed.addField('Version', 'Running version 2.0')
-  embed.addField('We are FOSS!', 'https://github.com/Polytoria/Polytoria-Community-Bot')
-  embed.addField('Rewritten by', 'Shiggy')
+  embed.setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
+  embed.addField('Version', 'Running version 2.0.0')
+  embed.addField('Invite our Bot', 'Tap the title to invite our bot directly to your server!')
+  embed.addField('We are open-sourced!', 'https://github.com/Polytoria/Polytoria-Community-Bot')
+  embed.addField('Rewritten by', 'Shiggy, DevPixels, baggy, and more!')
   embed.setFooter('Thanks to all the collaborators of the project!')
 
   await message.channel.send({ embeds: [embed] })
