@@ -20,12 +20,12 @@ const client = new Client({
 
 client.on('ready', () => {
   success({ context: '[Bot]', message: 'Bot succesfully connected.' })
-  client.user!.setActivity({
-    type: 'PLAYING',
-    url: 'https://api.polytoria.com',
-    name: 'Watching Polytoria API 👀'
-  })
-  success({ context: '[Bot]', message: 'Bot succesfully started.' })
+	client.user!.setActivity({
+	  type: 'PLAYING',
+	  url: 'https://api.polytoria.com',
+	  name: 'Watching Polytoria API 👀'
+	})
+	success({ context: '[Bot]', message: 'Bot succesfully started.' })
 })
 
 client.on('messageCreate', async (message): Promise<any | void> => {
@@ -46,14 +46,12 @@ client.on('messageCreate', async (message): Promise<any | void> => {
     message: 'Command registered.'
   })
 
-  const data = message.content
-    .slice(configuration.prefix.length, message.content.length)
-    .trim()
-    .split(/ +/g)
+  const data = message.content.slice(configuration.prefix.length, message.content.length).trim().split(/ +/g)
 
   const command: any = data[0]
   const argument: any[] = data.splice(1, data.length)
-  if (Object.prototype.hasOwnProperty.call(commands, command)) {
+
+  if (commands.hasOwnProperty(command)) {
     success({
       context: '[Bot]',
       message: 'Running command ' + command
@@ -82,7 +80,7 @@ process.on('unhandledRejection', (reason, p) => {
   console.error(reason, 'Unhandled Rejection at Promise', p)
 })
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.error(err)
   process.exit(1)
 })

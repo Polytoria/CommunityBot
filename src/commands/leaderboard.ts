@@ -87,9 +87,12 @@ export async function leaderboard (message: Message, args: string[]) {
   // Create Interaction event for 2 minutes
   const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
 
+  const msg = await message.channel.send({ embeds: [embed], components: [row] })
+
   // Listen for Button Interaction
   collector.on('collect', async (i) => {
     if (i.user.id !== message.author.id) {
+      await i.reply({ content: "nope, this button isn't for you", ephemeral: true })
       return
     }
 
@@ -104,8 +107,10 @@ export async function leaderboard (message: Message, args: string[]) {
     embed.url = 'https://polytoria.com/leaderboard?c=' + currentType
 
     // Update Embed and Button
-    await i.update({ embeds: [embed], components: [row] })
+    const updatedRow = new MessageActionRow().addComponents(selectMenu)
+    await msg.edit({ embeds: [embed], components: [updatedRow] })
+    await i.reply({ content: 'Feteched new page for you!', ephemeral: true })
   })
 
-  return await message.channel.send({ embeds: [embed], components: [row] })
+  return msg
 }

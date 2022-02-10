@@ -6,7 +6,8 @@
 	"scripts": {
 		"start": "node dist/index.js",
 		"build": "tsc",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"lint": "npx eslint \"src/**\" --fix"
 	},
 	"dependencies": {
 		"axios": "^0.24.0",

@@ -23,42 +23,6 @@ export async function catalog (message: Message, args: string[]) {
   }
 
   const creatorDisplay: string = await creatorUtils.getDisplayCreatorName(creator)
-  console.log({
-    title: data.Name,
-    description: data.Description === '' ? 'No description set.' : data.Description,
-    url: `https://polytoria.com/shop/${data.ID}`,
-    thumbnail: {
-      url: data.Thumbnail
-    },
-    color: '#ff5454',
-    fields: [
-      {
-        name: 'Creator Name',
-        value: creatorDisplay,
-        inline: true
-      },
-      {
-        name: 'Type',
-        value: data.Type,
-        inline: true
-      },
-      {
-        name: 'Price',
-        value: data.Price.toString(),
-        inline: true
-      },
-      {
-        name: 'Currency',
-        value: data.Currency,
-        inline: false
-      },
-      {
-        name: 'Created At',
-        value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
-        inline: true
-      }
-    ]
-  })
 
   const embed = new MessageEmbed({
     title: data.Name,
@@ -96,8 +60,6 @@ export async function catalog (message: Message, args: string[]) {
       }
     ]
   })
-
-  console.log(embed)
 
   return message.channel.send({
     embeds: [embed]

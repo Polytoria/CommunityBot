@@ -7,6 +7,7 @@ import { cookie } from './commands/cookie.js'
 import { guild } from './commands/guild.js'
 import { catalog } from './commands/catalog.js'
 import { leaderboard } from './commands/leaderboard.js'
+import { help } from './commands/help.js'
 
 export default {
   lookup: lookUp,
@@ -28,5 +29,6 @@ export default {
   'random-guild': randomGuild,
   'random-catalog': randomCatalog,
   '404-random-catalog': deletedRandomCatalog,
-  'random-banner': randomBanner
+  'random-banner': randomBanner,
+   help: help
 }
