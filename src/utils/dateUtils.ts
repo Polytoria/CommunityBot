@@ -8,10 +8,10 @@ export class dateUtils {
   }
 
   /**
-	 * atom Time To Display Time
-	 * @param atomTime Atom time format
-	 * @returns {string} formatted date as string
-	 */
+ * atom Time To Display Time
+ * @param atomTime Atom time format
+ * @returns {string} formatted date as string
+ */
   public static atomTimeToDisplayTime (atomTime: string): string {
     const date = new Date(atomTime)
 
