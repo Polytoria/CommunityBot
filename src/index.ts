@@ -20,12 +20,12 @@ const client = new Client({
 
 client.on('ready', () => {
   success({ context: '[Bot]', message: 'Bot succesfully connected.' })
-	client.user!.setActivity({
-	  type: 'PLAYING',
-	  url: 'https://api.polytoria.com',
-	  name: 'Watching Polytoria API 👀'
-	})
-	success({ context: '[Bot]', message: 'Bot succesfully started.' })
+client.user!.setActivity({
+  type: 'PLAYING',
+  url: 'https://api.polytoria.com',
+  name: 'Watching Polytoria API 👀'
+})
+success({ context: '[Bot]', message: 'Bot succesfully started.' })
 })
 
 client.on('messageCreate', async (message): Promise<any | void> => {
@@ -51,7 +51,7 @@ client.on('messageCreate', async (message): Promise<any | void> => {
   const command: any = data[0]
   const argument: any[] = data.splice(1, data.length)
 
-  if (commands.hasOwnProperty(command)) {
+  if (commands.hasOwnProperty(command)) { // eslint-disable-line no-prototype-builtins
     success({
       context: '[Bot]',
       message: 'Running command ' + command

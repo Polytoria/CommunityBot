@@ -8,10 +8,10 @@ const displayTexts: Record<string, string> = {
 
 export class responseHandler {
   /**
-	 * Check Error
-	 * @param { AxiosResponse } The response from Axios request.
-	 * @returns { IApiResponse }
-	 */
+ * Check Error
+ * @param { AxiosResponse } The response from Axios request.
+ * @returns { IApiResponse }
+ */
   public static checkError (response: AxiosResponse) {
     const result: IApiResponse = {
       hasError: false,

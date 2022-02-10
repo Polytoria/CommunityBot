@@ -4,13 +4,13 @@ import { userUtils } from './userUtils.js'
 
 export class creatorUtils {
   /**
-	 * get Display Creator Name
-	 * @param creator ICreator
-	 * @returns {Promise<string>} Return display string
-	 * Example of return string
-	 * User: Polytoria
-	 * Guild: Polytoria Staff Guild (Guild)
-	 */
+ * get Display Creator Name
+ * @param creator ICreator
+ * @returns {Promise<string>} Return display string
+ * Example of return string
+ * User: Polytoria
+ * Guild: Polytoria Staff Guild (Guild)
+ */
   public static async getDisplayCreatorName (creator: ICreator): Promise<string> {
     let result: string = ''
 

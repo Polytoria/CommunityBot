@@ -30,5 +30,5 @@ export default {
   'random-catalog': randomCatalog,
   '404-random-catalog': deletedRandomCatalog,
   'random-banner': randomBanner,
-   help: help
+  help: help
 }
