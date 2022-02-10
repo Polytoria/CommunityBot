@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
-import { userUtils } from '@utils/userUtils'
-import { dateUtils } from '@utils/dateUtils.js'
+import { userUtils } from '../utils/userUtils.js'
+import { dateUtils } from '../utils/dateUtils.js'
 
 export async function guild (message: Message, args: string[]): Promise<Message<boolean>> {
   const guildID = parseInt(args[0])
