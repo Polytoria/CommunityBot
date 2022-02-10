@@ -14,6 +14,5 @@ export async function info (message: Message) {
   embed.setFooter({
     text: "Thanks to all collaberators of the project!"
     })
-
   await message.channel.send({ embeds: [embed] })
 }
