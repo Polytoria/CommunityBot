@@ -1,6 +1,6 @@
 import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
 import axios from 'axios'
-import { userUtils } from '../../utils/userUtils.js'
+import { userUtils } from '@utils/userUtils.js'
 import { v4 } from 'uuid'
 
 export async function friends (message: Message, args: string[]) {

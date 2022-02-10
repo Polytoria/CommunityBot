@@ -21,11 +21,11 @@ export async function randomBanner (message: Message, args: string[]) {
     const randomizedID = randomUtils.randomInt(1, 900)
     tried++
     const response = await axios.get('http://polytoria.com/assets/thumbnails/games/banners/' + randomizedID + '.png', { validateStatus: () => true })
-
-    if (response.status != 404) {
+    
+    if (response.status !== 404) {
       const response2 = await axios.get('https://api.polytoria.com/v1/asset/info?id=' + randomizedID, { validateStatus: () => true })
 
-      if (response2.status == 400) {
+      if (response2.status === 400) {
         randomData.data = 'http://polytoria.com/assets/thumbnails/games/banners/' + randomizedID + '.png'
         randomData.tried = tried
         break
