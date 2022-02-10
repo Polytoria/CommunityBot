@@ -1,90 +1,90 @@
 // <reference path="index.d.ts"/>
-import {Client, ClientVoiceManager} from 'discord.js'
+import { Client } from 'discord.js'
 import dotenv from 'dotenv'
-import {success, alert, warning} from './utils/log.js'
+import { success, alert, warning } from './utils/log.js'
 import commands from './exports.js'
-import {IConfiguration, ICommand} from '../types'
+import { IConfiguration } from '../types'
 
 // Initialize .env file.
 dotenv.config()
 
 const configuration: IConfiguration = {
-	token: process.env.TOKEN,
-	prefix: 'p!',
-	coolDown: 3
+  token: process.env.TOKEN,
+  prefix: 'p!',
+  coolDown: 3
 }
 
 const client = new Client({
-	intents: ['GUILD_MESSAGES', 'GUILDS', 'GUILD_MEMBERS']
+  intents: ['GUILD_MESSAGES', 'GUILDS', 'GUILD_MEMBERS']
 })
 
 client.on('ready', () => {
-	success({context: '[Bot]', message: 'Bot succesfully connected.'})
+  success({ context: '[Bot]', message: 'Bot succesfully connected.' })
 	client.user!.setActivity({
-		type: 'PLAYING',
-		url: 'https://api.polytoria.com',
-		name: 'Watching Polytoria API 👀'
+	  type: 'PLAYING',
+	  url: 'https://api.polytoria.com',
+	  name: 'Watching Polytoria API 👀'
 	})
-	success({context: '[Bot]', message: 'Bot succesfully started.'})
+	success({ context: '[Bot]', message: 'Bot succesfully started.' })
 })
 
 client.on('messageCreate', async (message): Promise<any | void> => {
-	if (message.author.bot) {
-		return
-	}
+  if (message.author.bot) {
+    return
+  }
 
-	if (!message.content.startsWith(configuration.prefix)) {
-		return success({context: '[Server]', message: 'Message logged.'})
-	}
+  if (!message.content.startsWith(configuration.prefix)) {
+    return success({ context: '[Server]', message: 'Message logged.' })
+  }
 
-	if (!message.inGuild) {
-		return alert({context: '[Server]', message: 'Not in guild.'})
-	}
+  if (!message.inGuild) {
+    return alert({ context: '[Server]', message: 'Not in guild.' })
+  }
 
-	success({
-		context: '[Client]',
-		message: 'Command registered.'
-	})
+  success({
+    context: '[Client]',
+    message: 'Command registered.'
+  })
 
-	const data = message.content.slice(configuration.prefix.length, message.content.length).trim().split(/ +/g)
+  const data = message.content.slice(configuration.prefix.length, message.content.length).trim().split(/ +/g)
 
-	const command: any = data[0]
-	const argument: any[] = data.splice(1, data.length)
+  const command: any = data[0]
+  const argument: any[] = data.splice(1, data.length)
 
-	if (commands.hasOwnProperty(command)) {
-		success({
-			context: '[Bot]',
-			message: 'Running command ' + command
-		})
+  if (commands.hasOwnProperty(command)) {
+    success({
+      context: '[Bot]',
+      message: 'Running command ' + command
+    })
 
-		//@ts-expect-error
-		const invoke = commands[command]
+    // @ts-expect-error
+    const invoke = commands[command]
 
-		try {
-			if (invoke.constructor.name === 'AsyncFunction') {
-				await invoke(message, argument)
-			} else {
-				invoke(message, argument)
-			}
-		} catch (err: any) {
-			warning({
-				context: '[Bot]',
-				message: err.toString()
-			})
-		}
-	}
+    try {
+      if (invoke.constructor.name === 'AsyncFunction') {
+        await invoke(message, argument)
+      } else {
+        invoke(message, argument)
+      }
+    } catch (err: any) {
+      warning({
+        context: '[Bot]',
+        message: err.toString()
+      })
+    }
+  }
 })
 
 // Handle Promise Rejection
 process.on('unhandledRejection', (reason, p) => {
-    console.error(reason, 'Unhandled Rejection at Promise', p);
+  console.error(reason, 'Unhandled Rejection at Promise', p)
 })
 
 process.on('uncaughtException', err => {
-    console.error(err);
-    process.exit(1);
-});
+  console.error(err)
+  process.exit(1)
+})
 
-success({context: '[Bot]', message: 'Bot succesfully logged in.'})
+success({ context: '[Bot]', message: 'Bot succesfully logged in.' })
 
 client.login(configuration.token)
