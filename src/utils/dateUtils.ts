@@ -1,4 +1,13 @@
 export class dateUtils {
+  /**
+   * monthDifference Function
+   *
+   * @summary Used for calculate difference between month
+   *
+   * @param {Date} date1 Start Date
+   * @param {Date} date2 End Date
+   * @returns {number} difference between month
+   */
   public static monthDifference (date1: Date, date2: Date): number {
     let months = (date1.getFullYear() - date2.getFullYear()) * 12
     months -= date1.getMonth()
