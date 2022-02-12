@@ -8,6 +8,7 @@ import { guild } from './commands/guild.js'
 import { catalog } from './commands/catalog.js'
 import { leaderboard } from './commands/leaderboard.js'
 import { help } from './commands/help.js'
+import { info } from './commands/info.js'
 
 export default {
   lookup: lookUp,
@@ -31,5 +32,6 @@ export default {
   '404-random-catalog': deletedRandomCatalog,
   'random-banner': randomBanner,
   help: help,
-  level: level
+  level: level,
+  info: info
 }
