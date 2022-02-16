@@ -34,5 +34,5 @@ export default {
   help: help,
   level: level,
   info: info,
-  card: card
+  card: card,
 }

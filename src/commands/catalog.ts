@@ -4,6 +4,7 @@ import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 import { creatorUtils } from '../utils/creatorUtils.js'
 import { ICreator } from '../../types'
+import emojiUtils from '../utils/emojiUtils.js'
 
 export async function catalog (message: Message, args: string[]) {
   const assetID = parseInt(args[0])
@@ -34,27 +35,22 @@ export async function catalog (message: Message, args: string[]) {
     color: '#ff5454',
     fields: [
       {
-        name: '👷 Creator Name 👷',
+        name: 'Creator',
         value: creatorDisplay,
         inline: true
       },
       {
-        name: '👕 Type 👕',
+        name: 'Type',
         value: data.Type,
         inline: true
       },
       {
-        name: '💰 Price 💰',
-        value: data.Price.toString(),
+        name: 'Price',
+        value: (data.Currency == "Bricks" ? emojiUtils.brick : emojiUtils.stud ) + " " + data.Price.toString(),
         inline: true
       },
       {
-        name: '💵 Currency 💵',
-        value: data.Currency,
-        inline: false
-      },
-      {
-        name: '✏️ Created At ✏️',
+        name: 'Created At',
         value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
         inline: true
       }

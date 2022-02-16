@@ -1,4 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
+import emojiUtils from '../../utils/emojiUtils.js'
 
 export function studToBrick (message: Message, args: string[]): Promise<Message<boolean>> {
   const studs = parseInt(args[0])
@@ -6,23 +7,11 @@ export function studToBrick (message: Message, args: string[]): Promise<Message<
   const studRemoved = studs % 15
 
   const embed: MessageEmbed = new MessageEmbed({
-    title: 'Studs to Bricks!',
+    title: 'Studs to Bricks',
     color: '#ff5454',
-    fields: [
-      {
-        name: 'studs',
-        value: studs.toLocaleString(),
-        inline: true
-      },
-      {
-        name: 'bricks',
-        value: bricks.toLocaleString(),
-        inline: true
-      }
-    ],
-    description: `**${studs} <:stud:905987085347983411> ↔️ ${bricks} <:brick:905987077995376640>**`,
+    description: `**${studs} ${emojiUtils.stud} ↔️ ${bricks} ${emojiUtils.brick}**`,
     footer: {
-      text: studRemoved === 0 ? 'No warnings.' : `⚠ ${studRemoved} studs will be removed while converting.`
+      text: studRemoved === 0 ? 'All good 👍' : `⚠ ${studRemoved} studs will be removed while converting.`
     }
   })
 

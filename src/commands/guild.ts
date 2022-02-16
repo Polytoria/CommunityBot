@@ -3,6 +3,7 @@ import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { userUtils } from '../utils/userUtils.js'
 import { dateUtils } from '../utils/dateUtils.js'
+import emojiUtils from '../utils/emojiUtils.js'
 
 export async function guild (message: Message, args: string[]): Promise<Message<boolean>> {
   const guildID = parseInt(args[0])
@@ -19,7 +20,7 @@ export async function guild (message: Message, args: string[]): Promise<Message<
   const userData = await userUtils.getUserData(data.CreatorID)
 
   const Embed = new MessageEmbed({
-    title: data.Name,
+    title: data.Name + " " + (data.IsVerified == true ? emojiUtils.checkmark : ""),
     description: data.Description,
     url: 'https://polytoria.com/guilds/' + data.ID.toString(),
     thumbnail: {
@@ -28,29 +29,19 @@ export async function guild (message: Message, args: string[]): Promise<Message<
     color: '#ff5454',
     fields: [
       {
-        name: '🗂️ Creator ID 🗂️',
-        value: data.CreatorID.toString(),
+        name: 'Creator',
+        value: `[${userData.Username}](https://polytoria.com/user/${data.CreatorID})`,
         inline: true
       },
       {
-        name: '👷 Creator Name 👷',
-        value: userData.Username,
-        inline: true
-      },
-      {
-        name: '🎉 Members 🎉',
+        name: 'Members',
         value: data.Members.toLocaleString(),
         inline: true
       },
       {
-        name: '✅ Is Verified ✅',
-        value: data.IsVerified.toString(),
-        inline: true
-      },
-      {
-        name: '🔥 Created At 🔥',
+        name: 'Created At',
         value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
-        inline: true
+        inline: false
       }
     ]
   })
