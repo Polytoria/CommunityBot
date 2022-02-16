@@ -9,7 +9,8 @@ export class dateUtils {
    * @returns {number} difference between month
    */
   public static monthDifference (date1: Date, date2: Date): number {
-    let months = (date1.getFullYear() - date2.getFullYear()) * 12
+    let months
+    months = (date2.getFullYear() - date1.getFullYear()) * 12
     months -= date1.getMonth()
     months += date2.getMonth()
 
