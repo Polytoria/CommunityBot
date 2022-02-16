@@ -49,7 +49,7 @@ export async function level (message: Message, args: string[]) {
   description += `\n\n💬 Forum level is ${Math.round(result4)}`
   description += `\n💰 Economy level is ${Math.round(result6 + result7)}`
   description += `\n👨‍👩‍👦 Fame level is ${Math.round(result3 + result5 + result6)}`
-  description += `\n\nNoob 🤓 ${progressBar.splitBar(75,final,8,"▬","🟢")[0]} Pro 😎`
+  description += `\n\nNoob 🤓 ${progressBar.splitBar(75, final, 8, '▬', '🟢')[0]} Pro 😎`
 
   const embed = new MessageEmbed({
     title: userData.Username + "'s Level",
