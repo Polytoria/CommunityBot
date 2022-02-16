@@ -36,7 +36,7 @@ export class stringUtils {
 
   /**
  *
- * @param string String that you want to be capitalize
+ * @param {string} string String that you want to be capitalize
  * @returns {string} capitalized string
  */
   public static capitalizeString (string: string): string {
@@ -49,5 +49,60 @@ export class stringUtils {
     const result = arr.join(' ')
 
     return result
+  }
+
+  /**
+   * numberWithCommas Function
+   *
+   * @summary Give number a commas
+   *
+   * @param {number} x
+   * @returns {string} String with commas
+   */
+  public static numberWithCommas (x: number): string {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
+  /**
+   * getLines function
+   *
+   * @summary Get how many lines string used, Especially for Canvas
+   *
+   * @param ctx
+   * @param text
+   * @param maxWidth
+   * @returns
+   */
+  public static getLines (ctx: any, text: string, maxWidth: number): string[] {
+    const words = text.split(' ')
+    const lines = []
+    let currentLine = words[0]
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i]
+      const width = ctx.measureText(currentLine + ' ' + word).width
+      if (width < maxWidth) {
+        currentLine += ' ' + word
+      } else {
+        lines.push(currentLine)
+        currentLine = word
+      }
+    }
+    lines.push(currentLine)
+    return lines
+  }
+
+  /**
+   * replaceAll Function
+   *
+   * @summary Find string and replace all
+   *
+   * @param {string} str Original String
+   * @param {string} find String to find
+   * @param {string} replace Replace string with
+   * @returns {string} Replaced string
+   */
+  public static replaceAll (str: string, find: string | RegExp, replace: string): string {
+    return str.replace(new RegExp(find, 'g'), replace)
   }
 }
