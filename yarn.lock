@@ -677,6 +677,11 @@
   dependencies:
     "esutils" "^2.0.2"
 
+"dom-parser@^0.1.6":
+  "integrity" "sha512-3nVRKbLEwmGfghLoeT1dxlK/0votalnOfasP+8VCHYDfDuCETY4LeMblfOeqww6XZk2ymZ1Uewy/hVad6Dy3yw=="
+  "resolved" "https://registry.npmjs.org/dom-parser/-/dom-parser-0.1.6.tgz"
+  "version" "0.1.6"
+
 "dot-prop@^6.0.1":
   "integrity" "sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA=="
   "resolved" "https://registry.npmjs.org/dot-prop/-/dot-prop-6.0.1.tgz"

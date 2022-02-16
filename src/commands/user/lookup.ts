@@ -3,6 +3,7 @@ import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { stringUtils } from '../../utils/stringUtils.js'
+import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function lookUp (message: Message, args: string[]) {
   let apiURL: string = ''
@@ -21,6 +22,7 @@ export async function lookUp (message: Message, args: string[]) {
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const data = response.data
+  let badges = ' '
 
   const errResult = responseHandler.checkError(response)
 
@@ -28,8 +30,16 @@ export async function lookUp (message: Message, args: string[]) {
     return message.channel.send(errResult.displayText)
   }
 
+  if (data.Rank === 'ADMINISTRATOR') {
+    badges += emojiUtils.polytoria + ' '
+  }
+
+  if (data.Rank !== 'NONE') {
+    badges += emojiUtils.star + ' '
+  }
+
   const embed = new MessageEmbed({
-    title: data.Username,
+    title: data.Username + badges,
     url: `https://polytoria.com/user/${data.ID}`,
     description: data.Description,
     color: '#ff5454',

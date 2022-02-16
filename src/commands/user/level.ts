@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { userUtils } from '../../utils/userUtils.js'
 import progressBar from 'string-progressbar'
+import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function level (message: Message, args: string[]) {
   if (!args[0]) {
@@ -11,9 +12,9 @@ export async function level (message: Message, args: string[]) {
   const levelData = await userUtils.getLevel(userData.ID)
 
   let description = `⭐ ${userData.Username}'s Level is **${levelData.final} (${levelData.rank})** 🎉`
-  description += `\n\n💬 Forum level is ${levelData.levels.forum}`
-  description += `\n💰 Economy level is ${levelData.levels.economy}`
-  description += `\n👨‍👩‍👦 Fame level is ${levelData.levels.fame}`
+  description += `\n\n${emojiUtils.forum} Forum level is ${levelData.levels.forum}`
+  description += `\n${emojiUtils.shop} Economy level is ${levelData.levels.economy}`
+  description += `\n${emojiUtils.users} Fame level is ${levelData.levels.fame}`
   description += `\n\nNoob 🤓 ${progressBar.splitBar(75, levelData.final, 8, '▬', '🟢')[0]} Pro 😎`
 
   const embed = new MessageEmbed({
