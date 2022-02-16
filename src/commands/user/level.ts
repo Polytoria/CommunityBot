@@ -2,6 +2,7 @@ import { Message, MessageEmbed } from 'discord.js'
 import axios from 'axios'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { userUtils } from '../../utils/userUtils.js'
+import progressBar from 'string-progressbar'
 
 export async function level (message: Message, args: string[]) {
   if (!args[0]) {
@@ -10,9 +11,9 @@ export async function level (message: Message, args: string[]) {
   const userData = await userUtils.getUserDataFromUsername(args[0])
 
   const joinDateDate = new Date(userData.JoinedAt)
-  const lastSeenDate = new Date(userData.LastSeenAt)
+  const currentDate = new Date()
 
-  const accountAgeMonth = dateUtils.monthDifference(joinDateDate, lastSeenDate)
+  const accountAgeMonth = dateUtils.monthDifference(joinDateDate, currentDate)
 
   const userFriends = await axios.get('https://api.polytoria.com/v1/users/friends?id=' + userData.ID)
 
@@ -48,6 +49,7 @@ export async function level (message: Message, args: string[]) {
   description += `\n\n💬 Forum level is ${Math.round(result4)}`
   description += `\n💰 Economy level is ${Math.round(result6 + result7)}`
   description += `\n👨‍👩‍👦 Fame level is ${Math.round(result3 + result5 + result6)}`
+  description += `\n\nNoob 🤓 ${progressBar.splitBar(75,final,8,"▬","🟢")[0]} Pro 😎`
 
   const embed = new MessageEmbed({
     title: userData.Username + "'s Level",

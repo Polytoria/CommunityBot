@@ -16,6 +16,7 @@
 		"discord.js": "^13.3.1",
 		"dotenv": "^10.0.0",
 		"module-alias": "^2.2.2",
+		"string-progressbar": "^1.0.4",
 		"text-table": "^0.2.0",
 		"timestamp-conv": "^2.2.0",
 		"uuid": "^8.3.2"
