@@ -11,8 +11,6 @@ export async function info (message: Message) {
   embed.addField('Invite our Bot', 'Tap the title to invite our bot directly to your server!')
   embed.addField('We are open-sourced!', 'https://github.com/Polytoria/Polytoria-Community-Bot')
   embed.addField('Rewritten by', 'Shiggy, DevPixels, baggy, and more!')
-  embed.setFooter({
-    text: 'Thanks to all collaberators of the project!'
-  })
+  embed.setFooter('Thanks to all collaberators of the project!')
   await message.channel.send({ embeds: [embed] })
 }
