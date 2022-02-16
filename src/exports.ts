@@ -1,4 +1,4 @@
-import { lookUp, inventory, friends, avatar, level } from './commands/user.js'
+import { lookUp, inventory, friends, avatar, level, card } from './commands/user.js'
 import { randomGame, randomUser, randomGuild, randomCatalog, deletedRandomCatalog, randomBanner } from './commands/random.js'
 import { ping } from './commands/ping.js'
 import { brickToStud, studToBrick } from './commands/currency.js'
@@ -33,5 +33,6 @@ export default {
   'random-banner': randomBanner,
   help: help,
   level: level,
-  info: info
+  info: info,
+  card: card
 }

@@ -97,3 +97,44 @@ export type RandomResult = {
    */
   data: any;
 };
+
+export type ILevel = {
+  /**
+   * Final Score
+   */
+  final: number;
+  /**
+   * User Levels data
+   */
+  levels: {
+    /**
+     * Forum Level
+     */
+    forum: number;
+    /**
+     * Economy Level
+     */
+    economy: number;
+    /**
+     * Fame Level
+     */
+    fame: number;
+  },
+  /**
+   * Final rank as string
+   */
+  rank: string;
+  /**
+   * External data used to calculate the level
+   */
+  external: {
+    /**
+     * Friend Count rounded
+     */
+    friendCountRounded: number;
+    /**
+     * Account age as month
+     */
+    accountAgeMonth: number;
+  }
+};
