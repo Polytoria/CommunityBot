@@ -123,7 +123,7 @@ export type ILevel = {
   /**
    * Final rank as string
    */
-  rank: "Noob" | "Above Average" | "Insane" | "Nice" | "God";
+  rank: string;
   /**
    * External data used to calculate the level
    */
@@ -137,4 +137,4 @@ export type ILevel = {
      */
     accountAgeMonth: number;
   }
-}
+};
