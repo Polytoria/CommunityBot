@@ -46,7 +46,7 @@ export async function catalog (message: Message, args: string[]) {
       },
       {
         name: 'Price',
-        value: (data.Currency == "Bricks" ? emojiUtils.brick : emojiUtils.stud ) + " " + data.Price.toString(),
+        value: (data.Currency === 'Bricks' ? emojiUtils.brick : emojiUtils.stud) + ' ' + data.Price.toString(),
         inline: true
       },
       {

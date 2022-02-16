@@ -22,7 +22,7 @@ export async function lookUp (message: Message, args: string[]) {
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const data = response.data
-  let badges = " "
+  let badges = ' '
 
   const errResult = responseHandler.checkError(response)
 
@@ -30,12 +30,12 @@ export async function lookUp (message: Message, args: string[]) {
     return message.channel.send(errResult.displayText)
   }
 
-  if (data.Rank === "ADMINISTRATOR") {
-    badges += emojiUtils.polytoria + " "
+  if (data.Rank === 'ADMINISTRATOR') {
+    badges += emojiUtils.polytoria + ' '
   }
 
-  if (data.Rank !== "NONE") {
-    badges += emojiUtils.star + " "
+  if (data.Rank !== 'NONE') {
+    badges += emojiUtils.star + ' '
   }
 
   const embed = new MessageEmbed({

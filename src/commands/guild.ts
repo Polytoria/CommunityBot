@@ -20,7 +20,7 @@ export async function guild (message: Message, args: string[]): Promise<Message<
   const userData = await userUtils.getUserData(data.CreatorID)
 
   const Embed = new MessageEmbed({
-    title: data.Name + " " + (data.IsVerified == true ? emojiUtils.checkmark : ""),
+    title: data.Name + ' ' + (data.IsVerified === true ? emojiUtils.checkmark : ''),
     description: data.Description,
     url: 'https://polytoria.com/guilds/' + data.ID.toString(),
     thumbnail: {

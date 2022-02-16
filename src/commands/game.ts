@@ -19,30 +19,30 @@ export async function game (message: Message, args: string[]) {
 
   const userData = await userUtils.getUserData(data.CreatorID)
 
-  let externalDesc = ""
+  let externalDesc = ''
 
-  if (data.IsActive == false) {
+  if (data.IsActive === false) {
     externalDesc += `${emojiUtils.warning} This game is inactive.\n`
   }
 
-  externalDesc += "\n\n"
+  externalDesc += '\n\n'
 
-  if (data.Description == "") {
-    externalDesc += "*No description set.*"
+  if (data.Description === '') {
+    externalDesc += '*No description set.*'
   } else {
     externalDesc += data.Description
   }
 
   const embed = new MessageEmbed({
     title: data.Name,
-    description: data.Description,
+    description: externalDesc,
     thumbnail: {
       url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
     },
     url: `https://polytoria.com/games/${data.ID}`,
     color: '#ff5454',
     image: {
-      url: args[0] == "" ? "https://polytoria.com/assets/img/game_unavail.png" :`https://polytoria.com/assets/thumbnails/games/${args[0]}.png`
+      url: args[0] === '' ? 'https://polytoria.com/assets/img/game_unavail.png' : `https://polytoria.com/assets/thumbnails/games/${args[0]}.png`
     },
     fields: [
       {
@@ -74,7 +74,7 @@ export async function game (message: Message, args: string[]) {
         name: 'Updated At',
         value: dateUtils.atomTimeToDisplayTime(data.UpdatedAt),
         inline: true
-      },
+      }
     ]
   })
 
