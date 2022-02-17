@@ -19,13 +19,13 @@ const client = new Client({
 })
 
 client.on('ready', () => {
-  //@ts-expect-error
-  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: 'WATCHING' });
+  // @ts-expect-error
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: 'WATCHING' })
 
-  setInterval(function() {
-    //@ts-expect-error
-    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: 'WATCHING' });
-  },60000)
+  setInterval(function () {
+    // @ts-expect-error
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: 'WATCHING' })
+  }, 60000)
 })
 success({ context: '[Bot]', message: 'Bot succesfully started.' })
 
