@@ -2,6 +2,7 @@ import { Message, MessageAttachment } from 'discord.js'
 import { userUtils } from '../../utils/userUtils.js'
 import { stringUtils } from '../../utils/stringUtils.js'
 import pkg from 'canvas'
+import path from 'path'
 const { createCanvas, loadImage, registerFont } = pkg
 
 export async function card (message: Message, args: string[]) {
@@ -13,7 +14,7 @@ export async function card (message: Message, args: string[]) {
   const canvas = createCanvas(500, 700)
   const ctx = canvas.getContext('2d')
 
-  registerFont('assets/fonts/Comfortaa-Bold.ttf', { family: 'comfortaa_bold' })
+  registerFont(path.resolve(path.dirname('')) + '/assets/fonts/Comfortaa-Bold.ttf', { family: 'comfortaa_bold' })
 
   const ribbiImg = await loadImage('https://i.imgur.com/4KCSvTb.png')
   ctx.drawImage(ribbiImg, -14.6, 57.7, 354, 174)
