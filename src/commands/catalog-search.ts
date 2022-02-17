@@ -17,7 +17,6 @@ export async function catalogSearch (message: Message, args: string[]) {
 
   const embed = new MessageEmbed({
     title: `Search results for "${serachData}"`,
-    url: `https://polytoria.com/shop/${data.ID}`,
     color: '#ff5454',
     thumbnail: {
       url: data.Thumbnail
