@@ -9,6 +9,7 @@ import { catalog } from './commands/catalog.js'
 import { leaderboard } from './commands/leaderboard.js'
 import { help } from './commands/help.js'
 import { info } from './commands/info.js'
+import { status } from './commands/status.js'
 
 export default {
   lookup: lookUp,
@@ -34,5 +35,6 @@ export default {
   help: help,
   level: level,
   info: info,
-  card: card
+  card: card,
+  status: status
 }

@@ -138,3 +138,18 @@ export type ILevel = {
     accountAgeMonth: number;
   }
 };
+
+export type IStatus = {
+  /**
+   * Status as String
+   */
+  status: string,
+  /**
+   * Status code
+   */
+  statusCode: number,
+  /**
+   * Response Time
+   */
+  responseTime: number
+}
