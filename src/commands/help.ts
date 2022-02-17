@@ -1,11 +1,10 @@
 import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
 import pages from './helpPages.js'
-import axios from 'axios'
 import { v4 } from 'uuid'
 
 export async function help (message: Message, args: string[]) {
   let currentPage = 0
-  let pagesCount = pages.length
+  const pagesCount = pages.length
 
   // Change Page Function, Fetch current page
   function changePage (): any {
@@ -13,11 +12,11 @@ export async function help (message: Message, args: string[]) {
   }
 
   const embed = new MessageEmbed({
-    title: "List of available commands",
+    title: 'List of available commands',
     color: '#ff5454',
     description: 'Prefix: `p!`',
     thumbnail: {
-        url: 'https://cdn.discordapp.com/icons/587167555068624915/4149b9aea50a0fd41260d71ac743407d.webp?size=128'
+      url: 'https://cdn.discordapp.com/icons/587167555068624915/4149b9aea50a0fd41260d71ac743407d.webp?size=128'
     }
   })
 
