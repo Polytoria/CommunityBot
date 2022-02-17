@@ -122,6 +122,11 @@ export default [
       name: 'stud2brick `amount`',
       value: 'Converts studs into bricks\n`amount` - The amount of studs you want to convert',
       inline: false
-    }
+    },
+    {
+      name: 'catalog-search `name`',
+      value: 'Search for asset in the shop\n`name` - Name of the asset',
+      inline: false
+  }
   ]
 ]
