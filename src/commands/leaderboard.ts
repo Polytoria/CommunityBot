@@ -92,7 +92,7 @@ export async function leaderboard (message: Message, args: string[]) {
   // Listen for Button Interaction
   collector.on('collect', async (i) => {
     if (i.user.id !== message.author.id) {
-      await i.reply({ content: "nope, this button isn't for you", ephemeral: true })
+      await i.reply({ content: " ", ephemeral: true })
       return
     }
 
@@ -109,7 +109,7 @@ export async function leaderboard (message: Message, args: string[]) {
     // Update Embed and Button
     const updatedRow = new MessageActionRow().addComponents(selectMenu)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
-    await i.reply({ content: 'Feteched new page for you!', ephemeral: true })
+    await i.reply({ content: ' ', ephemeral: true })
   })
 
   return msg
