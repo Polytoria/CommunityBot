@@ -15,5 +15,6 @@ export default {
   shop: '<:Shop:914106876143230976>',
   users: '<:Users:914059858276409364>',
   forum: '<:Forum:914059872105021441>',
-  creation: '<:Creation:914059883031175198>'
+  creation: '<:Creation:914059883031175198>',
+  error: '<:error:920132962887028788>'
 }
