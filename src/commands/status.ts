@@ -45,7 +45,7 @@ function statusToEmoji (status: string): string {
 
 async function checkStatus (url: string): Promise<IStatus> {
   const startTime = new Date().getTime()
-  const response = await axios.get(url, { validateStatus: () => true })
+  const response = await axios.get(url, { validateStatus: () => true, timeout: 20000 })
   const endTime = new Date().getTime()
 
   let statusText = 'Unknown'
