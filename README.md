@@ -1,5 +1,3 @@
-# Polytoria-Community-Bot
+# Polytoria Community Bot
 
-Sometimes starting from scratch is the best solution...
-
-typescript rewrite
+Polytoria's Discord community bot rewritten in TypeScript.
