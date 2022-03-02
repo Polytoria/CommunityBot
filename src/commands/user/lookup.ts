@@ -34,7 +34,7 @@ export async function lookUp (message: Message, args: string[]) {
     badges += emojiUtils.polytoria + ' '
   }
 
-  if (data.Rank !== 'NONE') {
+  if (data.MembershipType !== 'NONE') {
     badges += emojiUtils.star + ' '
   }
 
