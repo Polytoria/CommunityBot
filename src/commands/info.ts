@@ -1,5 +1,5 @@
 import { MessageEmbed, Message } from 'discord.js'
-import { version } from  './../../package.json'
+import { version } from './../../package.json'
 
 export async function info (message: Message) {
   const embed: MessageEmbed = new MessageEmbed()
