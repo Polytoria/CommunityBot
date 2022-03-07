@@ -9,6 +9,7 @@
 		"format": "prettier --write .",
 		"lint": "npx eslint \"src/**\" --fix"
 	},
+	"license": "MIT",
 	"dependencies": {
 		"axios": "^0.24.0",
 		"canvas": "^2.9.0",
