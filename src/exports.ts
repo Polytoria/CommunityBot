@@ -11,6 +11,7 @@ import { help } from './commands/help.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
 import { catalogSearch } from './commands/catalog-search.js'
+import { toolbox } from './commands/toolbox.js'
 
 export default {
   lookup: lookUp,
@@ -38,5 +39,6 @@ export default {
   info: info,
   card: card,
   status: status,
-  'catalog-search': catalogSearch
+  'catalog-search': catalogSearch,
+  toolbox: toolbox
 }
