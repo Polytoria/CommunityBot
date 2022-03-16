@@ -109,7 +109,7 @@ export async function leaderboard (message: Message, args: string[]) {
     // Update Embed and Button
     const updatedRow = new MessageActionRow().addComponents(selectMenu)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
-    await i.reply({ content: 'Feteched new page for you!', ephemeral: true })
+    await i.reply({ content: ' ', ephemeral: true })
   })
 
   return msg

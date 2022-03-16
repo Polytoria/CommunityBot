@@ -106,7 +106,7 @@ export async function friends (message: Message, args: string[]) {
     // Update Embed and Button
     const updatedRow = new MessageActionRow().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
-    await i.reply({ content: 'Feteched new page for you!', ephemeral: true })
+    await i.reply({ content: ' ', ephemeral: true })
   })
 
   return msg

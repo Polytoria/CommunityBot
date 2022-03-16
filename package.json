@@ -1,6 +1,6 @@
 {
 	"name": "polytoria-community-bot",
-	"version": "2.0.0",
+	"version": "2.0.2",
 	"type": "module",
 	"typings": "./types",
 	"scripts": {
@@ -9,6 +9,7 @@
 		"format": "prettier --write .",
 		"lint": "npx eslint \"src/**\" --fix"
 	},
+	"license": "MIT",
 	"dependencies": {
 		"axios": "^0.24.0",
 		"canvas": "^2.9.0",

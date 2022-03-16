@@ -19,14 +19,15 @@ const client = new Client({
 })
 
 client.on('ready', () => {
-  success({ context: '[Bot]', message: 'Bot succesfully connected.' })
-client.user!.setActivity({
-  type: 'PLAYING',
-  url: 'https://api.polytoria.com',
-  name: 'Watching Polytoria API 👀'
+  // @ts-expect-error
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: 'WATCHING' })
+
+  setInterval(function () {
+    // @ts-expect-error
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: 'WATCHING' })
+  }, 60000)
 })
 success({ context: '[Bot]', message: 'Bot succesfully started.' })
-})
 
 client.on('messageCreate', async (message): Promise<any | void> => {
   if (message.author.bot) {
