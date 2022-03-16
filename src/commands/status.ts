@@ -27,7 +27,7 @@ const urlToCheck = [
   {
     name: 'Wiki',
     url: 'https://wiki.polytoria.com/'
-  },
+  }
 
 ]
 

@@ -40,5 +40,5 @@ export default {
   card: card,
   status: status,
   'catalog-search': catalogSearch,
-  'toolbox': toolbox
+  toolbox: toolbox
 }

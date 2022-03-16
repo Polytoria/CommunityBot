@@ -1,6 +1,5 @@
 import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
 import axios from 'axios'
-import { userUtils } from '../utils/userUtils.js'
 import { v4 } from 'uuid'
 
 export async function toolbox (message: Message, args: string[]) {
@@ -32,10 +31,10 @@ export async function toolbox (message: Message, args: string[]) {
   }
 
   const embed = new MessageEmbed({
-    title: "Toolbox",
+    title: 'Toolbox',
     color: '#ff5454',
     thumbnail: {
-      url: `https://polytoria.com/assets/img/model-temp.png`
+      url: 'https://polytoria.com/assets/img/model-temp.png'
     },
     description: ''
   })
@@ -69,7 +68,7 @@ export async function toolbox (message: Message, args: string[]) {
   // Listen for Button Interaction
   collector.on('collect', async (i) => {
     if (i.user.id !== message.author.id) {
-      await i.reply({ content: " ", ephemeral: true })
+      await i.reply({ content: ' ', ephemeral: true })
       return
     }
     // Change page
@@ -104,7 +103,7 @@ export async function toolbox (message: Message, args: string[]) {
     // Update Embed and Button
     const updatedRow = new MessageActionRow().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
-    await i.reply({ content: " ", ephemeral: true })
+    await i.reply({ content: ' ', ephemeral: true })
   })
 
   return msg
