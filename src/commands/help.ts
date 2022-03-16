@@ -49,7 +49,7 @@ export async function help (message: Message, args: string[]) {
   // Listen for Button Interaction
   collector.on('collect', async (i) => {
     if (i.user.id !== message.author.id) {
-      await i.reply({ content: "nope, this button isn't for you", ephemeral: true })
+      await i.reply({ content: " ", ephemeral: true })
       return
     }
     // Change page
