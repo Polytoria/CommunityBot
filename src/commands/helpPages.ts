@@ -127,6 +127,11 @@ export default [
       name: 'catalog-search `name`',
       value: 'Search for asset in the shop\n`name` - Name of the asset',
       inline: false
+    },
+    {
+      name: 'toolbox `name`',
+      value: 'Search for a model in the library\n`name` - Name of the asset',
+      inline: false
     }
   ]
 ]
