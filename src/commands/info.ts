@@ -1,5 +1,4 @@
 import { MessageEmbed, Message } from 'discord.js'
-import { version } from './../../package.json'
 
 export async function info (message: Message) {
   const embed: MessageEmbed = new MessageEmbed()
@@ -8,7 +7,7 @@ export async function info (message: Message) {
   embed.setColor('#fe5953')
   embed.setTitle('Polytoria Community Bot')
   embed.setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
-  embed.addField('Version', `Running version ${version}`)
+  embed.addField('Version', `Running version ${process.env.npm_package_version}`)
   embed.addField('Invite our Bot', 'Tap the title to invite our bot directly to your server!')
   embed.addField('We are open-sourced!', 'https://github.com/Polytoria/Polytoria-Community-Bot')
   embed.addField('Rewritten by', 'Shiggy, DevPixels, baggy, and more!')
