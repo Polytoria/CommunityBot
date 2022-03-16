@@ -21,9 +21,13 @@ const urlToCheck = [
     url: 'https://corp.polytoria.com/'
   },
   {
-    name: 'Docs site',
+    name: 'Docs',
     url: 'https://docs.polytoria.com/'
-  }
+  },
+  {
+    name: 'Wiki',
+    url: 'https://wiki.polytoria.com/'
+  },
 
 ]
 
