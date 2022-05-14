@@ -97,6 +97,9 @@ export async function avatar (message: Message, args: string[]) {
           case 'Tool':
             emoji = '🥤'
             break
+          case 'Head':
+            emoji = '🗣️'
+            break
         }
 
         wearablesString += `${emoji} [${itemData.data.Name}](https://polytoria.com/shop/${itemData.data.ID.toString()})\n`
