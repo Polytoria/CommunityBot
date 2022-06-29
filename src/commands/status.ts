@@ -17,10 +17,6 @@ const urlToCheck = [
     url: 'https://blog.polytoria.com/'
   },
   {
-    name: 'Corp site',
-    url: 'https://corp.polytoria.com/'
-  },
-  {
     name: 'Docs',
     url: 'https://docs.polytoria.com/'
   },
