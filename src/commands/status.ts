@@ -23,6 +23,10 @@ const urlToCheck = [
   {
     name: 'Wiki',
     url: 'https://wiki.polytoria.com/'
+  },
+  {
+    name: 'Helpdesk',
+    url: 'https://help.polytoria.com/'
   }
 
 ]
