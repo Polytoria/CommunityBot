@@ -7,7 +7,7 @@ export async function level (message: Message, args: string[]) {
   if (!args[0]) {
     return message.reply('Please tell me the username so I can calculate the level.')
   }
-  const userData = await userUtils.getUserDataFromUsername(args[0])
+  const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
   const levelData = await userUtils.getLevel(userData.ID)
 
