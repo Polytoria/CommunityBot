@@ -9,7 +9,7 @@ export async function card (message: Message, args: string[]) {
   if (!args[0]) {
     return message.reply('Please tell me the username so I can make you a card.')
   }
-  const userData = await userUtils.getUserDataFromUsername(args[0])
+  const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
   const canvas = createCanvas(500, 700)
   const ctx = canvas.getContext('2d')
