@@ -10,13 +10,13 @@ export async function lookUp (message: Message, args: string[]) {
 
   switch (args[1]) {
     case 'user':
-      apiURL = `https://api.polytoria.com/v1/users/getbyusername?username=${args[0]}`
+      apiURL = `https://api.polytoria.com/v1/users/getbyusername?username=${args.join(' ')}`
       break
     case 'id':
-      apiURL = `https://api.polytoria.com/v1/users/user?id=${args[0]}`
+      apiURL = `https://api.polytoria.com/v1/users/user?id=${args.join(' ')}`
       break
     default:
-      apiURL = `https://api.polytoria.com/v1/users/getbyusername?username=${args[0]}`
+      apiURL = `https://api.polytoria.com/v1/users/getbyusername?username=${args.join(' ')}`
       break
   }
 
