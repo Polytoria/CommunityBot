@@ -4,7 +4,7 @@ import { userUtils } from '../../utils/userUtils.js'
 import { v4 } from 'uuid'
 
 export async function inventory (message: Message, args: string[]) {
-  const userData = await userUtils.getUserDataFromUsername(args[0])
+  const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
   if (!userData.ID) {
     return message.reply('User not found!')
