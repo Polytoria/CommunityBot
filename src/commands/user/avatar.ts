@@ -3,7 +3,7 @@ import axios from 'axios'
 import { userUtils } from '../../utils/userUtils.js'
 
 export async function avatar (message: Message, args: string[]) {
-  const userData = await userUtils.getUserDataFromUsername(args[0])
+  const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
   if (!userData.ID) {
     return message.reply('User not found!')
