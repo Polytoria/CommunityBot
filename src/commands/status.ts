@@ -41,8 +41,8 @@ function statusToEmoji (status: string): string {
   }
 
   if (status === 'Forbidden') {
-    return emojiUtils.error;
-}
+    return emojiUtils.error
+  }
 
   if (status === 'Working') {
     return emojiUtils.checkmark
