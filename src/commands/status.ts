@@ -40,6 +40,10 @@ function statusToEmoji (status: string): string {
     return emojiUtils.error
   }
 
+  if (status === 'Forbidden') {
+    return emojiUtils.error;
+}
+
   if (status === 'Working') {
     return emojiUtils.checkmark
   }
@@ -61,6 +65,10 @@ async function checkStatus (url: string): Promise<IStatus> {
 
   if (response.status.toString().startsWith('5')) {
     statusText = 'Down'
+  }
+
+  if (response.status.toString().startsWith('4')) {
+    statusText = 'Forbidden'
   }
 
   if (response.status.toString().startsWith('2')) {
