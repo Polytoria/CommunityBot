@@ -8,7 +8,7 @@ import emojiUtils from '../utils/emojiUtils.js'
 export async function guild (message: Message, args: string[]): Promise<Message<boolean>> {
   const guildID = parseInt(args[0])
 
-  const response = await axios.get('https://api.polytoria.com/v1/guild/info', { params: { id: guildID }, validateStatus: () => true })
+  const response = await axios.get('https://api.polytoria.com/v1/guilds/info', { params: { id: guildID }, validateStatus: () => true })
   const data = response.data
 
   const errResult = responseHandler.checkError(response)
