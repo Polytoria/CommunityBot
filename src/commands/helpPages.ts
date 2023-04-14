@@ -16,11 +16,6 @@ export default [
       inline: false
     },
     {
-      name: 'leaderboard',
-      value: 'View Polytoria leaderboard',
-      inline: false
-    },
-    {
       name: 'avatar `username`',
       value: "View user's avatar\n`username` - User's username you want to view",
       inline: false
@@ -111,16 +106,6 @@ export default [
     {
       name: 'random-user',
       value: 'Gives you a random user from Polytoria',
-      inline: false
-    },
-    {
-      name: 'brick2stud `amount`',
-      value: 'Converts bricks into studs\n`amount` - The amount of bricks you want to convert',
-      inline: false
-    },
-    {
-      name: 'stud2brick `amount`',
-      value: 'Converts studs into bricks\n`amount` - The amount of studs you want to convert',
       inline: false
     },
     {
