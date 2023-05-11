@@ -1,5 +1,5 @@
 import { lookUp, inventory, friends, avatar, level, card } from './commands/user.js'
-import { randomGame, randomUser, randomGuild, randomCatalog, deletedRandomCatalog, randomBanner } from './commands/random.js'
+import { randomGame, randomUser, randomGuild, randomCatalog, randomBanner } from './commands/random.js'
 import { ping } from './commands/ping.js'
 import { game } from './commands/game.js'
 import { cookie } from './commands/cookie.js'
@@ -25,7 +25,6 @@ export default {
   'random-user': randomUser,
   'random-guild': randomGuild,
   'random-catalog': randomCatalog,
-  '404-random-catalog': deletedRandomCatalog,
   'random-banner': randomBanner,
   help: help,
   level: level,
