@@ -1,36 +1,34 @@
-import { lookUp, inventory, friends, avatar, level, card } from './commands/user.js'
-import { randomGame, randomUser, randomGuild, randomCatalog, randomBanner } from './commands/random.js'
+import { lookUp } from './commands/user.js'
 import { ping } from './commands/ping.js'
-import { game } from './commands/game.js'
 import { cookie } from './commands/cookie.js'
-import { guild } from './commands/guild.js'
-import { catalog } from './commands/catalog.js'
 import { help } from './commands/help.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
 import { catalogSearch } from './commands/catalog-search.js'
 import { toolbox } from './commands/toolbox.js'
+import { commands } from './commands/commands.js'
 
 export default {
   lookup: lookUp,
-  inventory: inventory,
+  inventory: commands,
   ping: ping,
-  game: game,
+  game: commands,
   cookie: cookie,
-  guild: guild,
-  catalog: catalog,
-  friends: friends,
-  avatar: avatar,
-  'random-game': randomGame,
-  'random-user': randomUser,
-  'random-guild': randomGuild,
-  'random-catalog': randomCatalog,
-  'random-banner': randomBanner,
+  guild: commands,
+  catalog: commands,
+  friends: commands,
+  avatar: commands,
+  'random-game': commands,
+  'random-user': commands,
+  'random-guild': commands,
+  'random-catalog': commands,
+  'random-banner': commands,
   help: help,
-  level: level,
+  level: commands,
   info: info,
-  card: card,
+  card: commands,
   status: status,
   'catalog-search': catalogSearch,
-  toolbox: toolbox
+  toolbox: toolbox,
+  commands: commands
 }
