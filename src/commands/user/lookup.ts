@@ -29,12 +29,18 @@ export async function lookUp (message: Message, args: string[]) {
 
   const embed = new MessageEmbed({
     title: data.username,
+    url: `https://polytoria.com/user/${data.ID}`,
     description: data.description,
     color: '#ff5454',
     thumbnail: {
       url: `https://c0.ptacdn.com/thumbnails/avatars/${data.avatarUrl}`
     },
     fields: [
+      {
+        name: 'User ID',
+        value: data.ID.toString(),
+        inline: true
+      },
       {
         name: 'Joined At',
         value: dateUtils.atomTimeToDisplayTime(data.registeredAt),
