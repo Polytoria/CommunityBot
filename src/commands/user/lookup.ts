@@ -19,7 +19,7 @@ export async function lookUp (message: Message, args: string[]) {
   }
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
-  const data = response.data
+  const data = response.data.user  // Fetch the "user" object from the API response
 
   const errResult = responseHandler.checkError(response)
 
@@ -33,12 +33,12 @@ export async function lookUp (message: Message, args: string[]) {
     description: data.description,
     color: '#ff5454',
     thumbnail: {
-      url: `https://c0.ptacdn.com/thumbnails/avatars/${data.avatarUrl}`
+      url: `${data.avatarUrl}`
     },
     fields: [
       {
         name: 'User ID',
-        value: data.ID.toString(),
+        value: data.id.toString(),
         inline: true
       },
       {
