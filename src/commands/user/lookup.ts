@@ -19,7 +19,7 @@ export async function lookUp (message: Message, args: string[]) {
   }
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
-  const data = response.data.user  // Fetch the "user" object from the API response
+  const data = response.data.user // Fetch the "user" object from the API response
 
   const errResult = responseHandler.checkError(response)
 
