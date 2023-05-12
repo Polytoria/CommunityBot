@@ -19,7 +19,7 @@ export default [
       name: 'info',
       value: 'Information about Polytoria Community Bot',
       inline: false
-    },
+    }
   ],
   [
 

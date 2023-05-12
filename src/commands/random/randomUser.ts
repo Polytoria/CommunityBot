@@ -1,7 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
-import { stringUtils } from '../../utils/stringUtils.js'
 
 export async function randomUser (message: Message, args: string[]) {
   const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/users/find', function (response: any) {
