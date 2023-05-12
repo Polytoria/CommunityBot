@@ -7,6 +7,7 @@ import { status } from './commands/status.js'
 import { catalogSearch } from './commands/catalog-search.js'
 import { toolbox } from './commands/toolbox.js'
 import { commands } from './commands/commands.js'
+import { randomUser } from './commands/random.js'
 
 export default {
   lookup: lookUp,
@@ -19,7 +20,7 @@ export default {
   friends: commands,
   avatar: commands,
   'random-game': commands,
-  'random-user': commands,
+  'random-user': randomUser,
   'random-guild': commands,
   'random-catalog': commands,
   'random-banner': commands,
