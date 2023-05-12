@@ -9,8 +9,8 @@ const urlToCheck = [
     url: 'https://polytoria.com/'
   },
   {
-    name: 'Internal APIs',
-    url: 'https://polytoria.com/api/fetch/catalog/items'
+    name: 'Public APIs',
+    url: 'https://api.polytoria.com/v1/users/find?id=7348'
   },
   {
     name: 'Blog',
@@ -19,10 +19,6 @@ const urlToCheck = [
   {
     name: 'Docs',
     url: 'https://docs.polytoria.com/'
-  },
-  {
-    name: 'Wiki',
-    url: 'https://wiki.polytoria.com/'
   },
   {
     name: 'Helpdesk',
