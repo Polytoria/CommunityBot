@@ -11,6 +11,11 @@ export default [
       inline: false
     },
     {
+      name: 'status',
+      value: 'Checks to see if Polytoria is online/offline',
+      inline: false
+    },
+    {
       name: 'help',
       value: "Command you're using right now.",
       inline: false
@@ -20,8 +25,5 @@ export default [
       value: 'Information about Polytoria Community Bot',
       inline: false
     }
-  ],
-  [
-
   ]
 ]
