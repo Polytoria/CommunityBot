@@ -23,7 +23,6 @@ export default {
   'random-user': randomUser,
   'random-guild': commands,
   'random-catalog': commands,
-  'random-banner': commands,
   help: help,
   level: commands,
   info: info,
