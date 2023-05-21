@@ -6,6 +6,11 @@ export default [
       inline: false
     },
     {
+      name: 'place `id`',
+      value: 'View place info from place ID\n`id` - Place ID',
+      inline: false
+    },
+    {
       name: 'random-user',
       value: 'Gives you a random user from Polytoria',
       inline: false
