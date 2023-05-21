@@ -6,7 +6,7 @@ export async function randomUser (message: Message, args: string[]) {
   const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/users/find', function (response: any) {
     return true
   }, function () {
-    return { id: randomUtils.randomInt(1, 20000) }
+    return { id: randomUtils.randomInt(1, 34800) }
   }, 20)
 
   if (randomData == null) {
