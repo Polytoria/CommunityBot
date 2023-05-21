@@ -8,12 +8,13 @@ import { catalogSearch } from './commands/catalog-search.js'
 import { toolbox } from './commands/toolbox.js'
 import { commands } from './commands/commands.js'
 import { randomUser } from './commands/random.js'
+import { place } from './commands/place.js'
 
 export default {
   lookup: lookUp,
   inventory: commands,
   ping: ping,
-  game: commands,
+  place: place,
   cookie: cookie,
   guild: commands,
   catalog: commands,
