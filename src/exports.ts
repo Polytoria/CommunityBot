@@ -7,7 +7,7 @@ import { status } from './commands/status.js'
 import { catalogSearch } from './commands/catalog-search.js'
 import { toolbox } from './commands/toolbox.js'
 import { commands } from './commands/commands.js'
-import { randomUser } from './commands/random.js'
+import { randomUser, randomGame } from './commands/random.js'
 import { place } from './commands/place.js'
 
 export default {
@@ -20,7 +20,7 @@ export default {
   catalog: commands,
   friends: commands,
   avatar: commands,
-  'random-game': commands,
+  'random-game': randomGame,
   'random-user': randomUser,
   'random-guild': commands,
   'random-catalog': commands,

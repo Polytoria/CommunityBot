@@ -1,13 +1,12 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
-import { userUtils } from '../../utils/userUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 
 export async function randomGame (message: Message, args: string[]) {
-  const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/games/info', function (response: any) {
-    return response.data.IsActive
+  const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/places/', function (response: any) {
+    return response.data.isActive
   }, function () {
-    return { id: randomUtils.randomInt(1, 2500) }
+    return { id: randomUtils.randomInt(1, 5200) }
   }, 20)
 
   if (randomData == null) {
@@ -15,58 +14,63 @@ export async function randomGame (message: Message, args: string[]) {
   }
 
   const data = randomData.data
-  const userData = await userUtils.getUserData(randomData.data.CreatorID)
+  const rating = data.rating
+  const creator = data.creator
 
   const embed = new MessageEmbed({
-    title: data.Name,
-    description: data.Description,
+    title: data.name,
+    description: data.description,
     thumbnail: {
-      url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
+      url: `${data.icon}`
     },
-    url: `https://polytoria.com/games/${randomData.data.ID}`,
+    url: `https://polytoria.com/places/${data.id}`,
     color: '#ff5454',
     image: {
-      url: `https://polytoria.com/assets/thumbnails/games/${data.ID}.png`
     },
     fields: [
       {
-        name: '🗂️ Creator ID 🗂️',
-        value: data.CreatorID.toLocaleString(),
+        name: 'Creator',
+        value: `[${creator.name}](https://polytoria.com/user/${creator.id})`,
         inline: true
       },
       {
-        name: '👷 Creator Name 👷',
-        value: userData.Username,
+        name: 'Visits',
+        value: data.visits.toLocaleString(),
         inline: true
       },
       {
-        name: '🎉 Visits 🎉',
-        value: data.Visits.toLocaleString(),
+        name: 'Likes',
+        value: rating.likes.toLocaleString() || 'N/A',
         inline: true
       },
       {
-        name: '🔼 Likes 🔼',
-        value: data.Likes.toLocaleString(),
+        name: 'Dislikes',
+        value: rating.dislikes.toLocaleString() || 'N/A',
         inline: true
       },
       {
-        name: '🔽 Dislikes 🔽',
-        value: data.Dislikes.toLocaleString(),
+        name: 'Genre',
+        value: data.genre.toLocaleString() || 'N/A',
         inline: true
       },
       {
-        name: '🔥 Created At 🔥',
-        value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
+        name: 'Max Players',
+        value: data.maxPlayers.toLocaleString() || 'N/A',
         inline: true
       },
       {
-        name: '📦 Updated At 📦',
-        value: dateUtils.atomTimeToDisplayTime(data.UpdatedAt),
+        name: 'Playing',
+        value: data.playing.toLocaleString() || 'N/A',
         inline: true
       },
       {
-        name: '🟢 Is Active 🟢',
-        value: data.IsActive.toString(),
+        name: 'Created At',
+        value: dateUtils.atomTimeToDisplayTime(data.createdAt),
+        inline: true
+      },
+      {
+        name: 'Updated At',
+        value: dateUtils.atomTimeToDisplayTime(data.updatedAt),
         inline: true
       }
     ]
