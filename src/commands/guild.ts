@@ -1,21 +1,20 @@
-import { Message, MessageEmbed } from 'discord.js';
-import axios from 'axios';
-import { responseHandler } from '../utils/responseHandler.js';
-import { userUtils } from '../utils/userUtils.js';
-import { dateUtils } from '../utils/dateUtils.js';
-import emojiUtils from '../utils/emojiUtils.js';
+import { Message, MessageEmbed } from 'discord.js'
+import axios from 'axios'
+import { responseHandler } from '../utils/responseHandler.js'
+import { dateUtils } from '../utils/dateUtils.js'
+import emojiUtils from '../utils/emojiUtils.js'
 
-export async function guild(message: Message, args: string[]): Promise<Message<boolean>> {
-  const guildID = parseInt(args[0]);
+export async function guild (message: Message, args: string[]): Promise<Message<boolean>> {
+  const guildID = parseInt(args[0])
 
-  const response = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}`, { validateStatus: () => true });
-  const data = response.data;
-  const creator = data.creator;
+  const response = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}`, { validateStatus: () => true })
+  const data = response.data
+  const creator = data.creator
 
-  const errResult = responseHandler.checkError(response);
+  const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    return message.channel.send(errResult.displayText);
+    return message.channel.send(errResult.displayText)
   }
 
   const embed = new MessageEmbed()
@@ -28,35 +27,35 @@ export async function guild(message: Message, args: string[]): Promise<Message<b
       {
         name: 'Creator',
         value: `[${creator.name}](https://polytoria.com/user/${creator.id})`,
-        inline: true,
+        inline: true
       },
       {
         name: 'Created At',
         value: dateUtils.atomTimeToDisplayTime(data.createdAt),
-        inline: true,
+        inline: true
       },
       {
         name: 'Join Type',
         value: data.joinType.toLocaleString(),
-        inline: true,
+        inline: true
       },
       {
         name: 'Members',
         value: data.memberCount.toLocaleString(),
-        inline: true,
+        inline: true
       },
       {
         name: 'Vault',
         value: data.vaultBalance.toLocaleString(),
-        inline: true,
+        inline: true
       }
-    );
+    )
 
   if (data.banner !== 'https://c0.ptacdn.com/guilds/banners/default.png') {
-    embed.setImage(data.banner);
+    embed.setImage(data.banner)
   }
 
   return message.channel.send({
-    embeds: [embed],
-  });
+    embeds: [embed]
+  })
 }
