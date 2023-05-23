@@ -1,13 +1,13 @@
 import { Message, MessageEmbed } from 'discord.js'
+import emojiUtils from '../../utils/emojiUtils.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
-import { userUtils } from '../../utils/userUtils.js'
 
 export async function randomGuild (message: Message, args: string[]) {
-  const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/guild/info', function () {
+  const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/guilds/', function () {
     return true
   }, function () {
-    return { id: randomUtils.randomInt(1, 2000) }
+    return { id: randomUtils.randomInt(1, 503) }
   }, 20)
 
   if (randomData == null) {
@@ -15,47 +15,47 @@ export async function randomGuild (message: Message, args: string[]) {
   }
 
   const data = randomData.data
+  const creator = data.creator
 
-  const userData = await userUtils.getUserData(randomData.data.CreatorID)
-
-  const Embed = new MessageEmbed({
-    title: data.Name,
-    description: data.Description,
-    thumbnail: {
-      url: data.Thumbnail
-    },
-    url: 'https://polytoria.com/guilds/' + data.ID.toString(),
-    color: '#ff5454',
-    fields: [
+  const embed = new MessageEmbed()
+    .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
+    .setDescription(data.description)
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
+    .setThumbnail(data.icon)
+    .setColor(data.color)
+    .addFields(
       {
-        name: '🗂️ Creator ID 🗂️',
-        value: data.CreatorID.toString(),
+        name: 'Creator',
+        value: `[${creator.name}](https://polytoria.com/user/${creator.id})`,
         inline: true
       },
       {
-        name: '👷 Creator Name 👷',
-        value: userData.Username,
+        name: 'Created At',
+        value: dateUtils.atomTimeToDisplayTime(data.createdAt),
         inline: true
       },
       {
-        name: '🎉 Members 🎉',
-        value: data.Members.toLocaleString(),
+        name: 'Join Type',
+        value: data.joinType.toLocaleString(),
         inline: true
       },
       {
-        name: '✅ Is Verified ✅',
-        value: data.IsVerified.toString(),
+        name: 'Members',
+        value: data.memberCount.toLocaleString(),
         inline: true
       },
       {
-        name: '🔥 Created At 🔥',
-        value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
+        name: 'Vault',
+        value: data.vaultBalance.toLocaleString(),
         inline: true
       }
-    ]
-  })
+    )
+
+  if (data.banner !== 'https://c0.ptacdn.com/guilds/banners/default.png') {
+    embed.setImage(data.banner)
+  }
 
   return message.channel.send({
-    embeds: [Embed]
+    embeds: [embed]
   })
 }
