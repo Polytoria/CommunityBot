@@ -1,52 +1,62 @@
-import { Message, MessageEmbed } from 'discord.js'
-import axios from 'axios'
-import { responseHandler } from '../utils/responseHandler.js'
-import { userUtils } from '../utils/userUtils.js'
-import { dateUtils } from '../utils/dateUtils.js'
-import emojiUtils from '../utils/emojiUtils.js'
+import { Message, MessageEmbed } from 'discord.js';
+import axios from 'axios';
+import { responseHandler } from '../utils/responseHandler.js';
+import { userUtils } from '../utils/userUtils.js';
+import { dateUtils } from '../utils/dateUtils.js';
+import emojiUtils from '../utils/emojiUtils.js';
 
-export async function guild (message: Message, args: string[]): Promise<Message<boolean>> {
-  const guildID = parseInt(args[0])
+export async function guild(message: Message, args: string[]): Promise<Message<boolean>> {
+  const guildID = parseInt(args[0]);
 
-  const response = await axios.get('https://api.polytoria.com/v1/guilds/info', { params: { id: guildID }, validateStatus: () => true })
-  const data = response.data
+  const response = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}`, { validateStatus: () => true });
+  const data = response.data;
+  const creator = data.creator;
 
-  const errResult = responseHandler.checkError(response)
+  const errResult = responseHandler.checkError(response);
 
   if (errResult.hasError === true) {
-    return message.channel.send(errResult.displayText)
+    return message.channel.send(errResult.displayText);
   }
 
-  const userData = await userUtils.getUserData(data.CreatorID)
-
-  const Embed = new MessageEmbed({
-    title: data.Name + ' ' + (data.IsVerified === true ? emojiUtils.checkmark : ''),
-    description: data.Description,
-    url: 'https://polytoria.com/guilds/' + data.ID.toString(),
-    thumbnail: {
-      url: data.Thumbnail
-    },
-    color: '#ff5454',
-    fields: [
+  const embed = new MessageEmbed()
+    .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
+    .setDescription(data.description)
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
+    .setThumbnail(data.icon)
+    .setColor(data.color)
+    .addFields(
       {
         name: 'Creator',
-        value: `[${userData.Username}](https://polytoria.com/user/${data.CreatorID})`,
-        inline: true
-      },
-      {
-        name: 'Members',
-        value: data.Members.toLocaleString(),
-        inline: true
+        value: `[${creator.name}](https://polytoria.com/user/${creator.id})`,
+        inline: true,
       },
       {
         name: 'Created At',
-        value: dateUtils.atomTimeToDisplayTime(data.CreatedAt),
-        inline: false
+        value: dateUtils.atomTimeToDisplayTime(data.createdAt),
+        inline: true,
+      },
+      {
+        name: 'Join Type',
+        value: data.joinType.toLocaleString(),
+        inline: true,
+      },
+      {
+        name: 'Members',
+        value: data.memberCount.toLocaleString(),
+        inline: true,
+      },
+      {
+        name: 'Vault',
+        value: data.vaultBalance.toLocaleString(),
+        inline: true,
       }
-    ]
-  })
+    );
+
+  if (data.banner !== 'https://c0.ptacdn.com/guilds/banners/default.png') {
+    embed.setImage(data.banner);
+  }
 
   return message.channel.send({
-    embeds: [Embed]
-  })
+    embeds: [embed],
+  });
 }
