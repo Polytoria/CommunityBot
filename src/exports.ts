@@ -2,6 +2,7 @@ import { lookUp } from './commands/user.js'
 import { ping } from './commands/ping.js'
 import { cookie } from './commands/cookie.js'
 import { help } from './commands/help.js'
+import { guild } from './commands/guild.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
 import { catalogSearch } from './commands/catalog-search.js'
@@ -16,7 +17,7 @@ export default {
   ping: ping,
   place: place,
   cookie: cookie,
-  guild: commands,
+  guild: guild,
   catalog: commands,
   friends: commands,
   avatar: commands,
