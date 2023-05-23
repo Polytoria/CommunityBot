@@ -11,6 +11,11 @@ export default [
       inline: false
     },
     {
+      name: 'guild `id`',
+      value: 'View guild info from guild ID\n`id` - Guild ID',
+      inline: false
+    },
+    {
       name: 'random-user',
       value: 'Gives you a random user from Polytoria',
       inline: false
