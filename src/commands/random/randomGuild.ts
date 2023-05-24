@@ -4,11 +4,21 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 
 export async function randomGuild (message: Message, args: string[]) {
-  const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/guilds/', function () {
-    return true
-  }, function () {
-    return { id: randomUtils.randomInt(1, 503) }
-  }, 20)
+  const randomId = randomUtils.randomInt(1, 500)
+  const apiUrl = `https://api.polytoria.com/v1/guilds/${randomId}`
+
+  console.log('API URL:', apiUrl); // Log the API URL to the console
+
+  const randomData = await randomUtils.randomize(
+    apiUrl,
+    function (response: any) {
+      return response.data
+    },
+    function () {
+      return { id: randomId }
+    },
+    20
+  )
 
   if (randomData == null) {
     return message.channel.send('Guild not found, Please try again..')

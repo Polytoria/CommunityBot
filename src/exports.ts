@@ -8,7 +8,7 @@ import { status } from './commands/status.js'
 import { catalogSearch } from './commands/catalog-search.js'
 import { toolbox } from './commands/toolbox.js'
 import { commands } from './commands/commands.js'
-import { randomUser, randomPlace } from './commands/random.js'
+import { randomUser, randomPlace, randomGuild } from './commands/random.js'
 import { place } from './commands/place.js'
 
 export default {
@@ -23,7 +23,7 @@ export default {
   avatar: commands,
   'random-place': randomPlace,
   'random-user': randomUser,
-  'random-guild': commands,
+  'random-guild': randomGuild,
   'random-catalog': commands,
   help: help,
   level: commands,
