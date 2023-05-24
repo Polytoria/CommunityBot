@@ -33,7 +33,7 @@ export async function place (message: Message, args: string[]) {
   }
 
   const embed = new MessageEmbed({
-    title: data.name,
+    title: (data.name + ' ' + (data.isFeatured === true ? emojiUtils.star : '')),
     description: externalDesc,
     thumbnail: {
       url: `${data.icon}`
