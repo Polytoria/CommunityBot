@@ -2,17 +2,6 @@ import axios from 'axios'
 import { RandomResult } from '../../types/index.d.js'
 
 export class randomUtils {
-  /**
- * randomize Function
- *
- * @summary Randomize Function for randomizing stuff
- *
- * @param { string } api API Url
- * @param { Function } vaildFunction Check if vaild, return True if vaild
- * @param { Function } generateParams Generate random parameter
- * @param { Number } maxTriedCount Request Limit
- * @returns { Promise<RandomResult | null> } Result Data
- */
   public static async randomize (
     api: string,
     vaildFunction: Function,
@@ -25,22 +14,23 @@ export class randomUtils {
     while (true) {
       triedCount++
 
-      const response = await axios.get(api, { params: generateParams(), validateStatus: () => { return true } })
+      const response = await axios.get(api, {
+        params: generateParams(),
+        validateStatus: () => true
+      })
 
-      if (response.status !== 404) {
-        if (response.status !== 400) {
-          let testResult = null
-          if (vaildFunction.constructor.name === 'AsyncFunction') {
-            testResult = await vaildFunction(response)
-          } else {
-            testResult = vaildFunction(response)
-          }
+      if (response.status !== 404 && response.status !== 400) {
+        let testResult = null
+        if (vaildFunction.constructor.name === 'AsyncFunction') {
+          testResult = await vaildFunction(response)
+        } else {
+          testResult = vaildFunction(response)
+        }
 
-          if (testResult === true) {
-            const data = response.data
-            resultData = data
-            break
-          }
+        if (testResult) {
+          const data = response.data
+          resultData = data
+          break
         }
       }
 
@@ -58,14 +48,14 @@ export class randomUtils {
   }
 
   /**
- * randomInt
- *
- * @summary Random integer
- *
- * @param { number } min Min Number
- * @param { number } max Max Number
- * @returns { number } Randomized Number
- */
+   * randomInt
+   *
+   * @summary Random integer
+   *
+   * @param { number } min Min Number
+   * @param { number } max Max Number
+   * @returns { number } Randomized Number
+   */
   public static randomInt (min: number, max: number): number {
     return Math.floor(Math.random() * (max - min)) + min
   }

@@ -3,15 +3,23 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function randomGame (message: Message, args: string[]) {
-  const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/places/', function (response: any) {
-    return response.data.isActive
-  }, function () {
-    return { id: randomUtils.randomInt(1, 5200) }
-  }, 20)
+export async function randomPlace (message: Message, args: string[]) {
+  const randomId = randomUtils.randomInt(1, 5200)
+  const apiUrl = `https://api.polytoria.com/v1/places/${randomId}`
 
-  if (randomData == null) {
-    return message.channel.send('Place not found, Please try again..')
+  const randomData = await randomUtils.randomize(
+    apiUrl,
+    function (response: any) {
+      return response.data
+    },
+    function () {
+      return { id: randomId }
+    },
+    20
+  )
+
+  if (!randomData || !randomData.data) {
+    return message.channel.send('Place not found, please try again.')
   }
 
   const data = randomData.data
@@ -19,15 +27,14 @@ export async function randomGame (message: Message, args: string[]) {
   const creator = data.creator
 
   const embed = new MessageEmbed({
-    title: (data.name + ' ' + (data.isFeatured === true ? emojiUtils.star : '')),
+    title: data.name + (data.isFeatured === true ? emojiUtils.star : ''),
     description: data.description,
     thumbnail: {
       url: `${data.icon}`
     },
     url: `https://polytoria.com/places/${data.id}`,
     color: '#ff5454',
-    image: {
-    },
+    image: {},
     fields: [
       {
         name: 'Creator',
