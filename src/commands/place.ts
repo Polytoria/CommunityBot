@@ -21,7 +21,7 @@ export async function place (message: Message, args: string[]) {
   let externalDesc = ''
 
   if (data.isActive === false) {
-    externalDesc += `${emojiUtils.warning} This place is inactive.\n`
+    externalDesc += `${emojiUtils.warning}  This place is currently private. Only the creator can join it.\n`
   }
 
   externalDesc += '\n\n'

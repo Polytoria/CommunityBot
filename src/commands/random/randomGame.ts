@@ -11,7 +11,7 @@ export async function randomGame (message: Message, args: string[]) {
   }, 20)
 
   if (randomData == null) {
-    return message.channel.send('Game not found, Please try again..')
+    return message.channel.send('Place not found, Please try again..')
   }
 
   const data = randomData.data
