@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
+import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function randomGame (message: Message, args: string[]) {
   const randomData = await randomUtils.randomize('https://api.polytoria.com/v1/places/', function (response: any) {
@@ -18,7 +19,7 @@ export async function randomGame (message: Message, args: string[]) {
   const creator = data.creator
 
   const embed = new MessageEmbed({
-    title: data.name,
+    title: (data.name + ' ' + (data.isFeatured === true ? emojiUtils.star : '')),
     description: data.description,
     thumbnail: {
       url: `${data.icon}`
