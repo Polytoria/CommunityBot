@@ -7,7 +7,7 @@ export async function randomGuild (message: Message, args: string[]) {
   const randomId = randomUtils.randomInt(1, 500)
   const apiUrl = `https://api.polytoria.com/v1/guilds/${randomId}`
 
-  console.log('API URL:', apiUrl); // Log the API URL to the console
+  console.log('API URL:', apiUrl) // Log the API URL to the console
 
   const randomData = await randomUtils.randomize(
     apiUrl,
