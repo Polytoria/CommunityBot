@@ -21,18 +21,18 @@ export default [
       inline: false
     },
     {
+      name: 'random-place',
+      value: 'Gives you a random place from Polytoria',
+      inline: false
+    },
+    {
+      name: 'random-guild',
+      value: 'Gives you a random guild from Polytoria',
+      inline: false
+    },
+    {
       name: 'status',
       value: 'Checks to see if Polytoria is online/offline',
-      inline: false
-    },
-    {
-      name: 'help',
-      value: "Command you're using right now.",
-      inline: false
-    },
-    {
-      name: 'info',
-      value: 'Information about Polytoria Community Bot',
       inline: false
     }
   ]
