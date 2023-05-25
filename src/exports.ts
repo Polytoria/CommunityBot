@@ -8,7 +8,8 @@ import { status } from './commands/status.js'
 import { catalogSearch } from './commands/catalog-search.js'
 import { toolbox } from './commands/toolbox.js'
 import { commands } from './commands/commands.js'
-import { randomUser, randomPlace, randomGuild } from './commands/random.js'
+import { store } from './commands/store.js'
+import { randomUser, randomPlace, randomGuild, randomStore } from './commands/random.js'
 import { place } from './commands/place.js'
 
 export default {
@@ -18,13 +19,13 @@ export default {
   place: place,
   cookie: cookie,
   guild: guild,
-  catalog: commands,
+  store: store,
   friends: commands,
   avatar: commands,
   'random-place': randomPlace,
   'random-user': randomUser,
   'random-guild': randomGuild,
-  'random-catalog': commands,
+  'random-store': randomStore,
   help: help,
   level: commands,
   info: info,

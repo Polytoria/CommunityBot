@@ -11,6 +11,11 @@ export default [
       inline: false
     },
     {
+      name: 'store `id`',
+      value: 'View store info from store ID\n`id` - Store ID',
+      inline: false
+    },
+    {
       name: 'guild `id`',
       value: 'View guild info from guild ID\n`id` - Guild ID',
       inline: false
@@ -23,6 +28,11 @@ export default [
     {
       name: 'random-place',
       value: 'Gives you a random place from Polytoria',
+      inline: false
+    },
+    {
+      name: 'random-store',
+      value: 'Gives you a random asset from Polytoria',
       inline: false
     },
     {
