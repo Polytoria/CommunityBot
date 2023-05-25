@@ -4,7 +4,7 @@ import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 import emojiUtils from '../utils/emojiUtils.js'
 
-export async function store(message: Message, args: string[]) {
+export async function store (message: Message, args: string[]) {
   const assetID = parseInt(args[0])
 
   const response = await axios.get(`https://api.polytoria.com/v1/store/${assetID}`, {
