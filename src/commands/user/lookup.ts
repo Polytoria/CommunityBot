@@ -4,22 +4,11 @@ import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 
 export async function lookUp (message: Message, args: string[]) {
-  let apiURL: string = ''
+  const userID = parseInt(args[0])
 
-  switch (args[1]) {
-    case 'user':
-      apiURL = `https://api.polytoria.com/v1/users/find?username=${args.join(' ')}`
-      break
-    case 'id':
-      apiURL = `https://api.polytoria.com/v1/users/find?id=${args.join(' ')}`
-      break
-    default:
-      apiURL = `https://api.polytoria.com/v1/users/find?username=${args.join(' ')}`
-      break
-  }
-
-  const response = await axios.get(apiURL, { validateStatus: () => true })
-  const data = response.data.user // Fetch the "user" object from the API response
+  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, { validateStatus: () => true })
+  const data = response.data
+  const thumbnail = data.thumbnail
 
   const errResult = responseHandler.checkError(response)
 
@@ -29,11 +18,11 @@ export async function lookUp (message: Message, args: string[]) {
 
   const embed = new MessageEmbed({
     title: data.username,
-    url: `https://polytoria.com/user/${data.ID}`,
+    url: `https://polytoria.com/user/${data.id}`,
     description: data.description,
     color: '#ff5454',
     thumbnail: {
-      url: `${data.avatarUrl}`
+      url: `${thumbnail.avatar}`
     },
     fields: [
       {
@@ -50,7 +39,32 @@ export async function lookUp (message: Message, args: string[]) {
         name: 'Last seen at',
         value: dateUtils.atomTimeToDisplayTime(data.lastSeenAt),
         inline: true
-      }
+      },
+      {
+        name: 'Place Visits',
+        value: data.placeVisits.toString(),
+        inline: true
+      },
+      {
+        name: 'Profile Views',
+        value: data.profileViews.toString(),
+        inline: true
+      },
+      {
+        name: 'Forum Posts',
+        value: data.forumPosts.toString(),
+        inline: true
+      },
+      {
+        name: 'Asset Sales',
+        value: data.assetSales.toString(),
+        inline: true
+      },
+      {
+        name: 'Networth',
+        value: data.netWorth.toString(),
+        inline: true
+      },
     ]
   })
 
