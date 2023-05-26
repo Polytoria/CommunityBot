@@ -36,7 +36,7 @@ export async function place (message: Message, args: string[]) {
     title: (data.name + ' ' + (data.isFeatured === true ? emojiUtils.star : '')),
     description: externalDesc,
     thumbnail: {
-      url: `${data.icon}`
+      url: `${data.thumbnail}`
     },
     url: `https://polytoria.com/places/${data.id}`,
     color: '#ff5454',
