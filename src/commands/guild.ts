@@ -21,7 +21,7 @@ export async function guild (message: Message, args: string[]): Promise<Message<
     .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setDescription(data.description)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
-    .setThumbnail(data.icon)
+    .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .addFields(
       {
