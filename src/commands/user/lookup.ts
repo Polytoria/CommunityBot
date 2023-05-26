@@ -2,6 +2,7 @@ import { Message, MessageEmbed } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
+import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function lookUp (message: Message, args: string[]) {
   const userID = parseInt(args[0])
@@ -9,6 +10,7 @@ export async function lookUp (message: Message, args: string[]) {
   const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, { validateStatus: () => true })
   const data = response.data
   const thumbnail = data.thumbnail
+  let badges = ' '
 
   const errResult = responseHandler.checkError(response)
 
@@ -16,8 +18,15 @@ export async function lookUp (message: Message, args: string[]) {
     return message.channel.send(errResult.displayText)
   }
 
+  if (data.membershipType === 'plusDeluxe') {
+    badges += emojiUtils.plusdeluxe + ' '
+  }
+  if (data.membershipType === 'plus') {
+    badges += emojiUtils.plus + ' '
+  }
+
   const embed = new MessageEmbed({
-    title: data.username,
+    title: data.username + badges,
     url: `https://polytoria.com/user/${data.id}`,
     description: data.description,
     color: '#ff5454',
