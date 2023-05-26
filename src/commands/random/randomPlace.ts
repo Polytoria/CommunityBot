@@ -3,7 +3,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function randomPlace(message: Message, args: string[]) {
+export async function randomPlace (message: Message, args: string[]) {
   const randomId = randomUtils.randomInt(1, 5200)
   const apiUrl = `https://api.polytoria.com/v1/places/${randomId}`
 
