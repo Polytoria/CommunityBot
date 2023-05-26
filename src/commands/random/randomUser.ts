@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
+import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function randomUser (message: Message, args: string[]) {
   const randomId = randomUtils.randomInt(1, 34800)
@@ -23,9 +24,17 @@ export async function randomUser (message: Message, args: string[]) {
 
   const data = randomData.data
   const thumbnail = data.thumbnail
+  let badges = ' '
+
+  if (data.membershipType === 'plusDeluxe') {
+    badges += emojiUtils.plusdeluxe + ' '
+  }
+  if (data.membershipType === 'plus') {
+    badges += emojiUtils.plus + ' '
+  }
 
   const embed = new MessageEmbed({
-    title: data.username,
+    title: data.username + badges,
     url: `https://polytoria.com/user/${data.id}`,
     description: data.description,
     color: '#ff5454',
