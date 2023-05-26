@@ -64,7 +64,7 @@ export async function lookUp (message: Message, args: string[]) {
         name: 'Networth',
         value: data.netWorth.toString(),
         inline: true
-      },
+      }
     ]
   })
 
