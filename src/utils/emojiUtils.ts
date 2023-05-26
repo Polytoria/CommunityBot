@@ -16,5 +16,7 @@ export default {
   users: '<:Users:914059858276409364>',
   forum: '<:Forum:914059872105021441>',
   creation: '<:Creation:914059883031175198>',
-  error: '<:error:920132962887028788>'
+  error: '<:error:920132962887028788>',
+  plus: '<:plus:1111789336074133565>',
+  plusdeluxe: '<:plusdeluxe:1111789389664755743>'
 }
