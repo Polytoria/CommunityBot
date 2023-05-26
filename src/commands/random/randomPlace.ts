@@ -3,13 +3,16 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function randomPlace (message: Message, args: string[]) {
+export async function randomPlace(message: Message, args: string[]) {
   const randomId = randomUtils.randomInt(1, 5200)
   const apiUrl = `https://api.polytoria.com/v1/places/${randomId}`
+
+  console.log('Fetching data from:', apiUrl)
 
   const randomData = await randomUtils.randomize(
     apiUrl,
     function (response: any) {
+      console.log('Response:', response)
       return response.data
     },
     function () {
@@ -30,7 +33,7 @@ export async function randomPlace (message: Message, args: string[]) {
     title: data.name + (data.isFeatured === true ? emojiUtils.star : ''),
     description: data.description,
     thumbnail: {
-      url: `${data.icon}`
+      url: `${data.thumbnail}`
     },
     url: `https://polytoria.com/places/${data.id}`,
     color: '#ff5454',
@@ -83,6 +86,8 @@ export async function randomPlace (message: Message, args: string[]) {
       }
     ]
   })
+
+  console.log('Embed:', embed)
 
   return message.channel.send({ embeds: [embed] })
 }
