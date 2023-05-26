@@ -31,7 +31,7 @@ export async function randomGuild (message: Message, args: string[]) {
     .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setDescription(data.description)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
-    .setThumbnail(data.icon)
+    .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .addFields(
       {
