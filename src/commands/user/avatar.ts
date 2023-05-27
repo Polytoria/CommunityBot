@@ -44,7 +44,6 @@ export async function avatar (message: Message, args: string[]) {
         value: bodyColorsString,
         inline: false
       },
-
       {
         name: 'Total Price',
         value: 'Calculating..',
@@ -93,9 +92,7 @@ export async function avatar (message: Message, args: string[]) {
 
         // Add to price
         if (itemData.data.Price !== -1) {
-          {
-            brickPrice += itemData.data.price
-          }
+          brickPrice += itemData.data.price
         }
       }
     }
