@@ -12,7 +12,7 @@ export class userUtils {
  * @returns {Promise<any>} Return User Data
  */
   public static async getUserData (id: number): Promise<any> {
-    const response = await axios.get('https://api.polytoria.com/v1/users/find', { params: { id }, validateStatus: () => true })
+    const response = await axios.get('https://api.polytoria.com/v1/users/', { params: { id }, validateStatus: () => true })
     const data = response.data.user
 
     return data.user
@@ -34,7 +34,7 @@ export class userUtils {
       }
     })
 
-    const user = response.data.user
+    const user = response.data
 
     return user
   }

@@ -5,39 +5,34 @@ import { userUtils } from '../../utils/userUtils.js'
 export async function avatar (message: Message, args: string[]) {
   const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
-  if (!userData.ID) {
+  if (!userData.id) {
     return message.reply('User not found!')
   }
 
-  const apiURL = 'https://api.polytoria.com/v1/users/getappearance?id=' + userData.ID.toString()
+  const apiURL = `https://api.polytoria.com/v1/users/${userData.id.toString()}/avatar`
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const data = response.data
-  const bodyColors = data.BodyColors
-  const wearables = data.Wearables
-  const hats = wearables.Hats
+  const bodyColors = data.colors
+  const hats = data.assets
 
   // Make body colors string
   let bodyColorsString: string = ''
 
-  bodyColorsString += 'Head: ' + bodyColors.Head + '\n'
-  bodyColorsString += 'Torso: ' + bodyColors.Torso + '\n'
-  bodyColorsString += 'Left Arm: ' + bodyColors.LeftArm + '\n'
-  bodyColorsString += 'Right Arm: ' + bodyColors.RightArm + '\n'
-  bodyColorsString += 'Left Leg: ' + bodyColors.LeftLeg + '\n'
-  bodyColorsString += 'Right Leg: ' + bodyColors.RightLeg + '\n'
+  bodyColorsString += 'Head: ' + bodyColors.head + '\n'
+  bodyColorsString += 'Torso: ' + bodyColors.torso + '\n'
+  bodyColorsString += 'Left Arm: ' + bodyColors.leftArm + '\n'
+  bodyColorsString += 'Right Arm: ' + bodyColors.rightArm + '\n'
+  bodyColorsString += 'Left Leg: ' + bodyColors.leftLeg + '\n'
+  bodyColorsString += 'Right Leg: ' + bodyColors.rightLeg + '\n'
 
   let wearablesString = ''
-  let studPrice = 0
   let brickPrice = 0
 
   const embed = new MessageEmbed({
-    title: userData.Username + "'s Avatar",
-    url: `https://polytoria.com/user/${data.ID}`,
+    title: userData.username + "'s Avatar",
+    url: `https://polytoria.com/user/${data.id}`,
     color: '#ff5454',
-    thumbnail: {
-      url: `https://polytoria.com/assets/thumbnails/avatars/${data.AvatarHash}.png`
-    },
     fields: [
       {
         name: 'Currently Wearing',
@@ -63,30 +58,25 @@ export async function avatar (message: Message, args: string[]) {
   for (const item of Object.values(hats)) {
     const itemData = await axios.get('https://api.polytoria.com/v1/asset/info?id=' + item, { validateStatus: () => true })
     if (itemData.data.Success) {
-      wearablesString += `👒 [${itemData.data.Name}](https://polytoria.com/shop/${itemData.data.ID.toString()})\n`
+      wearablesString += `👒 [${itemData.data.name}](https://polytoria.com/shop/${itemData.data.id.toString()})\n`
 
       // Add to price
       if (itemData.data.Price !== -1) {
         if (itemData.data.Currency === 'Bricks') {
           brickPrice += itemData.data.Price
-        } else {
-          studPrice += itemData.data.Price
         }
       }
     }
   }
 
-  for (const item of Object.values(wearables)) {
+  for (const item of Object.values(hats)) {
     if (typeof item === 'number') {
-      const itemData = await axios.get('https://api.polytoria.com/v1/asset/info?id=' + item, { validateStatus: () => true })
+      const itemData = await axios.get('https://api.polytoria.com/v1/store/' + item, { validateStatus: () => true })
       if (itemData.data.Success) {
         let emoji = '❓'
-        switch (itemData.data.Type) {
+        switch (itemData.data.type) {
           case 'Face':
             emoji = '🙂'
-            break
-          case 'Tshirt':
-            emoji = '🎽'
             break
           case 'Shirt':
             emoji = '👕'
@@ -97,19 +87,14 @@ export async function avatar (message: Message, args: string[]) {
           case 'Tool':
             emoji = '🥤'
             break
-          case 'Head':
-            emoji = '🗣️'
-            break
         }
 
-        wearablesString += `${emoji} [${itemData.data.Name}](https://polytoria.com/shop/${itemData.data.ID.toString()})\n`
+        wearablesString += `${emoji} [${itemData.data.name}](https://polytoria.com/store/${itemData.data.id.toString()})\n`
 
         // Add to price
         if (itemData.data.Price !== -1) {
-          if (itemData.data.Currency === 'Bricks') {
-            brickPrice += itemData.data.Price
-          } else {
-            studPrice += itemData.data.Price
+          {
+            brickPrice += itemData.data.price
           }
         }
       }
@@ -133,7 +118,7 @@ export async function avatar (message: Message, args: string[]) {
     },
     {
       name: 'Total Price',
-      value: `${brickPrice} Brick(s) ${studPrice} Stud(s)`,
+      value: `${brickPrice} Brick(s)`,
       inline: false
     }
   )
