@@ -10,7 +10,7 @@ const urlToCheck = [
   },
   {
     name: 'Public APIs',
-    url: 'https://api.polytoria.com/v1/users/find?id=7348'
+    url: 'https://api.polytoria.com/v1/users/7348'
   },
   {
     name: 'Blog',
