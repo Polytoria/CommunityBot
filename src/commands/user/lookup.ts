@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
@@ -93,5 +93,17 @@ export async function lookUp (message: Message, args: string[]) {
     ]
   })
 
-  return message.channel.send({ embeds: [embed] })
+  // Create the action row and button
+  const actionRow = new MessageActionRow()
+    .addComponents(
+      new MessageButton()
+        .setURL(`https://polytoria.com/store/${data.id}`)
+        .setLabel('View on Polytoria')
+        .setStyle('LINK')
+    )
+
+  return message.channel.send({
+    embeds: [embed],
+    components: [actionRow]
+  })
 }

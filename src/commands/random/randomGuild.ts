@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
@@ -65,7 +65,17 @@ export async function randomGuild (message: Message, args: string[]) {
     embed.setImage(data.banner)
   }
 
+  // Create the action row and button
+  const actionRow = new MessageActionRow()
+    .addComponents(
+      new MessageButton()
+        .setURL(`https://polytoria.com/store/${data.id}`)
+        .setLabel('View on Polytoria')
+        .setStyle('LINK')
+    )
+
   return message.channel.send({
-    embeds: [embed]
+    embeds: [embed],
+    components: [actionRow]
   })
 }
