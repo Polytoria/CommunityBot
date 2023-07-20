@@ -1,8 +1,8 @@
 export default [
   [
     {
-      name: 'lookup `username/id` `type(optional)`',
-      value: 'Lookup user from username or ID\n`username/id` - Their username or id\n`type` - Type, `id` or `username`',
+      name: 'lookup `username`',
+      value: 'Lookup users information\n',
       inline: false
     },
     {
