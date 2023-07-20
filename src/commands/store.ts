@@ -19,12 +19,18 @@ export async function store (message: Message, args: string[]) {
     return message.channel.send(errResult.displayText)
   }
 
+  let thumbnailURL = data.thumbnail
+
+  if (data.type.toLowerCase() === 'audio') {
+    thumbnailURL = 'https://c0.ptacdn.com/static/images/placeholders/audio.88cff071.png'
+  }
+
   const embed = new MessageEmbed({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
     description: data.description === '' ? 'No description set.' : data.description,
     url: `https://polytoria.com/store/${data.id}`,
     thumbnail: {
-      url: `${data.thumbnail}`
+      url: thumbnailURL
     },
     color: '#ff5454',
     fields: [
