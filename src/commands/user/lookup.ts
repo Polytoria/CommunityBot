@@ -5,17 +5,33 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function lookUp (message: Message, args: string[]) {
-  const userID = parseInt(args[0])
+  const username = args[0]
 
-  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, { validateStatus: () => true })
-  const data = response.data
-  const thumbnail = data.thumbnail
-  let badges = ' '
+  // Get the user ID using the first API
+  const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
+    validateStatus: () => true
+  })
+  const lookupData = lookupResponse.data
 
-  const errResult = responseHandler.checkError(response)
+  const errResult = responseHandler.checkError(lookupResponse)
 
   if (errResult.hasError === true) {
     return message.channel.send(errResult.displayText)
+  }
+
+  const userID = lookupData.id
+
+  // Fetch the rest of the user data using the second API
+  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, {
+    validateStatus: () => true
+  })
+  const data = response.data
+  let badges = ' '
+
+  const errResult2 = responseHandler.checkError(response)
+
+  if (errResult2.hasError === true) {
+    return message.channel.send(errResult2.displayText)
   }
 
   if (data.membershipType === 'plusDeluxe') {
@@ -31,7 +47,7 @@ export async function lookUp (message: Message, args: string[]) {
     description: data.description,
     color: '#ff5454',
     thumbnail: {
-      url: `${thumbnail.avatar}`
+      url: data.thumbnail?.avatar
     },
     fields: [
       {
