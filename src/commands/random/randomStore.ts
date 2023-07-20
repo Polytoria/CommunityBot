@@ -25,12 +25,19 @@ export async function randomStore (message: Message, args: string[]) {
   const data = randomData.data
   const creator = data.creator
 
+  let thumbnailURL = data.thumbnail
+
+  // Check if the asset type is "audio" and set a specific link as the thumbnail
+  if (data.type.toLowerCase() === 'audio') {
+    thumbnailURL = 'https://c0.ptacdn.com/static/images/placeholders/audio.88cff071.png'
+  }
+
   const embed = new MessageEmbed({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
     description: data.description === '' ? 'No description set.' : data.description,
     url: `https://polytoria.com/store/${data.id}`,
     thumbnail: {
-      url: `${data.thumbnail}`
+      url: thumbnailURL
     },
     color: '#ff5454',
     fields: [
@@ -40,6 +47,17 @@ export async function randomStore (message: Message, args: string[]) {
         inline: true
       },
       {
+        name: 'Created At',
+        value: dateUtils.atomTimeToDisplayTime(data.createdAt),
+        inline: true
+      }
+    ]
+  })
+
+  const assetType = data.type.toLowerCase()
+  if (!['audio', 'decal', 'meshes'].includes(assetType)) {
+    embed.fields.push(
+      {
         name: 'Price',
         value: data.price.toString(),
         inline: true
@@ -48,14 +66,9 @@ export async function randomStore (message: Message, args: string[]) {
         name: 'Sales',
         value: data.sales.toString(),
         inline: true
-      },
-      {
-        name: 'Created At',
-        value: dateUtils.atomTimeToDisplayTime(data.createdAt),
-        inline: true
       }
-    ]
-  })
+    )
+  }
 
   return await message.channel.send({ embeds: [embed] })
 }
