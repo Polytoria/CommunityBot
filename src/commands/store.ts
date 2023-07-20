@@ -34,6 +34,17 @@ export async function store (message: Message, args: string[]) {
         inline: true
       },
       {
+        name: 'Created At',
+        value: dateUtils.atomTimeToDisplayTime(data.createdAt),
+        inline: true
+      }
+    ]
+  })
+
+  const assetType = data.type.toLowerCase()
+  if (!['audio', 'decal', 'mesh'].includes(assetType)) {
+    embed.fields.push(
+      {
         name: 'Price',
         value: data.price.toString(),
         inline: true
@@ -42,14 +53,9 @@ export async function store (message: Message, args: string[]) {
         name: 'Sales',
         value: data.sales.toString(),
         inline: true
-      },
-      {
-        name: 'Created At',
-        value: dateUtils.atomTimeToDisplayTime(data.createdAt),
-        inline: true
       }
-    ]
-  })
+    )
+  }
 
   return message.channel.send({
     embeds: [embed]
