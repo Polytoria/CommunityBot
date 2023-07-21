@@ -100,7 +100,7 @@ export async function place (message: Message, args: string[]) {
         .setStyle('LINK')
     )
 
-  return message.channel.send({
+  return message.reply({
     embeds: [embed],
     components: [actionRow]
   })

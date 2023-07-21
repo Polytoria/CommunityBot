@@ -99,7 +99,7 @@ export async function status (message: Message, args: string[]) {
     index++
   }
 
-  const msg = await message.channel.send({ embeds: [embed] })
+  const msg = await message.reply({ embeds: [embed] })
   const responseTimes = []
 
   let index2 = 0

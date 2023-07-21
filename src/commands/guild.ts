@@ -64,7 +64,7 @@ export async function guild (message: Message, args: string[]): Promise<Message<
         .setStyle('LINK')
     )
 
-  return message.channel.send({
+  return message.reply({
     embeds: [embed],
     components: [actionRow]
   })

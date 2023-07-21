@@ -93,7 +93,7 @@ export async function randomPlace (message: Message, args: string[]) {
         .setStyle('LINK')
     )
 
-  return message.channel.send({
+  return message.reply({
     embeds: [embed],
     components: [actionRow]
   })

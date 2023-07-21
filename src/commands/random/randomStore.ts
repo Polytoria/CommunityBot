@@ -79,5 +79,5 @@ export async function randomStore (message: Message, args: string[]) {
         .setStyle('LINK')
     )
 
-  return await message.channel.send({ embeds: [embed], components: [actionRow] })
+  return message.reply({ embeds: [embed], components: [actionRow] })
 }
