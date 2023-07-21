@@ -5,6 +5,11 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function lookUp (message: Message, args: string[]) {
+  // Check if a username was provided
+  if (args.length === 0) {
+    return message.reply('You need to type a username for me to lookup!')
+  }
+
   const username = args[0]
 
   // Get the user ID using the first API
@@ -16,7 +21,7 @@ export async function lookUp (message: Message, args: string[]) {
   const errResult = responseHandler.checkError(lookupResponse)
 
   if (errResult.hasError === true) {
-    return message.channel.send(errResult.displayText)
+    return message.reply(errResult.displayText)
   }
 
   const userID = lookupData.id
@@ -31,7 +36,7 @@ export async function lookUp (message: Message, args: string[]) {
   const errResult2 = responseHandler.checkError(response)
 
   if (errResult2.hasError === true) {
-    return message.channel.send(errResult2.displayText)
+    return message.reply(errResult2.displayText)
   }
 
   if (data.membershipType === 'plusDeluxe') {
@@ -94,15 +99,14 @@ export async function lookUp (message: Message, args: string[]) {
   })
 
   // Create the action row and button
-  const actionRow = new MessageActionRow()
-    .addComponents(
-      new MessageButton()
-        .setURL(`https://polytoria.com/store/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle('LINK')
-    )
+  const actionRow = new MessageActionRow().addComponents(
+    new MessageButton()
+      .setURL(`https://polytoria.com/store/${data.id}`)
+      .setLabel('View on Polytoria')
+      .setStyle('LINK')
+  )
 
-  return message.channel.send({
+  return message.reply({
     embeds: [embed],
     components: [actionRow]
   })
