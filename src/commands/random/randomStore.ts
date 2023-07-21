@@ -55,11 +55,11 @@ export async function randomStore (message: Message, args: string[]) {
   })
 
   const assetType = data.type.toLowerCase()
-  if (!['audio', 'decal', 'meshes'].includes(assetType)) {
+  if (!['audio', 'decal', 'mesh'].includes(assetType)) {
     embed.fields.push(
       {
         name: 'Price',
-        value: data.price.toString(),
+        value: emojiUtils.brick + ' ' + data.price.toString(),
         inline: true
       },
       {

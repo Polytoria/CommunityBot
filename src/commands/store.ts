@@ -52,7 +52,7 @@ export async function store (message: Message, args: string[]) {
     embed.fields.push(
       {
         name: 'Price',
-        value: data.price.toString(),
+        value: emojiUtils.brick + ' ' + data.price.toString(),
         inline: true
       },
       {
