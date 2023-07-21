@@ -7,6 +7,10 @@ import emojiUtils from '../utils/emojiUtils.js'
 export async function store (message: Message, args: string[]) {
   const assetID = parseInt(args[0])
 
+  if (args.length === 0) {
+    return message.reply('Please provide me with a store ID before I can continue!')
+  }
+
   const response = await axios.get(`https://api.polytoria.com/v1/store/${assetID}`, {
     validateStatus: () => true
   })

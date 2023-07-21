@@ -7,6 +7,10 @@ import emojiUtils from '../utils/emojiUtils.js'
 export async function guild (message: Message, args: string[]): Promise<Message<boolean>> {
   const guildID = parseInt(args[0])
 
+  if (args.length === 0) {
+    return message.reply('Please provide me with a guild ID before I can continue!')
+  }
+
   const response = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}`, { validateStatus: () => true })
   const data = response.data
   const creator = data.creator

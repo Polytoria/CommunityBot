@@ -7,6 +7,10 @@ import emojiUtils from '../utils/emojiUtils.js'
 export async function place (message: Message, args: string[]) {
   const placeID = parseInt(args[0])
 
+  if (args.length === 0) {
+    return message.reply('Please provide me with a place ID before I can continue!')
+  }
+
   const response = await axios.get(`https://api.polytoria.com/v1/places/${placeID}`, { validateStatus: () => true })
   const data = response.data
   const rating = data.rating
