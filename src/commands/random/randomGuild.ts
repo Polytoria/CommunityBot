@@ -56,7 +56,7 @@ export async function randomGuild (message: Message, args: string[]) {
       },
       {
         name: 'Vault',
-        value: data.vaultBalance.toLocaleString(),
+        value: emojiUtils.brick + ' ' + data.vaultBalance.toString(),
         inline: true
       }
     )

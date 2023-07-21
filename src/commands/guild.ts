@@ -46,7 +46,7 @@ export async function guild (message: Message, args: string[]): Promise<Message<
       },
       {
         name: 'Vault',
-        value: data.vaultBalance.toLocaleString(),
+        value: emojiUtils.brick + ' ' + data.vaultBalance.toString(),
         inline: true
       }
     )
