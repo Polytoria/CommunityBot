@@ -14,9 +14,13 @@ export async function lookUp (message: Message, args: string[]) {
 
   // Get the user ID using the first API
   const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
-    validateStatus: () => true
+    validateStatus: (status) => status === 404 || status === 200 // Allow 404 response
   })
   const lookupData = lookupResponse.data
+
+  if (lookupResponse.status === 404) {
+    return message.reply('Couldn\'t find a user! Did you type the right name?')
+  }
 
   const errResult = responseHandler.checkError(lookupResponse)
 
