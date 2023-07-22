@@ -63,7 +63,7 @@ export async function guild (message: Message, args: string[]): Promise<Message<
   const actionRow = new MessageActionRow()
     .addComponents(
       new MessageButton()
-        .setURL(`https://polytoria.com/store/${data.id}`)
+        .setURL(`https://polytoria.com/guilds/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle('LINK')
     )

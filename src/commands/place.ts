@@ -99,7 +99,7 @@ export async function place (message: Message, args: string[]) {
   const actionRow = new MessageActionRow()
     .addComponents(
       new MessageButton()
-        .setURL(`https://polytoria.com/store/${data.id}`)
+        .setURL(`https://polytoria.com/places/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle('LINK')
     )

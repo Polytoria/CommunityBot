@@ -89,7 +89,7 @@ export async function randomUser (message: Message, args: string[]) {
   const actionRow = new MessageActionRow()
     .addComponents(
       new MessageButton()
-        .setURL(`https://polytoria.com/store/${data.id}`)
+        .setURL(`https://polytoria.com/users/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle('LINK')
     )
