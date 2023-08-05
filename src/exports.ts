@@ -1,4 +1,4 @@
-import { lookUp } from './commands/user.js'
+import { lookUp, card } from './commands/user.js'
 import { ping } from './commands/ping.js'
 import { cookie } from './commands/cookie.js'
 import { help } from './commands/help.js'
@@ -29,7 +29,7 @@ export default {
   help: help,
   level: commands,
   info: info,
-  card: commands,
+  card: card,
   status: status,
   'catalog-search': catalogSearch,
   toolbox: toolbox,

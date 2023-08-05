@@ -34,9 +34,9 @@ export class userUtils {
       }
     })
 
-    const id = response.data.id;
-    const user = userUtils.getUserData(id);
-    return user;
+    const id = response.data.id
+    const user = userUtils.getUserData(id)
+    return user
   }
 
   /**
@@ -68,14 +68,12 @@ export class userUtils {
 
     result.external.accountAgeMonth = accountAgeMonth
 
-    result.external.friendCountRounded = friendCountRounded
-
-    const result2 = 12 * ((-1 / ((1 * accountAgeMonth) + 0.4) + 1));
-    const result3 = 8 * ((-1 / ((userData.forumPosts / 25) + 1) + 1));
-    const result4 = 15 * ((-1 / ((userData.profileViews / 1500) + 1) + 1));
-    const result5 = 10 * ((-1 / ((userData.netWorth / 30000) + 1) + 1));
-    const result6 = 10 * ((-1 / ((userData.assetSales / 3) + 1) + 1));
-    const final = Math.round(result2 + result3 + result4 + result5 + result6);
+    const result2 = 12 * ((-1 / ((1 * accountAgeMonth) + 0.4) + 1))
+    const result3 = 8 * ((-1 / ((userData.forumPosts / 25) + 1) + 1))
+    const result4 = 15 * ((-1 / ((userData.profileViews / 1500) + 1) + 1))
+    const result5 = 10 * ((-1 / ((userData.netWorth / 30000) + 1) + 1))
+    const result6 = 10 * ((-1 / ((userData.assetSales / 3) + 1) + 1))
+    const final = Math.round(result2 + result3 + result4 + result5 + result6)
 
     result.final = final
 
@@ -93,9 +91,9 @@ export class userUtils {
       result.rank = 'Noob'
     }
 
-    result.levels.economy = Math.round(result5 + result6);
-    result.levels.fame = Math.round(result3 + result4);
-    result.levels.forum = Math.round(result3);
+    result.levels.economy = Math.round(result5 + result6)
+    result.levels.fame = Math.round(result3 + result4)
+    result.levels.forum = Math.round(result3)
 
     return result
   }

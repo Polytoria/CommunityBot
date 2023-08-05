@@ -79,7 +79,7 @@ export async function card (message: Message, args: string[]) {
   ctx.textAlign = 'center'
   ctx.fillStyle = '#ffffff'
   ctx.font = '35px comfortaa_bold'
-  
+
   ctx.fillText(levelData.external.accountAgeMonth.toLocaleString(), 225, 630)
   ctx.fillText(stringUtils.numberWithCommas(userData.netWorth), 405, 630)
   ctx.fillText(stringUtils.numberWithCommas(userData.profileViews), 105, 630)
