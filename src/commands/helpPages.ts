@@ -2,7 +2,17 @@ export default [
   [
     {
       name: 'lookup `username`',
-      value: 'Lookup users information\n',
+      value: "Lookup users information\n`username` - User's username you want to view",
+      inline: false
+    },
+    {
+      name: 'card `username`',
+      value: "Gives you an image with information about specified user\n`username` - User's username you want to view",
+      inline: false
+    },
+    {
+      name: 'level `username`',
+      value: "Gives you information about specified user\n`username` - User's username you want to view",
       inline: false
     },
     {

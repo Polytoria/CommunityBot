@@ -11,7 +11,7 @@ export async function level (message: Message, args: string[]) {
 
   const levelData = await userUtils.getLevel(userData.id)
 
-  let description = `⭐ ${userData.username}'s Level is **${levelData.final} (${levelData.rank})** 🎉`
+  let description = `⭐ ${userData.username}'s level is **${levelData.final} (${levelData.rank})** 🎉`
   description += `\n\n${emojiUtils.forum} Forum level is ${levelData.levels.forum}`
   description += `\n${emojiUtils.shop} Economy level is ${levelData.levels.economy}`
   description += `\n${emojiUtils.users} Fame level is ${levelData.levels.fame}`
