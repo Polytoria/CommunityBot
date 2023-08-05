@@ -34,9 +34,9 @@ export class userUtils {
       }
     })
 
-    const user = response.data
-
-    return user
+    const id = response.data.id;
+    const user = userUtils.getUserData(id);
+    return user;
   }
 
   /**
@@ -68,20 +68,14 @@ export class userUtils {
 
     result.external.accountAgeMonth = accountAgeMonth
 
-    const userFriends = await axios.get('https://api.polytoria.com/v1/users/friends?id=' + userData.ID)
-
-    const friendCountRounded = 10 * userFriends.data.Pages
-
     result.external.friendCountRounded = friendCountRounded
 
-    const result2 = 12 * ((-1 / ((1 * accountAgeMonth) + 0.4) + 1))
-    const result3 = 12 * ((-1 / ((friendCountRounded / 100) + 1) + 1))
-    const result4 = 8 * ((-1 / ((userData.ForumPosts / 25) + 1) + 1))
-    const result5 = 15 * ((-1 / ((userData.ProfileViews / 1500) + 1) + 1))
-    const result6 = 10 * ((-1 / ((userData.TradeValue / 30000) + 1) + 1))
-    const result7 = 10 * ((-1 / ((userData.ItemSales / 3) + 1) + 1))
-
-    const final = Math.round(result2 + result3 + result4 + result5 + result6 + result7)
+    const result2 = 12 * ((-1 / ((1 * accountAgeMonth) + 0.4) + 1));
+    const result3 = 8 * ((-1 / ((userData.forumPosts / 25) + 1) + 1));
+    const result4 = 15 * ((-1 / ((userData.profileViews / 1500) + 1) + 1));
+    const result5 = 10 * ((-1 / ((userData.netWorth / 30000) + 1) + 1));
+    const result6 = 10 * ((-1 / ((userData.assetSales / 3) + 1) + 1));
+    const final = Math.round(result2 + result3 + result4 + result5 + result6);
 
     result.final = final
 
@@ -99,9 +93,9 @@ export class userUtils {
       result.rank = 'Noob'
     }
 
-    result.levels.economy = Math.round(result6 + result7)
-    result.levels.fame = Math.round(result3 + result5 + result6)
-    result.levels.forum = Math.round(result4)
+    result.levels.economy = Math.round(result5 + result6);
+    result.levels.fame = Math.round(result3 + result4);
+    result.levels.forum = Math.round(result3);
 
     return result
   }
