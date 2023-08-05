@@ -19,24 +19,24 @@ export async function card (message: Message, args: string[]) {
   const ribbiImg = await loadImage('https://i.imgur.com/4KCSvTb.png')
   ctx.drawImage(ribbiImg, -14.6, 57.7, 354, 174)
 
-  const avatarImg = await loadImage(`https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`)
-  ctx.drawImage(avatarImg, 156, 22, 358, 358)
+  const avatarImg = await loadImage(userData.thumbnail.avatar)
+  ctx.drawImage(avatarImg, 156, -10, 358, 358)
 
-  const topImg = await loadImage('https://i.imgur.com/8PamD2O.png')
+  const topImg = await loadImage('https://i.imgur.com/4o2LtvN.png')
   ctx.drawImage(topImg, 0, 227, 497, 471)
 
   ctx.font = '700 30px comfortaa_bold'
   ctx.fillStyle = '#ffffff'
-  ctx.fillText(userData.Username, 28, 340)
+  ctx.fillText(userData.username, 28, 340)
 
   ctx.fillStyle = '#d9d9d9'
   ctx.font = '15px comfortaa_bold'
-  ctx.fillText('#' + userData.ID, 28, 362)
+  ctx.fillText('#' + userData.id, 28, 362)
   ctx.font = '17px comfortaa_bold'
   ctx.fillStyle = '#ffffff'
 
-  let description = userData.Description
-  if (userData.Description === '') {
+  let description = userData.description
+  if (userData.description === '') {
     description = 'No description set.'
   }
 
@@ -58,7 +58,7 @@ export async function card (message: Message, args: string[]) {
   ctx.font = '23px comfortaa_bold'
   ctx.fillStyle = '#ffffff'
 
-  const levelData = await userUtils.getLevel(userData.ID)
+  const levelData = await userUtils.getLevel(userData.id)
 
   ctx.fillText(levelData.final.toLocaleString(), 45, 505)
   ctx.font = '35px comfortaa_bold'
@@ -66,8 +66,6 @@ export async function card (message: Message, args: string[]) {
   ctx.fillText(levelData.final.toLocaleString(), 110, 515)
 
   ctx.font = '14px comfortaa_bold'
-  ctx.fillStyle = '#ffaf45'
-  ctx.fillText('???', 213, 513)
 
   ctx.fillStyle = '#85daff'
   ctx.fillText(levelData.levels.forum.toLocaleString(), 275, 513)
@@ -81,9 +79,10 @@ export async function card (message: Message, args: string[]) {
   ctx.textAlign = 'center'
   ctx.fillStyle = '#ffffff'
   ctx.font = '35px comfortaa_bold'
-  ctx.fillText('~ ' + levelData.external.friendCountRounded, 70, 620)
-  ctx.fillText(levelData.external.accountAgeMonth.toLocaleString(), 225, 620)
-  ctx.fillText(stringUtils.numberWithCommas(userData.TradeValue), 405, 620)
+  
+  ctx.fillText(levelData.external.accountAgeMonth.toLocaleString(), 225, 630)
+  ctx.fillText(stringUtils.numberWithCommas(userData.netWorth), 405, 630)
+  ctx.fillText(stringUtils.numberWithCommas(userData.profileViews), 105, 630)
 
   ctx.fillStyle = '#2599ff'
 
