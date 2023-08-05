@@ -35,7 +35,7 @@ export async function randomUser (message: Message, args: string[]) {
 
   const embed = new MessageEmbed({
     title: data.username + badges,
-    url: `https://polytoria.com/user/${data.id}`,
+    url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
     color: '#ff5454',
     thumbnail: {
