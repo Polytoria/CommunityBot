@@ -1,11 +1,11 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, MessageEmbed, MessageActionRow, MessageButton, Interaction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 import emojiUtils from '../utils/emojiUtils.js'
 
-export async function guild (message: Message, args: string[]): Promise<Message<boolean>> {
-  const guildID = parseInt(args[0])
+export async function guild (message: Message, args: string[]): Promise<Message | null> {
+  const guildID: number = parseInt(args[0])
 
   if (args.length === 0) {
     return message.reply('Please provide me with a guild ID before I can continue!')
@@ -59,17 +59,80 @@ export async function guild (message: Message, args: string[]): Promise<Message<
     embed.setImage(data.banner)
   }
 
-  // Create the action row and button
-  const actionRow = new MessageActionRow()
+  const memberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/members?page=1&limit=15`)
+  const memberData = memberResponse.data.members
+
+  const memberUsernames: string = memberData.map((member: any) => member.user.username).join('\n')
+
+  const memberEmbed = new MessageEmbed()
+    .setTitle('Members')
+    .setDescription(memberUsernames)
+
+  const guildButton = new MessageButton()
+    .setLabel('Guild')
+    .setStyle('PRIMARY')
+    .setCustomId('guild_button')
+
+  const membersButton = new MessageButton()
+    .setLabel('Members')
+    .setStyle('PRIMARY')
+    .setCustomId('members_button')
+
+  const actionRow: MessageActionRow = new MessageActionRow()
     .addComponents(
       new MessageButton()
         .setURL(`https://polytoria.com/guilds/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle('LINK')
     )
+    .addComponents(
+      membersButton
+    )
 
-  return message.reply({
+  const reply = await message.reply({
     embeds: [embed],
     components: [actionRow]
   })
+
+  const collector = reply.createMessageComponentCollector({
+    componentType: 'BUTTON',
+    filter: (interaction: Interaction) => (
+      interaction.isButton() && interaction.user.id === message.author.id
+    ),
+    time: 60000,
+    max: 1
+  })
+
+  collector.on('collect', async (interaction) => {
+    if (interaction.customId === 'members_button') {
+      membersButton.setDisabled(true)
+      await reply.edit({
+        embeds: [memberEmbed],
+        components: [
+          new MessageActionRow().addComponents(guildButton)
+        ]
+      })
+
+      const guildButtonCollector = reply.createMessageComponentCollector({
+        componentType: 'BUTTON',
+        filter: (btnInteraction: Interaction) => (
+          btnInteraction.isButton() &&
+          btnInteraction.customId === 'guild_button' &&
+          btnInteraction.user.id === message.author.id
+        ),
+        time: 60000,
+        max: 1
+      })
+
+      guildButtonCollector.on('collect', async () => {
+        membersButton.setDisabled(false)
+        await reply.edit({
+          embeds: [embed],
+          components: [actionRow]
+        })
+      })
+    }
+  })
+
+  return reply
 }
