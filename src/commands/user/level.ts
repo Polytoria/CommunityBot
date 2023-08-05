@@ -9,51 +9,46 @@ export async function level (message: Message, args: string[]) {
   }
   const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
-  const levelData = await userUtils.getLevel(userData.ID)
+  const levelData = await userUtils.getLevel(userData.id)
 
-  let description = `⭐ ${userData.Username}'s Level is **${levelData.final} (${levelData.rank})** 🎉`
+  let description = `⭐ ${userData.username}'s Level is **${levelData.final} (${levelData.rank})** 🎉`
   description += `\n\n${emojiUtils.forum} Forum level is ${levelData.levels.forum}`
   description += `\n${emojiUtils.shop} Economy level is ${levelData.levels.economy}`
   description += `\n${emojiUtils.users} Fame level is ${levelData.levels.fame}`
   description += `\n\nNoob 🤓 ${progressBar.splitBar(75, levelData.final, 8, '▬', '🟢')[0]} Pro 😎`
 
   const embed = new MessageEmbed({
-    title: userData.Username + "'s Level",
-    url: `https://polytoria.com/user/${userData.ID}`,
+    title: userData.username + "'s level",
+    url: `https://polytoria.com/users/${userData.id}`,
     description: description,
     color: '#ff5454',
     thumbnail: {
-      url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
+      url: userData.thumbnail.avatar
     },
     fields: [
       {
         name: 'Forum Posts',
-        value: userData.ForumPosts.toLocaleString(),
+        value: userData.forumPosts.toLocaleString(),
         inline: true
       },
       {
-        name: 'Friend count',
-        value: '~' + levelData.external.friendCountRounded.toLocaleString(),
-        inline: true
-      },
-      {
-        name: 'Account Age(Month)',
+        name: 'Account Age',
         value: levelData.external.accountAgeMonth.toLocaleString(),
         inline: true
       },
       {
-        name: 'Trade Value',
-        value: userData.TradeValue.toLocaleString(),
+        name: 'Networth',
+        value: userData.netWorth.toLocaleString(),
         inline: true
       },
       {
         name: 'Profile Views',
-        value: userData.ProfileViews.toLocaleString(),
+        value: userData.profileViews.toLocaleString(),
         inline: true
       },
       {
         name: 'Item Sales',
-        value: userData.ItemSales.toLocaleString(),
+        value: userData.assetSales.toLocaleString(),
         inline: true
       }
     ]

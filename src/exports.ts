@@ -1,4 +1,4 @@
-import { lookUp, card } from './commands/user.js'
+import { lookUp, card, level } from './commands/user.js'
 import { ping } from './commands/ping.js'
 import { cookie } from './commands/cookie.js'
 import { help } from './commands/help.js'
@@ -26,7 +26,7 @@ export default {
   'random-guild': randomGuild,
   'random-store': randomStore,
   help: help,
-  level: commands,
+  level: level,
   info: info,
   card: card,
   status: status,
