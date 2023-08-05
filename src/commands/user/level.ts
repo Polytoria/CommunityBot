@@ -19,41 +19,36 @@ export async function level (message: Message, args: string[]) {
 
   const embed = new MessageEmbed({
     title: userData.Username + "'s Level",
-    url: `https://polytoria.com/user/${userData.ID}`,
+    url: `https://polytoria.com/user/${userData.id}`,
     description: description,
     color: '#ff5454',
     thumbnail: {
-      url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
+      url: userData.thumbnail.avatar
     },
     fields: [
       {
         name: 'Forum Posts',
-        value: userData.ForumPosts.toLocaleString(),
+        value: userData.forumPosts.toLocaleString(),
         inline: true
       },
       {
-        name: 'Friend count',
-        value: '~' + levelData.external.friendCountRounded.toLocaleString(),
-        inline: true
-      },
-      {
-        name: 'Account Age(Month)',
+        name: 'Account Age',
         value: levelData.external.accountAgeMonth.toLocaleString(),
         inline: true
       },
       {
-        name: 'Trade Value',
-        value: userData.TradeValue.toLocaleString(),
+        name: 'Networth',
+        value: userData.netWorth.toLocaleString(),
         inline: true
       },
       {
         name: 'Profile Views',
-        value: userData.ProfileViews.toLocaleString(),
+        value: userData.profileViews.toLocaleString(),
         inline: true
       },
       {
         name: 'Item Sales',
-        value: userData.ItemSales.toLocaleString(),
+        value: userData.assetSales.toLocaleString(),
         inline: true
       }
     ]
