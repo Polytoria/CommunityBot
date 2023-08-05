@@ -64,8 +64,11 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   const memberUsernames: string = memberData.map((member: any) => member.user.username).join('\n')
 
   const memberEmbed = new MessageEmbed()
-    .setTitle('Members')
+    .setTitle(data.name + ' - Members ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setDescription(memberUsernames)
+    .setThumbnail(data.thumbnail)
+    .setColor(data.color)
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
   const guildButton = new MessageButton()
     .setLabel('Guild')
