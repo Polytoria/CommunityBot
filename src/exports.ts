@@ -6,7 +6,6 @@ import { guild } from './commands/guild.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
 import { catalogSearch } from './commands/catalog-search.js'
-import { toolbox } from './commands/toolbox.js'
 import { commands } from './commands/commands.js'
 import { store } from './commands/store.js'
 import { randomUser, randomPlace, randomGuild, randomStore } from './commands/random.js'
@@ -32,6 +31,6 @@ export default {
   card: commands,
   status: status,
   'catalog-search': catalogSearch,
-  toolbox: toolbox,
+  toolbox: commands,
   commands: commands
 }
