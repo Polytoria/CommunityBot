@@ -63,7 +63,7 @@ export class userUtils {
 
     const userData = await userUtils.getUserData(id)
 
-    const joinDateDate = new Date(userData.JoinedAt)
+    const joinDateDate = new Date(userData.registeredAt)
     const currentDate = new Date()
 
     const accountAgeMonth = dateUtils.monthDifference(joinDateDate, currentDate)
