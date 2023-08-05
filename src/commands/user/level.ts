@@ -9,17 +9,17 @@ export async function level (message: Message, args: string[]) {
   }
   const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
-  const levelData = await userUtils.getLevel(userData.ID)
+  const levelData = await userUtils.getLevel(userData.id)
 
-  let description = `⭐ ${userData.Username}'s Level is **${levelData.final} (${levelData.rank})** 🎉`
+  let description = `⭐ ${userData.username}'s Level is **${levelData.final} (${levelData.rank})** 🎉`
   description += `\n\n${emojiUtils.forum} Forum level is ${levelData.levels.forum}`
   description += `\n${emojiUtils.shop} Economy level is ${levelData.levels.economy}`
   description += `\n${emojiUtils.users} Fame level is ${levelData.levels.fame}`
   description += `\n\nNoob 🤓 ${progressBar.splitBar(75, levelData.final, 8, '▬', '🟢')[0]} Pro 😎`
 
   const embed = new MessageEmbed({
-    title: userData.Username + "'s Level",
-    url: `https://polytoria.com/user/${userData.id}`,
+    title: userData.username + "'s level",
+    url: `https://polytoria.com/users/${userData.id}`,
     description: description,
     color: '#ff5454',
     thumbnail: {
