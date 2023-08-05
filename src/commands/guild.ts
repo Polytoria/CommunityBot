@@ -61,7 +61,6 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
   const memberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/members?page=1&limit=15`)
   const memberData = memberResponse.data.members
-
   const memberUsernames: string = memberData.map((member: any) => member.user.username).join('\n')
 
   const memberEmbed = new MessageEmbed()
@@ -77,6 +76,16 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .setLabel('Members')
     .setStyle('PRIMARY')
     .setCustomId('members_button')
+
+  const nextButton = new MessageButton()
+    .setLabel('Next')
+    .setStyle('SUCCESS')
+    .setCustomId('next_button')
+
+  const prevButton = new MessageButton()
+    .setLabel('Previous')
+    .setStyle('DANGER')
+    .setCustomId('prev_button')
 
   const actionRow: MessageActionRow = new MessageActionRow()
     .addComponents(
@@ -94,22 +103,28 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     components: [actionRow]
   })
 
+  let memberPage = 1
+
   const collector = reply.createMessageComponentCollector({
     componentType: 'BUTTON',
     filter: (interaction: Interaction) => (
       interaction.isButton() && interaction.user.id === message.author.id
     ),
-    time: 60000,
-    max: 1
+    time: 60000
   })
 
   collector.on('collect', async (interaction) => {
+    await interaction.deferUpdate() // Defer the interaction
+
     if (interaction.customId === 'members_button') {
       membersButton.setDisabled(true)
+      nextButton.setDisabled(false)
+      prevButton.setDisabled(true)
+
       await reply.edit({
         embeds: [memberEmbed],
         components: [
-          new MessageActionRow().addComponents(guildButton)
+          new MessageActionRow().addComponents(guildButton, prevButton, nextButton)
         ]
       })
 
@@ -120,16 +135,79 @@ export async function guild (message: Message, args: string[]): Promise<Message 
           btnInteraction.customId === 'guild_button' &&
           btnInteraction.user.id === message.author.id
         ),
-        time: 60000,
-        max: 1
+        time: 60000
       })
 
       guildButtonCollector.on('collect', async () => {
         membersButton.setDisabled(false)
+        nextButton.setDisabled(true)
+        prevButton.setDisabled(true)
         await reply.edit({
           embeds: [embed],
           components: [actionRow]
         })
+      })
+
+      const nextButtonCollector = reply.createMessageComponentCollector({
+        componentType: 'BUTTON',
+        filter: (btnInteraction: Interaction) => (
+          btnInteraction.isButton() &&
+          btnInteraction.customId === 'next_button' &&
+          btnInteraction.user.id === message.author.id
+        ),
+        time: 60000
+      })
+
+      nextButtonCollector.on('collect', async () => {
+        const newPage = memberPage + 1
+        const newMemberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/members?page=${newPage}&limit=15`)
+        const newMemberData = newMemberResponse.data.members
+        const newMemberUsernames: string = newMemberData.map((member: any) => member.user.username).join('\n')
+
+        memberPage = newPage
+        memberEmbed.setDescription(newMemberUsernames)
+
+        nextButton.setDisabled(false)
+        prevButton.setDisabled(false)
+
+        await reply.edit({
+          embeds: [memberEmbed],
+          components: [
+            new MessageActionRow().addComponents(guildButton, prevButton, nextButton)
+          ]
+        })
+      })
+
+      const prevButtonCollector = reply.createMessageComponentCollector({
+        componentType: 'BUTTON',
+        filter: (btnInteraction: Interaction) => (
+          btnInteraction.isButton() &&
+          btnInteraction.customId === 'prev_button' &&
+          btnInteraction.user.id === message.author.id
+        ),
+        time: 60000
+      })
+
+      prevButtonCollector.on('collect', async () => {
+        if (memberPage > 1) {
+          const newPage = memberPage - 1
+          const newMemberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/members?page=${newPage}&limit=15`)
+          const newMemberData = newMemberResponse.data.members
+          const newMemberUsernames: string = newMemberData.map((member: any) => member.user.username).join('\n')
+
+          memberPage = newPage
+          memberEmbed.setDescription(newMemberUsernames)
+
+          nextButton.setDisabled(false)
+          prevButton.setDisabled(false)
+
+          await reply.edit({
+            embeds: [memberEmbed],
+            components: [
+              new MessageActionRow().addComponents(guildButton, prevButton, nextButton)
+            ]
+          })
+        }
       })
     }
   })
