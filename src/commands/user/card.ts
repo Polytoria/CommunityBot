@@ -16,13 +16,13 @@ export async function card (message: Message, args: string[]) {
 
   registerFont(path.resolve(path.dirname('')) + '/assets/fonts/Comfortaa-Bold.ttf', { family: 'comfortaa_bold' })
 
-  const ribbiImg = await loadImage('https://i.imgur.com/4KCSvTb.png')
+  const ribbiImg = await loadImage('https://schoolfactsonline.com/4KCSvTb.png')
   ctx.drawImage(ribbiImg, -14.6, 57.7, 354, 174)
 
   const avatarImg = await loadImage(userData.thumbnail.avatar)
   ctx.drawImage(avatarImg, 156, -10, 358, 358)
 
-  const topImg = await loadImage('https://i.imgur.com/4o2LtvN.png')
+  const topImg = await loadImage('https://schoolfactsonline.com/4o2LtvN.png')
   ctx.drawImage(topImg, 0, 227, 497, 471)
 
   ctx.font = '700 30px comfortaa_bold'
