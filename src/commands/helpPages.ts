@@ -6,6 +6,16 @@ export default [
       inline: false
     },
     {
+      name: 'inventory `username`',
+      value: "Let's you see the inventory of specified user\n`username` - User's username you want to view",
+      inline: false
+    },
+    {
+      name: 'store-search `name`',
+      value: 'Search for asset in the shop\n`name` - Name of the asset',
+      inline: false
+    },
+    {
       name: 'card `username`',
       value: "Gives you an image with information about specified user\n`username` - User's username you want to view",
       inline: false
