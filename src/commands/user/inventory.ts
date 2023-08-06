@@ -34,7 +34,7 @@ export async function inventory (message: Message, args: string[]) {
 
   const embed = new MessageEmbed({
     title: userData.username + "'s Inventory.",
-    url: `https://polytoria.com/user/${userData.id}/inventory`,
+    url: `https://polytoria.com/users/${userData.id}/inventory`,
     color: '#ff5454',
     thumbnail: {
       url: userData.thumbnail.avatar
