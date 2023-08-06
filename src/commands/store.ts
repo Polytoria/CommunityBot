@@ -29,6 +29,10 @@ export async function store (message: Message, args: string[]) {
     thumbnailURL = 'https://c0.ptacdn.com/static/images/placeholders/audio.88cff071.png'
   }
 
+  const creatorLink = creator.type === 'user'
+    ? `https://polytoria.com/users/${creator.id}`
+    : `https://polytoria.com/guilds/${creator.id}`
+
   const embed = new MessageEmbed({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
     description: data.description === '' ? 'No description set.' : data.description,
@@ -40,7 +44,7 @@ export async function store (message: Message, args: string[]) {
     fields: [
       {
         name: 'Creator',
-        value: creator.name,
+        value: `[${creator.name}](${creatorLink})`,
         inline: true
       },
       {
