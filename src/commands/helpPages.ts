@@ -6,23 +6,30 @@ export default [
       inline: false
     },
     {
-      name: 'inventory `username`',
-      value: "Let's you see the inventory of specified user\n`username` - User's username you want to view",
-      inline: false
-    },
-    {
       name: 'store-search `name`',
       value: 'Search for asset in the shop\n`name` - Name of the asset',
       inline: false
     },
     {
-      name: 'card `username`',
-      value: "Gives you an image with information about specified user\n`username` - User's username you want to view",
+      name: 'inventory `username`',
+      value: "Let's you see the inventory of specified user\n`username` - User's username you want to view",
       inline: false
     },
     {
-      name: 'level `username`',
-      value: "Gives you information about specified user\n`username` - User's username you want to view",
+      name: 'status',
+      value: 'Checks to see if Polytoria is online/offline',
+      inline: false
+    },
+    {
+      name: 'guild `id`',
+      value: "View guild's information and members \n`id` - Guild's ID",
+      inline: false
+    }
+  ],
+  [
+    {
+      name: 'store `id`',
+      value: 'View store info from store ID\n`id` - Store ID',
       inline: false
     },
     {
@@ -31,15 +38,22 @@ export default [
       inline: false
     },
     {
-      name: 'store `id`',
-      value: 'View store info from store ID\n`id` - Store ID',
+      name: 'level `username`',
+      value: "Gives you information about specified user\n`username` - User's username you want to view",
       inline: false
     },
     {
-      name: 'guild `id`',
-      value: 'View guild info from guild ID\n`id` - Guild ID',
+      name: 'card `username`',
+      value: "Gives you an image with information about specified user\n`username` - User's username you want to view",
       inline: false
     },
+    {
+      name: 'info',
+      value: 'Information about Polytoria Community Bot',
+      inline: false
+    }
+  ],
+  [
     {
       name: 'random-user',
       value: 'Gives you a random user from Polytoria',
@@ -58,11 +72,6 @@ export default [
     {
       name: 'random-guild',
       value: 'Gives you a random guild from Polytoria',
-      inline: false
-    },
-    {
-      name: 'status',
-      value: 'Checks to see if Polytoria is online/offline',
       inline: false
     }
   ]
