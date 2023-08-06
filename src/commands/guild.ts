@@ -61,7 +61,9 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
   const memberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/members?page=1&limit=15`)
   const memberData = memberResponse.data.members
-  const memberUsernames: string = memberData.map((member: any) => member.user.username).join('\n')
+  const memberUsernames = memberData
+    .map((member: any) => `[${member.user.username}](https://polytoria.com/users/${member.user.id})`)
+    .join('\n')
 
   const memberEmbed = new MessageEmbed()
     .setTitle(data.name + ' - Members ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
