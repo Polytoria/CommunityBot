@@ -5,7 +5,7 @@ import { help } from './commands/help.js'
 import { guild } from './commands/guild.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
-import { catalogSearch } from './commands/store-search.js'
+import { storeSearch } from './commands/store-search.js'
 import { commands } from './commands/commands.js'
 import { store } from './commands/store.js'
 import { randomUser, randomPlace, randomGuild, randomStore } from './commands/random.js'
@@ -30,7 +30,7 @@ export default {
   info: info,
   card: card,
   status: status,
-  'catalog-search': catalogSearch,
+  'store-search': storeSearch,
   toolbox: commands,
   commands: commands
 }
