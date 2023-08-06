@@ -6,13 +6,13 @@ import { v4 } from 'uuid'
 export async function inventory (message: Message, args: string[]) {
   const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
-  if (!userData.ID) {
+  if (!userData.id) {
     return message.reply('User not found!')
   }
 
   let currentPage = 1
 
-  const apiURL = `https://api.polytoria.com/v1/users/${userData.id.toString()}/inventory`;
+  const apiURL = `https://api.polytoria.com/v1/users/${userData.id.toString()}/inventory`
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const data = response.data
@@ -25,15 +25,15 @@ export async function inventory (message: Message, args: string[]) {
     let resultString: string = ''
 
     // @ts-expect-error
-    response.data.Inventory.forEach((item) => {
-      resultString += `[${item.name}](https://polytoria.com/shop/${item.id})\n`
+    response.data.data.forEach((item) => {
+      resultString += `[${item.asset.name}](https://polytoria.com/store/${item.id})\n`
     })
 
     return resultString
   }
 
   const embed = new MessageEmbed({
-    title: userData.Username + "'s Inventory.",
+    title: userData.username + "'s Inventory.",
     url: `https://polytoria.com/user/${userData.id}/inventory`,
     color: '#ff5454',
     thumbnail: {
@@ -55,7 +55,7 @@ export async function inventory (message: Message, args: string[]) {
   // Create Buttons
   const leftBtn: MessageButton = new MessageButton().setCustomId(leftBtnID).setLabel('◀').setStyle('PRIMARY').setDisabled(true)
 
-  const pageNumBtn: MessageButton = new MessageButton().setCustomId(pageNum).setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.total.toString()}`).setStyle('SECONDARY')
+  const pageNumBtn: MessageButton = new MessageButton().setCustomId(pageNum).setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.lastPage.toString()}`).setStyle('SECONDARY')
 
   const rightBtn: MessageButton = new MessageButton().setCustomId(rightBtnID).setLabel('▶').setStyle('PRIMARY')
 
@@ -82,9 +82,9 @@ export async function inventory (message: Message, args: string[]) {
     }
 
     // Update button state
-    if (currentPage >= data.Pages) {
+    if (currentPage >= data.meta.lastPage) {
       rightBtn.setDisabled(true)
-      currentPage = data.Pages
+      currentPage = data.meta.lastPage
     } else {
       rightBtn.setDisabled(false)
     }
@@ -97,7 +97,7 @@ export async function inventory (message: Message, args: string[]) {
     }
 
     // Set Page
-    pageNumBtn.setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.total.toString()}`)
+    pageNumBtn.setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.lastPage.toString()}`)
 
     // Fetch Inventory
     const inventoryData: string = await changePage()
