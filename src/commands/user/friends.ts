@@ -26,7 +26,7 @@ export async function friends (message: Message, args: string[]) {
 
     // @ts-expect-error
     response.data.Friends.forEach((item) => {
-      resultString += `[${item.Username}](https://polytoria.com/user/${item.ID})\n`
+      resultString += `[${item.Username}](https://polytoria.com/users/${item.ID})\n`
     })
 
     return resultString
@@ -34,7 +34,7 @@ export async function friends (message: Message, args: string[]) {
 
   const embed = new MessageEmbed({
     title: userData.Username + "'s Friends.",
-    url: `https://polytoria.com/user/${userData.ID}/friends`,
+    url: `https://polytoria.com/users/${userData.ID}/friends`,
     color: '#ff5454',
     thumbnail: {
       url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`

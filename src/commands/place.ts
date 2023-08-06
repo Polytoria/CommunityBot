@@ -49,7 +49,7 @@ export async function place (message: Message, args: string[]) {
     fields: [
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.com/user/${creator.id})`,
+        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
         inline: true
       },
       {

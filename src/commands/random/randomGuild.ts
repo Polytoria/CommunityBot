@@ -36,7 +36,7 @@ export async function randomGuild (message: Message, args: string[]) {
     .addFields(
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.com/user/${creator.id})`,
+        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
         inline: true
       },
       {

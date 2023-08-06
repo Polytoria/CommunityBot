@@ -30,7 +30,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .addFields(
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.com/user/${creator.id})`,
+        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
         inline: true
       },
       {

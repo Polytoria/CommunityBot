@@ -31,7 +31,7 @@ export async function avatar (message: Message, args: string[]) {
 
   const embed = new MessageEmbed({
     title: userData.username + "'s Avatar",
-    url: `https://polytoria.com/user/${data.id}`,
+    url: `https://polytoria.com/users/${data.id}`,
     color: '#ff5454',
     fields: [
       {
@@ -57,7 +57,7 @@ export async function avatar (message: Message, args: string[]) {
   for (const item of Object.values(hats)) {
     const itemData = await axios.get('https://api.polytoria.com/v1/asset/info?id=' + item, { validateStatus: () => true })
     if (itemData.data.Success) {
-      wearablesString += `👒 [${itemData.data.name}](https://polytoria.com/shop/${itemData.data.id.toString()})\n`
+      wearablesString += `👒 [${itemData.data.name}](https://polytoria.com/store/${itemData.data.id.toString()})\n`
 
       // Add to price
       if (itemData.data.Price !== -1) {
