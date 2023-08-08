@@ -55,14 +55,14 @@ export async function avatar (message: Message, args: string[]) {
   const oldMessage = await message.channel.send({ embeds: [embed] })
 
   for (const item of Object.values(hats)) {
-    const itemData = await axios.get('https://api.polytoria.com/v1/asset/info?id=' + item, { validateStatus: () => true })
+    const itemData = await axios.get('https://api.polytoria.com/v1/store/' + item, { validateStatus: () => true })
     if (itemData.data.Success) {
       wearablesString += `👒 [${itemData.data.name}](https://polytoria.com/store/${itemData.data.id.toString()})\n`
 
       // Add to price
-      if (itemData.data.Price !== -1) {
+      if (itemData.data.price !== 0) {
         if (itemData.data.Currency === 'Bricks') {
-          brickPrice += itemData.data.Price
+          brickPrice += itemData.data.price
         }
       }
     }
@@ -74,16 +74,16 @@ export async function avatar (message: Message, args: string[]) {
       if (itemData.data.Success) {
         let emoji = '❓'
         switch (itemData.data.type) {
-          case 'Face':
+          case 'face':
             emoji = '🙂'
             break
-          case 'Shirt':
+          case 'shirt':
             emoji = '👕'
             break
-          case 'Pants':
+          case 'pants':
             emoji = '👖'
             break
-          case 'Tool':
+          case 'tool':
             emoji = '🥤'
             break
         }
