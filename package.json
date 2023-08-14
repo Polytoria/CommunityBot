@@ -22,6 +22,7 @@
 		"string-progressbar": "^1.0.4",
 		"text-table": "^0.2.0",
 		"timestamp-conv": "^3.0.0",
+		"typescript": "^5.1.6",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
@@ -36,7 +37,6 @@
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-promise": "^5.2.0",
 		"prettier": "^3.0.0",
-		"prettier-eslint": "^13.0.0",
-		"typescript": "^4.5.4"
+		"prettier-eslint": "^13.0.0"
 	}
 }
