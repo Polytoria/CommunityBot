@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
@@ -27,7 +27,7 @@ export async function randomGuild (message: Message, args: string[]) {
   const data = randomData.data
   const creator = data.creator
 
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
     .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setDescription(data.description)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
@@ -66,9 +66,9 @@ export async function randomGuild (message: Message, args: string[]) {
   }
 
   // Create the action row and button
-  const actionRow = new MessageActionRow()
+  const actionRow = new ActionRowBuilder()
     .addComponents(
-      new MessageButton()
+      new ButtonBuilder()
         .setURL(`https://polytoria.com/guilds/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle('LINK')

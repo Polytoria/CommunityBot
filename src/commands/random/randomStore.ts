@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -36,7 +36,7 @@ export async function randomStore (message: Message, args: string[]) {
     ? `https://polytoria.com/users/${creator.id}`
     : `https://polytoria.com/guilds/${creator.id}`
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
     description: data.description === '' ? 'No description set.' : data.description,
     url: `https://polytoria.com/store/${data.id}`,

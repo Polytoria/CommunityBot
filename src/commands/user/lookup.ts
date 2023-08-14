@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
@@ -50,11 +50,11 @@ export async function lookUp (message: Message, args: string[]) {
     badges += emojiUtils.plus + ' '
   }
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: data.username + badges,
     url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
-    color: '#ff5454',
+    color: 0xFF5454,
     thumbnail: {
       url: data.thumbnail?.avatar
     },
@@ -103,8 +103,8 @@ export async function lookUp (message: Message, args: string[]) {
   })
 
   // Create the action row and button
-  const actionRow = new MessageActionRow().addComponents(
-    new MessageButton()
+  const actionRow = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
       .setURL(`https://polytoria.com/users/${data.id}`)
       .setLabel('View on Polytoria')
       .setStyle('LINK')

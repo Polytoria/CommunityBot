@@ -15,7 +15,7 @@ const configuration: IConfiguration = {
 }
 
 const client = new Client({
-  intents: ['GUILD_MESSAGES', 'GUILDS', 'GUILD_MEMBERS']
+  intents: ['GuildMessages', 'Guilds', 'GuildMembers']
 })
 
 client.on('ready', () => {

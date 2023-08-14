@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -26,7 +26,7 @@ export async function randomPlace (message: Message, args: string[]) {
   const rating = data.rating
   const creator = data.creator
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: data.name + (data.isFeatured === true ? emojiUtils.star : ''),
     description: data.description,
     thumbnail: {
@@ -34,7 +34,6 @@ export async function randomPlace (message: Message, args: string[]) {
     },
     url: `https://polytoria.com/places/${data.id}`,
     color: '#ff5454',
-    image: {},
     fields: [
       {
         name: 'Creator',
@@ -85,9 +84,9 @@ export async function randomPlace (message: Message, args: string[]) {
   })
 
   // Create the action row and button
-  const actionRow = new MessageActionRow()
+  const actionRow = new ActionRowBuilder()
     .addComponents(
-      new MessageButton()
+      new ButtonBuilder()
         .setURL(`https://polytoria.com/places/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle('LINK')

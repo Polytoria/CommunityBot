@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -33,7 +33,7 @@ export async function randomUser (message: Message, args: string[]) {
     badges += emojiUtils.plus + ' '
   }
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: data.username + badges,
     url: `https://polytoria.com/users/${data.id}`,
     description: data.description,

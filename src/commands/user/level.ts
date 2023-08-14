@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import { userUtils } from '../../utils/userUtils.js'
 import progressBar from 'string-progressbar'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -17,11 +17,11 @@ export async function level (message: Message, args: string[]) {
   description += `\n${emojiUtils.users} Fame level is ${levelData.levels.fame}`
   description += `\n\nNoob 🤓 ${progressBar.splitBar(75, levelData.final, 8, '▬', '🟢')[0]} Pro 😎`
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: userData.username + "'s level",
     url: `https://polytoria.com/users/${userData.id}`,
     description: description,
-    color: '#ff5454',
+    color: 0xFF5454,
     thumbnail: {
       url: userData.thumbnail.avatar
     },
