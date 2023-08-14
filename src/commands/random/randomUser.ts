@@ -86,6 +86,6 @@ export async function randomUser (message: Message, args: string[]) {
   })
 
   return message.reply({
-    embeds: [embed],
+    embeds: [embed]
   })
 }

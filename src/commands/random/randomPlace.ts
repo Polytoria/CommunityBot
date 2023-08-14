@@ -84,6 +84,6 @@ export async function randomPlace (message: Message, args: string[]) {
   })
 
   return message.reply({
-    embeds: [embed],
+    embeds: [embed]
   })
 }

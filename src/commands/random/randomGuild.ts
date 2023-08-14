@@ -66,6 +66,6 @@ export async function randomGuild (message: Message, args: string[]) {
   }
 
   return message.reply({
-    embeds: [embed],
+    embeds: [embed]
   })
 }

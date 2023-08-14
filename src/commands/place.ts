@@ -94,6 +94,6 @@ export async function place (message: Message, args: string[]) {
   })
 
   return message.reply({
-    embeds: [embed],
+    embeds: [embed]
   })
 }

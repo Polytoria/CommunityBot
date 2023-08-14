@@ -72,6 +72,6 @@ export async function store (message: Message, args: string[]) {
   }
 
   return message.reply({
-    embeds: [embed],
+    embeds: [embed]
   })
 }
