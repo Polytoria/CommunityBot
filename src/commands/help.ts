@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder } from 'discord.js'
 import pages from './helpPages.js'
 import { v4 } from 'uuid'
 
@@ -11,9 +11,9 @@ export async function help (message: Message, args: string[]) {
     return pages[currentPage]
   }
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: 'List of available commands',
-    color: '#ff5454',
+    color: 0xFF5454,
     description: 'Prefix: `p!`',
     thumbnail: {
       url: 'https://cdn.discordapp.com/icons/587167555068624915/4149b9aea50a0fd41260d71ac743407d.webp?size=128'
@@ -22,7 +22,7 @@ export async function help (message: Message, args: string[]) {
 
   // Fetch Friends
   const helpData: any = await changePage()
-  embed.fields = helpData
+  embed.addFields = helpData
 
   // Generate Button ID base on current time
   const buttonID: string = v4()
@@ -31,13 +31,13 @@ export async function help (message: Message, args: string[]) {
   const rightBtnID: string = 'right' + buttonID
 
   // Create Buttons
-  const leftBtn: MessageButton = new MessageButton().setCustomId(leftBtnID).setLabel('◀').setStyle('PRIMARY').setDisabled(true)
+  const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle('PRIMARY').setDisabled(true)
 
-  const pageNumBtn: MessageButton = new MessageButton().setCustomId(pageNum).setLabel(`Page ${currentPage + 1} of ${pagesCount}`).setStyle('SECONDARY')
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${currentPage + 1} of ${pagesCount}`).setStyle('SECONDARY')
 
-  const rightBtn: MessageButton = new MessageButton().setCustomId(rightBtnID).setLabel('▶').setStyle('PRIMARY')
+  const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle('PRIMARY')
 
-  const row = new MessageActionRow().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
+  const row = new ActionRowBuilder().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
 
   const filter = () => true
 
@@ -79,10 +79,10 @@ export async function help (message: Message, args: string[]) {
 
     // Fetch Help page
     const helpData: any = changePage()
-    embed.fields = helpData
+    embed.addFields = helpData
 
     // Update Embed and Button
-    const updatedRow = new MessageActionRow().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
+    const updatedRow = new ActionRowBuilder().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })
