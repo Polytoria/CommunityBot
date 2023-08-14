@@ -12,7 +12,7 @@ export async function info (message: Message) {
       { name: 'We are open-sourced!', value: 'https://github.com/Polytoria/Polytoria-Community-Bot', inline: true },
       { name: 'Rewritten by', value: 'Shiggy, DevPixels, baggy, and more!', inline: true }
     )
-    .setFooter({ text: 'Thank you for using Polytoria Community Bot!', iconURL: 'https://starmanthegamer.com/icon.png' });
+    .setFooter({ text: 'Thank you for using Polytoria Community Bot!', iconURL: 'https://starmanthegamer.com/icon.png' })
 
   await message.channel.send({ embeds: [embed] })
 }
