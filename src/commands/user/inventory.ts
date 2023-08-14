@@ -16,10 +16,6 @@ export async function inventory (message: Message, args: string[]) {
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
 
-  if (response.status === 500) {
-    return message.reply("This user's inventory is private, and cannot be viewed.")
-  }
-
   const data = response.data
 
   // Change Page Function, Fetch current page
@@ -49,7 +45,7 @@ export async function inventory (message: Message, args: string[]) {
 
   // Fetch Inventory
   const inventoryData: string = await changePage()
-  embed.setDescription = inventoryData
+  embed.setDescription(inventoryData)
 
   // Generate Button ID base on current time
   const buttonID: string = v4()
@@ -106,7 +102,7 @@ export async function inventory (message: Message, args: string[]) {
 
     // Fetch Inventory
     const inventoryData: string = await changePage()
-    embed.setDescription = inventoryData
+    embed.setDescription(inventoryData)
 
     // Update Embed and Button
     const updatedRow = new ActionRowBuilder().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
