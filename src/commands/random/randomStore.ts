@@ -43,7 +43,7 @@ export async function randomStore (message: Message, args: string[]) {
     thumbnail: {
       url: thumbnailURL
     },
-    color: '#ff5454',
+    color: 0xFF5454,
     fields: [
       {
         name: 'Creator',
@@ -75,9 +75,9 @@ export async function randomStore (message: Message, args: string[]) {
   }
 
   // Create the action row and button
-  const actionRow = new MessageActionRow()
+  const actionRow = new ActionRowBuilder()
     .addComponents(
-      new MessageButton()
+      new ButtonBuilder()
         .setURL(`https://polytoria.com/store/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle('LINK')

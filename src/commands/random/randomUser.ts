@@ -37,7 +37,7 @@ export async function randomUser (message: Message, args: string[]) {
     title: data.username + badges,
     url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
-    color: '#ff5454',
+    color: 0xFF5454,
     thumbnail: {
       url: `${thumbnail.avatar}`
     },
@@ -86,9 +86,9 @@ export async function randomUser (message: Message, args: string[]) {
   })
 
   // Create the action row and button
-  const actionRow = new MessageActionRow()
+  const actionRow = new ActionRowBuilder()
     .addComponents(
-      new MessageButton()
+      new ButtonBuilder()
         .setURL(`https://polytoria.com/users/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle('LINK')
