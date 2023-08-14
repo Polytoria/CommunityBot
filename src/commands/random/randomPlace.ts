@@ -33,7 +33,7 @@ export async function randomPlace (message: Message, args: string[]) {
       url: `${data.thumbnail}`
     },
     url: `https://polytoria.com/places/${data.id}`,
-    color: '#ff5454',
+    color: 0xFF5454,
     fields: [
       {
         name: 'Creator',
@@ -83,17 +83,7 @@ export async function randomPlace (message: Message, args: string[]) {
     ]
   })
 
-  // Create the action row and button
-  const actionRow = new ActionRowBuilder()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/places/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle('LINK')
-    )
-
   return message.reply({
     embeds: [embed],
-    components: [actionRow]
   })
 }

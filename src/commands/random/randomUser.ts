@@ -85,17 +85,7 @@ export async function randomUser (message: Message, args: string[]) {
     ]
   })
 
-  // Create the action row and button
-  const actionRow = new ActionRowBuilder()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/users/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle('LINK')
-    )
-
   return message.reply({
     embeds: [embed],
-    components: [actionRow]
   })
 }
