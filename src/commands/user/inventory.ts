@@ -15,6 +15,11 @@ export async function inventory (message: Message, args: string[]) {
   const apiURL = `https://api.polytoria.com/v1/users/${userData.id.toString()}/inventory`
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
+
+  if (response.status === 500) {
+    return message.reply("This user's inventory is private, and cannot be viewed.")
+  }
+
   const data = response.data
 
   // Change Page Function, Fetch current page
