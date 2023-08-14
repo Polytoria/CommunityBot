@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
 import { userUtils } from '../../utils/userUtils.js'
 
@@ -29,10 +29,10 @@ export async function avatar (message: Message, args: string[]) {
   let wearablesString = ''
   let brickPrice = 0
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: userData.username + "'s Avatar",
     url: `https://polytoria.com/users/${data.id}`,
-    color: '#ff5454',
+    color: 0xFF5454,
     fields: [
       {
         name: 'Currently Wearing',

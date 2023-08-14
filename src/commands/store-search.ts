@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import emojiUtils from '../utils/emojiUtils.js'
@@ -15,9 +15,9 @@ export async function storeSearch (message: Message, args: string[]) {
     return message.channel.send(errResult.displayText)
   }
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: `Search results for "${serachData}"`,
-    color: '#ff5454',
+    color: 0xFF5454,
     /*
     thumbnail: {
       url: data.Thumbnail

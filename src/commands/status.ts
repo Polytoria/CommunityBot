@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
 import emojiUtils from '../utils/emojiUtils.js'
 import { IStatus } from '../../types/index.js'
@@ -79,11 +79,11 @@ async function checkStatus (url: string): Promise<IStatus> {
 }
 
 export async function status (message: Message, args: string[]) {
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: 'Polytoria Status',
     description: emojiUtils.loading + ' Checking..',
     url: 'https://status.polytoria.com/',
-    color: '#ff5454',
+    color: 0xFF5454,
     fields: [
 
     ]
