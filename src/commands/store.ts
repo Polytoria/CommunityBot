@@ -57,7 +57,7 @@ export async function store (message: Message, args: string[]) {
 
   const assetType = data.type.toLowerCase()
   if (!['audio', 'decal', 'mesh'].includes(assetType)) {
-    embed.fields.push(
+    embed.addFields(
       {
         name: 'Price',
         value: emojiUtils.brick + ' ' + data.price.toString(),
