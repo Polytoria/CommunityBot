@@ -10,4 +10,6 @@ export async function commands (message: Message) {
       { name: 'What happened?', value: 'Polytoria has revamped their entire website, and we rely on APIs to access the information we serve to you. With those APIs currently being unavailable, we cannot serve you the requested command.' },
       { name: 'When will this command return?', value: 'In the future when the API for this command returns.', inline: true }
     )
+
+  await message.channel.send({ embeds: [embed] })
 }
