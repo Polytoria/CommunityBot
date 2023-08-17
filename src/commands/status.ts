@@ -94,7 +94,7 @@ export async function status (message: Message, args: string[]) {
       name: item.name,
       value: `${emojiUtils.loading} Checking`,
       inline: true
-    });
+    })
   }
 
   const msg = await message.reply({ embeds: [embed] })
