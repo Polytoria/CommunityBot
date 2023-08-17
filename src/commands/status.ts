@@ -112,7 +112,7 @@ export async function status (message: Message, args: string[]) {
     index2++
   }
 
-  embed.description = `Average Response time: \`${(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(2)}ms\``
+  embed.setDescription(`Average Response time: \`${(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(2)}ms\``)
   msg.edit({ embeds: [embed] })
 
   return msg
