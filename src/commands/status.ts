@@ -89,14 +89,12 @@ export async function status (message: Message, args: string[]) {
     ]
   })
 
-  let index = 0
   for (const item of urlToCheck) {
-    embed.fields[index] = {
+    embed.addFields({
       name: item.name,
       value: `${emojiUtils.loading} Checking`,
       inline: true
-    }
-    index++
+    });
   }
 
   const msg = await message.reply({ embeds: [embed] })
