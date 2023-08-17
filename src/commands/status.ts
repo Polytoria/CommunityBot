@@ -84,34 +84,34 @@ export async function status (message: Message, args: string[]) {
     description: emojiUtils.loading + ' Checking..',
     url: 'https://status.polytoria.com/',
     color: 0xFF5454,
-    fields: [
-
-    ]
+    fields: []
   })
 
-  for (const item of urlToCheck) {
-    embed.addFields({
+  const fieldPromises = urlToCheck.map(async (item) => {
+    const mainPageStatus = await checkStatus(item.url)
+    return {
       name: item.name,
-      value: `${emojiUtils.loading} Checking`,
+      value: `${statusToEmoji(mainPageStatus.status)} ${mainPageStatus.status}\n\`${mainPageStatus.statusCode}\` \`${mainPageStatus.responseTime}ms\``,
       inline: true
-    })
-  }
+    }
+  })
+
+  const fields = await Promise.all(fieldPromises)
+  embed.addFields(fields)
 
   const msg = await message.reply({ embeds: [embed] })
-  const responseTimes = []
 
-  let index2 = 0
-  for (const item of urlToCheck) {
-    const mainPageStatus = await checkStatus(item.url)
+  const responseTimes = fields.map((field) => {
+    const [, , , responseTimeStr] = field.value.split(' ')
+    return parseInt(responseTimeStr)
+  })
 
-    embed.fields[index2].value = `${statusToEmoji(mainPageStatus.status)} ${mainPageStatus.status}\n\`${mainPageStatus.statusCode}\` \`${mainPageStatus.responseTime}ms\``
-    msg.edit({ embeds: [embed] })
-    responseTimes.push(mainPageStatus.responseTime)
-    index2++
-  }
+  const averageResponseTime = (
+    responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length
+  ).toFixed(2)
 
-  embed.setDescription(`Average Response time: \`${(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(2)}ms\``)
-  msg.edit({ embeds: [embed] })
+  embed.setDescription(`Average Response time: \`${averageResponseTime}ms\``)
+  await msg.edit({ embeds: [embed] })
 
   return msg
 }
