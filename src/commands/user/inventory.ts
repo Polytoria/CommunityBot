@@ -60,7 +60,7 @@ export async function inventory (message: Message, args: string[]) {
 
   const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
-  const row = new ActionRowBuilder().addComponents(leftBtn, pageNumBtn, rightBtn)
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
 
   const filter = () => true
 
