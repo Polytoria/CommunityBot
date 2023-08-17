@@ -104,7 +104,7 @@ export async function friends (message: Message, args: string[]) {
     embed.setDescription(friendsData)
 
     // Update Embed and Button
-    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
+    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })

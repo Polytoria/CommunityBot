@@ -82,7 +82,7 @@ export async function help (message: Message, args: string[]) {
     embed.addFields = helpData
 
     // Update Embed and Button
-    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
+    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })
