@@ -16,6 +16,10 @@ export async function inventory (message: Message, args: string[]) {
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
 
+  if (response.status === 403) {
+    return message.reply("This user's inventory is private, and cannot be viewed.")
+  }
+
   const data = response.data
 
   // Change Page Function, Fetch current page
