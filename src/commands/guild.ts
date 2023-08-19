@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
@@ -59,7 +59,16 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     embed.setImage(data.banner)
   }
 
-  return message.channel.send({
-    embeds: [embed]
+  const actionRow = new ActionRowBuilder<ButtonBuilder>()
+  .addComponents(
+    new ButtonBuilder()
+      .setURL(`https://polytoria.com/guilds/${data.id}`)
+      .setLabel('View on Polytoria')
+      .setStyle(ButtonStyle.Link)
+  )
+
+  return message.reply({
+    embeds: [embed],
+    components: [actionRow]
   })
 }

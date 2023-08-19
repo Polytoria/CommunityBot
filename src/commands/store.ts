@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
@@ -71,7 +71,16 @@ export async function store (message: Message, args: string[]) {
     )
   }
 
+  const actionRow = new ActionRowBuilder<ButtonBuilder>()
+  .addComponents(
+    new ButtonBuilder()
+      .setURL(`https://polytoria.com/store/${data.id}`)
+      .setLabel('View on Polytoria')
+      .setStyle(ButtonStyle.Link)
+  )
+
   return message.reply({
-    embeds: [embed]
+    embeds: [embed],
+    components: [actionRow]
   })
 }
