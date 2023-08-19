@@ -24,7 +24,6 @@ const urlToCheck = [
     name: 'Helpdesk',
     url: 'https://help.polytoria.com/'
   }
-
 ]
 
 function statusToEmoji (status: string): string {
@@ -83,11 +82,10 @@ export async function status (message: Message, args: string[]) {
     title: 'Polytoria Status',
     description: emojiUtils.loading + ' Checking..',
     url: 'https://status.polytoria.com/',
-    color: 0xFF5454,
-    fields: [
-
-    ]
+    color: 0xFF5454
   })
+
+  embed.data.fields = []
 
   for (const item of urlToCheck) {
     embed.addFields({
@@ -104,7 +102,7 @@ export async function status (message: Message, args: string[]) {
   for (const item of urlToCheck) {
     const mainPageStatus = await checkStatus(item.url)
 
-    embed.fields[index2].value = `${statusToEmoji(mainPageStatus.status)} ${mainPageStatus.status}\n\`${mainPageStatus.statusCode}\` \`${mainPageStatus.responseTime}ms\``
+    embed.data.fields[index2].value = `${statusToEmoji(mainPageStatus.status)} ${mainPageStatus.status}\n\`${mainPageStatus.statusCode}\` \`${mainPageStatus.responseTime}ms\``
     msg.edit({ embeds: [embed] })
     responseTimes.push(mainPageStatus.responseTime)
     index2++
