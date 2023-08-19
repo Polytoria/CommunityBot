@@ -23,7 +23,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
   const embed = new EmbedBuilder()
     .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
-    .setDescription(data.description)
+    .setDescription(data.description === '' ? 'No description set.' : data.description)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
