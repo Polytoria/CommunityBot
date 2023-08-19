@@ -92,7 +92,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .setStyle(ButtonStyle.Danger)
     .setCustomId('prev_button')
 
-    const actionRow = new ActionRowBuilder<ButtonBuilder>()
+  const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
       new ButtonBuilder()
         .setURL(`https://polytoria.com/guilds/${data.id}`)

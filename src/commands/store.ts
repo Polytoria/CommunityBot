@@ -72,12 +72,12 @@ export async function store (message: Message, args: string[]) {
   }
 
   const actionRow = new ActionRowBuilder<ButtonBuilder>()
-  .addComponents(
-    new ButtonBuilder()
-      .setURL(`https://polytoria.com/store/${data.id}`)
-      .setLabel('View on Polytoria')
-      .setStyle(ButtonStyle.Link)
-  )
+    .addComponents(
+      new ButtonBuilder()
+        .setURL(`https://polytoria.com/store/${data.id}`)
+        .setLabel('View on Polytoria')
+        .setStyle(ButtonStyle.Link)
+    )
 
   return message.reply({
     embeds: [embed],
