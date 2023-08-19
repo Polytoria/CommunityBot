@@ -1,5 +1,5 @@
 // <reference path="index.d.ts"/>
-import { Client } from 'discord.js'
+import { Client, GatewayIntentBits } from 'discord.js'
 import dotenv from 'dotenv'
 import { success, alert, warning } from './utils/log.js'
 import commands from './exports.js'
@@ -15,8 +15,12 @@ const configuration: IConfiguration = {
 }
 
 const client = new Client({
-  intents: ['GuildMessages', 'Guilds', 'GuildMembers']
-})
+  intents: [
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+  ],
+});
 
 client.on('ready', () => {
   // @ts-expect-error
