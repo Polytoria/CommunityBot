@@ -20,24 +20,20 @@ export async function storeSearch (message: Message, args: string[]) {
 
   const embed = new EmbedBuilder({
     title: `Search results for "${serachData}"`,
-    color: 0xFF5454,
-    /*
-    thumbnail: {
-      url: data.Thumbnail
-    },
-    */
-    description: ''
+    color: 0xFF5454
   })
 
   let index = 1
+  let description = ''
+
   for (const item of data) {
-    embed.setDescription(
-      embed.setDescription + `\`${index}\` [${item.name}](https://polytoria.com/store/${item.id}) ${
-        item.isLimited === true ? emojiUtils.star : ''
-      }\n`
-    )
+    description += `\`${index}\` [${item.name}](https://polytoria.com/store/${item.id}) ${
+    item.isLimited === true ? emojiUtils.star : ''
+  }\n`
     index++
   }
+
+  embed.setDescription(description)
 
   return message.channel.send({
     embeds: [embed]
