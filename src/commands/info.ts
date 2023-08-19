@@ -7,7 +7,7 @@ export async function info (message: Message) {
     .setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
     .setThumbnail('https://starmanthegamer.com/icon.png')
     .addFields(
-      { name: 'Version', value: 'Currently running version: ' },
+      { name: 'Version', value: `Currently running version: ${process.env.npm_package_version}` },
       { name: 'Invite our Bot', value: 'Tap the title to invite our bot directly to your server!', inline: true },
       { name: 'We are open-sourced!', value: 'https://github.com/Polytoria/Polytoria-Community-Bot', inline: true },
       { name: 'Rewritten by', value: 'Shiggy, DevPixels, baggy, and more!', inline: true }
