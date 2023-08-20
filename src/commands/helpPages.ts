@@ -2,8 +2,7 @@ export default [
   [
     {
       name: 'lookup `username`',
-      value:
-        "Lookup users information\n`username` - User's username you want to view",
+      value: "Lookup users information\n`username` - User's username you want to view",
       inline: false
     },
     {
@@ -13,8 +12,7 @@ export default [
     },
     {
       name: 'inventory `username`',
-      value:
-        "Let's you see the inventory of specified user\n`username` - User's username you want to view",
+      value: "Let's you see the inventory of specified user\n`username` - User's username you want to view",
       inline: false
     },
     {
@@ -41,14 +39,12 @@ export default [
     },
     {
       name: 'level `username`',
-      value:
-        "Gives you information about specified user\n`username` - User's username you want to view",
+      value: "Gives you information about specified user\n`username` - User's username you want to view",
       inline: false
     },
     {
       name: 'card `username`',
-      value:
-        "Gives you an image with information about specified user\n`username` - User's username you want to view",
+      value: "Gives you an image with information about specified user\n`username` - User's username you want to view",
       inline: false
     },
     {

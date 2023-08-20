@@ -1,10 +1,4 @@
-import {
-  Message,
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle
-} from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -43,7 +37,7 @@ export async function randomUser (message: Message, args: string[]) {
     title: data.username + badges,
     url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
-    color: 0xff5454,
+    color: 0xFF5454,
     thumbnail: {
       url: `${thumbnail.avatar}`
     },
@@ -91,12 +85,13 @@ export async function randomUser (message: Message, args: string[]) {
     ]
   })
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setURL(`https://polytoria.com/users/${data.id}`)
-      .setLabel('View on Polytoria')
-      .setStyle(ButtonStyle.Link)
-  )
+  const actionRow = new ActionRowBuilder<ButtonBuilder>()
+    .addComponents(
+      new ButtonBuilder()
+        .setURL(`https://polytoria.com/users/${data.id}`)
+        .setLabel('View on Polytoria')
+        .setStyle(ButtonStyle.Link)
+    )
 
   return message.reply({
     embeds: [embed],

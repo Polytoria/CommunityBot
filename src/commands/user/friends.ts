@@ -1,10 +1,4 @@
-import {
-  Message,
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle
-} from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import axios from 'axios'
 import { userUtils } from '../../utils/userUtils.js'
 import { v4 } from 'uuid'
@@ -18,19 +12,14 @@ export async function friends (message: Message, args: string[]) {
 
   let currentPage = 1
 
-  const apiURL =
-    'https://api.polytoria.com/v1/users/friends?id=' + userData.ID.toString()
+  const apiURL = 'https://api.polytoria.com/v1/users/friends?id=' + userData.ID.toString()
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const data = response.data
 
   // Change Page Function, Fetch current page
   async function changePage (): Promise<string> {
-    const apiURL =
-      'https://api.polytoria.com/v1/users/friends?id=' +
-      userData.ID.toString() +
-      '&page=' +
-      currentPage
+    const apiURL = 'https://api.polytoria.com/v1/users/friends?id=' + userData.ID.toString() + '&page=' + currentPage
 
     const response = await axios.get(apiURL, { validateStatus: () => true })
     let resultString: string = ''
@@ -46,7 +35,7 @@ export async function friends (message: Message, args: string[]) {
   const embed = new EmbedBuilder({
     title: userData.Username + "'s Friends.",
     url: `https://polytoria.com/users/${userData.ID}/friends`,
-    color: 0xff5454,
+    color: 0xFF5454,
     thumbnail: {
       url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
     },
@@ -64,40 +53,20 @@ export async function friends (message: Message, args: string[]) {
   const rightBtnID: string = 'right' + buttonID
 
   // Create Buttons
-  const leftBtn: ButtonBuilder = new ButtonBuilder()
-    .setCustomId(leftBtnID)
-    .setLabel('◀')
-    .setStyle(ButtonStyle.Primary)
-    .setDisabled(true)
+  const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: ButtonBuilder = new ButtonBuilder()
-    .setCustomId(pageNum)
-    .setLabel(`Page ${currentPage.toString()} of ${data.Pages.toString()}`)
-    .setStyle(ButtonStyle.Secondary)
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${currentPage.toString()} of ${data.Pages.toString()}`).setStyle(ButtonStyle.Secondary)
 
-  const rightBtn: ButtonBuilder = new ButtonBuilder()
-    .setCustomId(rightBtnID)
-    .setLabel('▶')
-    .setStyle(ButtonStyle.Primary)
+  const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    leftBtn,
-    pageNumBtn,
-    rightBtn
-  )
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
 
   const filter = () => true
 
   // Create Interaction event for 2 minutes
-  const collector = message.channel.createMessageComponentCollector({
-    filter,
-    time: 120000
-  })
+  const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
 
-  const msg = await message.channel.send({
-    embeds: [embed],
-    components: [row]
-  })
+  const msg = await message.channel.send({ embeds: [embed], components: [row] })
 
   // Listen for Button Interaction
   collector.on('collect', async (i) => {
@@ -128,20 +97,14 @@ export async function friends (message: Message, args: string[]) {
     }
 
     // Set Page
-    pageNumBtn.setLabel(
-      `Page ${currentPage.toString()} of ${data.Pages.toString()}`
-    )
+    pageNumBtn.setLabel(`Page ${currentPage.toString()} of ${data.Pages.toString()}`)
 
     // Fetch Friends
     const friendsData: string = await changePage()
     embed.setDescription(friendsData)
 
     // Update Embed and Button
-    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      leftBtn,
-      pageNumBtn,
-      rightBtn
-    )
+    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })

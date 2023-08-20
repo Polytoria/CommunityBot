@@ -1,10 +1,4 @@
-import {
-  Message,
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle
-} from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -35,24 +29,21 @@ export async function randomStore (message: Message, args: string[]) {
 
   // Check if the asset type is "audio" and set a specific link as the thumbnail
   if (data.type.toLowerCase() === 'audio') {
-    thumbnailURL =
-      'https://c0.ptacdn.com/static/images/placeholders/audio.88cff071.png'
+    thumbnailURL = 'https://c0.ptacdn.com/static/images/placeholders/audio.88cff071.png'
   }
 
-  const creatorLink =
-    creator.type === 'user'
-      ? `https://polytoria.com/users/${creator.id}`
-      : `https://polytoria.com/guilds/${creator.id}`
+  const creatorLink = creator.type === 'user'
+    ? `https://polytoria.com/users/${creator.id}`
+    : `https://polytoria.com/guilds/${creator.id}`
 
   const embed = new EmbedBuilder({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
-    description:
-      data.description === '' ? 'No description set.' : data.description,
+    description: data.description === '' ? 'No description set.' : data.description,
     url: `https://polytoria.com/store/${data.id}`,
     thumbnail: {
       url: thumbnailURL
     },
-    color: 0xff5454,
+    color: 0xFF5454,
     fields: [
       {
         name: 'Creator',
@@ -83,12 +74,13 @@ export async function randomStore (message: Message, args: string[]) {
     )
   }
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setURL(`https://polytoria.com/store/${data.id}`)
-      .setLabel('View on Polytoria')
-      .setStyle(ButtonStyle.Link)
-  )
+  const actionRow = new ActionRowBuilder<ButtonBuilder>()
+    .addComponents(
+      new ButtonBuilder()
+        .setURL(`https://polytoria.com/store/${data.id}`)
+        .setLabel('View on Polytoria')
+        .setStyle(ButtonStyle.Link)
+    )
 
   return message.reply({
     embeds: [embed],

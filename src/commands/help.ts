@@ -1,10 +1,4 @@
-import {
-  Message,
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle
-} from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import pages from './helpPages.js'
 import { v4 } from 'uuid'
 
@@ -20,7 +14,7 @@ export async function help (message: Message, args: string[]) {
   const originalHelpData: any = await changePage()
   const embed = new EmbedBuilder({
     title: 'List of available commands',
-    color: 0xff5454,
+    color: 0xFF5454,
     description: 'Prefix: `p!`',
     thumbnail: {
       url: 'https://cdn.discordapp.com/icons/587167555068624915/4149b9aea50a0fd41260d71ac743407d.webp?size=128'
@@ -36,40 +30,20 @@ export async function help (message: Message, args: string[]) {
   const rightBtnID: string = 'right' + buttonID
 
   // Create Buttons
-  const leftBtn: ButtonBuilder = new ButtonBuilder()
-    .setCustomId(leftBtnID)
-    .setLabel('◀')
-    .setStyle(ButtonStyle.Primary)
-    .setDisabled(true)
+  const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: ButtonBuilder = new ButtonBuilder()
-    .setCustomId(pageNum)
-    .setLabel(`Page ${currentPage + 1} of ${pagesCount}`)
-    .setStyle(ButtonStyle.Secondary)
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${currentPage + 1} of ${pagesCount}`).setStyle(ButtonStyle.Secondary)
 
-  const rightBtn: ButtonBuilder = new ButtonBuilder()
-    .setCustomId(rightBtnID)
-    .setLabel('▶')
-    .setStyle(ButtonStyle.Primary)
+  const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    leftBtn,
-    pageNumBtn,
-    rightBtn
-  )
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
 
   const filter = () => true
 
   // Create Interaction event for 2 minutes
-  const collector = message.channel.createMessageComponentCollector({
-    filter,
-    time: 120000
-  })
+  const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
 
-  const msg = await message.channel.send({
-    embeds: [embed],
-    components: [row]
-  })
+  const msg = await message.channel.send({ embeds: [embed], components: [row] })
 
   // Listen for Button Interaction
   collector.on('collect', async (i) => {
@@ -112,11 +86,7 @@ export async function help (message: Message, args: string[]) {
     pageNumBtn.setLabel(`Page ${currentPage + 1} of ${pagesCount.toString()}`)
 
     // Update Embed and Button
-    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      leftBtn,
-      pageNumBtn,
-      rightBtn
-    )
+    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })

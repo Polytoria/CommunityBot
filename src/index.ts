@@ -25,23 +25,11 @@ const client = new Client({
 
 client.on('ready', () => {
   // @ts-expect-error
-  client.user.setActivity(
-    `${client.guilds.cache.reduce(
-      (a, guild) => a + guild.memberCount,
-      0
-    )} Users | p!help`,
-    { type: ActivityType.Watching }
-  )
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: ActivityType.Watching })
 
   setInterval(function () {
     // @ts-expect-error
-    client.user.setActivity(
-      `${client.guilds.cache.reduce(
-        (a, guild) => a + guild.memberCount,
-        0
-      )} Users | p!help`,
-      { type: ActivityType.Watching }
-    )
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: ActivityType.Watching })
   }, 60000)
 })
 success({ context: '[Bot]', message: 'Bot succesfully started.' })
@@ -64,16 +52,12 @@ client.on('messageCreate', async (message): Promise<any | void> => {
     message: 'Command registered.'
   })
 
-  const data = message.content
-    .slice(configuration.prefix.length, message.content.length)
-    .trim()
-    .split(/ +/g)
+  const data = message.content.slice(configuration.prefix.length, message.content.length).trim().split(/ +/g)
 
   const command: any = data[0]
   const argument: any[] = data.splice(1, data.length)
 
-  if (commands.hasOwnProperty(command)) {
-    // eslint-disable-line no-prototype-builtins
+  if (commands.hasOwnProperty(command)) { // eslint-disable-line no-prototype-builtins
     success({
       context: '[Bot]',
       message: 'Running command ' + command
@@ -102,7 +86,7 @@ process.on('unhandledRejection', (reason, p) => {
   console.error(reason, 'Unhandled Rejection at Promise', p)
 })
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.error(err)
   process.exit(1)
 })

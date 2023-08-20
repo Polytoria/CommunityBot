@@ -4,16 +4,14 @@ import { userUtils } from './userUtils.js'
 
 export class creatorUtils {
   /**
-   * get Display Creator Name
-   * @param creator ICreator
-   * @returns {Promise<string>} Return display string
-   * Example of return string
-   * User: Polytoria
-   * Guild: Polytoria Staff Guild (Guild)
-   */
-  public static async getDisplayCreatorName (
-    creator: ICreator
-  ): Promise<string> {
+ * get Display Creator Name
+ * @param creator ICreator
+ * @returns {Promise<string>} Return display string
+ * Example of return string
+ * User: Polytoria
+ * Guild: Polytoria Staff Guild (Guild)
+ */
+  public static async getDisplayCreatorName (creator: ICreator): Promise<string> {
     let result: string = ''
 
     if (creator.creatorType === 'User') {
@@ -23,10 +21,7 @@ export class creatorUtils {
       }
       result = userData.Username
     } else {
-      const response = await axios.get(
-        'https://api.polytoria.com/v1/guild/info',
-        { params: { id: creator.creatorID } }
-      )
+      const response = await axios.get('https://api.polytoria.com/v1/guild/info', { params: { id: creator.creatorID } })
       const data = response.data
 
       result = data.Name + ' (Guild)'

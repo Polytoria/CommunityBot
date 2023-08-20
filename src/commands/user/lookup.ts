@@ -1,10 +1,4 @@
-import {
-  Message,
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle
-} from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
@@ -19,16 +13,13 @@ export async function lookUp (message: Message, args: string[]) {
   const username = args[0]
 
   // Get the user ID using the first API
-  const lookupResponse = await axios.get(
-    `https://api.polytoria.com/v1/users/find?username=${username}`,
-    {
-      validateStatus: (status) => status === 404 || status === 200 // Allow 404 response
-    }
-  )
+  const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
+    validateStatus: (status) => status === 404 || status === 200 // Allow 404 response
+  })
   const lookupData = lookupResponse.data
 
   if (lookupResponse.status === 404) {
-    return message.reply("Couldn't find a user! Did you type the right name?")
+    return message.reply('Couldn\'t find a user! Did you type the right name?')
   }
 
   const errResult = responseHandler.checkError(lookupResponse)
@@ -40,12 +31,9 @@ export async function lookUp (message: Message, args: string[]) {
   const userID = lookupData.id
 
   // Fetch the rest of the user data using the second API
-  const response = await axios.get(
-    `https://api.polytoria.com/v1/users/${userID}`,
-    {
-      validateStatus: () => true
-    }
-  )
+  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, {
+    validateStatus: () => true
+  })
   const data = response.data
   let badges = ' '
 
@@ -66,7 +54,7 @@ export async function lookUp (message: Message, args: string[]) {
     title: data.username + badges,
     url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
-    color: 0xff5454,
+    color: 0xFF5454,
     thumbnail: {
       url: data.thumbnail?.avatar
     },
@@ -114,12 +102,13 @@ export async function lookUp (message: Message, args: string[]) {
     ]
   })
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setURL(`https://polytoria.com/users/${data.id}`)
-      .setLabel('View on Polytoria')
-      .setStyle(ButtonStyle.Link)
-  )
+  const actionRow = new ActionRowBuilder<ButtonBuilder>()
+    .addComponents(
+      new ButtonBuilder()
+        .setURL(`https://polytoria.com/users/${data.id}`)
+        .setLabel('View on Polytoria')
+        .setStyle(ButtonStyle.Link)
+    )
 
   return message.reply({
     embeds: [embed],

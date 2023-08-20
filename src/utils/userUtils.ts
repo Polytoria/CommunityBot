@@ -4,43 +4,37 @@ import { ILevel } from '../../types/index.js'
 
 export class userUtils {
   /**
-   * getUserData
-   *
-   * @summary Get User Data from ID
-   *
-   * @param {number} id Targeted UserID
-   * @returns {Promise<any>} Return User Data
-   */
+ * getUserData
+ *
+ * @summary Get User Data from ID
+ *
+ * @param {number} id Targeted UserID
+ * @returns {Promise<any>} Return User Data
+ */
   public static async getUserData (id: number): Promise<any> {
-    const response = await axios.get(
-      `https://api.polytoria.com/v1/users/${id}`,
-      {
-        validateStatus: () => true
-      }
-    )
+    const response = await axios.get(`https://api.polytoria.com/v1/users/${id}`, {
+      validateStatus: () => true
+    })
     const data = response.data
 
     return data
   }
 
   /**
-   * getUserDataFromUsername
-   *
-   * @summary Get User Data from Username
-   *
-   * @param {string} username Targeted User
-   * @returns {Promise<any>} Return User Data
-   */
+ * getUserDataFromUsername
+ *
+ * @summary Get User Data from Username
+ *
+ * @param {string} username Targeted User
+ * @returns {Promise<any>} Return User Data
+ */
   public static async getUserDataFromUsername (username: string): Promise<any> {
-    const response = await axios.get(
-      'https://api.polytoria.com/v1/users/find',
-      {
-        params: { username },
-        validateStatus: function (status) {
-          return status >= 200 && status < 300 // default
-        }
+    const response = await axios.get('https://api.polytoria.com/v1/users/find', {
+      params: { username },
+      validateStatus: function (status) {
+        return status >= 200 && status < 300 // default
       }
-    )
+    })
 
     const id = response.data.id
     const user = userUtils.getUserData(id)
@@ -72,18 +66,15 @@ export class userUtils {
     const joinDateDate = new Date(userData.registeredAt)
     const currentDate = new Date()
 
-    const accountAgeMonth = dateUtils.monthDifference(
-      joinDateDate,
-      currentDate
-    )
+    const accountAgeMonth = dateUtils.monthDifference(joinDateDate, currentDate)
 
     result.external.accountAgeMonth = accountAgeMonth
 
-    const result2 = 12 * (-1 / (1 * accountAgeMonth + 0.4) + 1)
-    const result3 = 8 * (-1 / (userData.forumPosts / 25 + 1) + 1)
-    const result4 = 15 * (-1 / (userData.profileViews / 1500 + 1) + 1)
-    const result5 = 10 * (-1 / (userData.netWorth / 30000 + 1) + 1)
-    const result6 = 10 * (-1 / (userData.assetSales / 3 + 1) + 1)
+    const result2 = 12 * ((-1 / ((1 * accountAgeMonth) + 0.4) + 1))
+    const result3 = 8 * ((-1 / ((userData.forumPosts / 25) + 1) + 1))
+    const result4 = 15 * ((-1 / ((userData.profileViews / 1500) + 1) + 1))
+    const result5 = 10 * ((-1 / ((userData.netWorth / 30000) + 1) + 1))
+    const result6 = 10 * ((-1 / ((userData.assetSales / 3) + 1) + 1))
     const final = Math.round(result2 + result3 + result4 + result5 + result6)
 
     result.final = final

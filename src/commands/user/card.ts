@@ -7,19 +7,14 @@ const { createCanvas, loadImage, registerFont } = pkg
 
 export async function card (message: Message, args: string[]) {
   if (!args[0]) {
-    return message.reply(
-      'Please tell me the username so I can make you a card.'
-    )
+    return message.reply('Please tell me the username so I can make you a card.')
   }
   const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
   const canvas = createCanvas(500, 700)
   const ctx = canvas.getContext('2d')
 
-  registerFont(
-    path.resolve(path.dirname('')) + '/assets/fonts/Comfortaa-Bold.ttf',
-    { family: 'comfortaa_bold' }
-  )
+  registerFont(path.resolve(path.dirname('')) + '/assets/fonts/Comfortaa-Bold.ttf', { family: 'comfortaa_bold' })
 
   const ribbiImg = await loadImage('https://schoolfactsonline.com/4KCSvTb.png')
   ctx.drawImage(ribbiImg, -14.6, 57.7, 354, 174)
@@ -45,11 +40,7 @@ export async function card (message: Message, args: string[]) {
     description = 'No description set.'
   }
 
-  const lines = stringUtils.getLines(
-    ctx,
-    stringUtils.replaceAll(description, /\r?\n|\r/, ' '),
-    441
-  )
+  const lines = stringUtils.getLines(ctx, stringUtils.replaceAll(description, /\r?\n|\r/, ' '), 441)
   let descXPos = 380
   let linescount = 0
   lines.forEach(function (item, index) {
@@ -105,9 +96,7 @@ export async function card (message: Message, args: string[]) {
     ctx.fillRect(85, 525, 1, 14)
   }
 
-  const attachment = new AttachmentBuilder(canvas.toBuffer(), {
-    name: 'Card.png'
-  })
+  const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'Card.png' })
 
   return message.channel.send({ files: [attachment] })
 }
