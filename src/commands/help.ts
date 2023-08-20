@@ -11,6 +11,7 @@ export async function help (message: Message, args: string[]) {
     return pages[currentPage]
   }
 
+  const originalHelpData: any = await changePage()
   const embed = new EmbedBuilder({
     title: 'List of available commands',
     color: 0xFF5454,
@@ -20,9 +21,7 @@ export async function help (message: Message, args: string[]) {
     }
   })
 
-  // Fetch Friends
-  const helpData: any = await changePage()
-  embed.addFields = helpData
+  embed.addFields(originalHelpData)
 
   // Generate Button ID base on current time
   const buttonID: string = v4()
@@ -74,12 +73,17 @@ export async function help (message: Message, args: string[]) {
       leftBtn.setDisabled(false)
     }
 
+    if (currentPage === 0) {
+      embed.data.fields = []
+      embed.addFields(originalHelpData)
+    } else {
+      const helpData: any = changePage()
+      embed.data.fields = []
+      embed.addFields(helpData)
+    }
+
     // Set Page
     pageNumBtn.setLabel(`Page ${currentPage + 1} of ${pagesCount.toString()}`)
-
-    // Fetch Help page
-    const helpData: any = changePage()
-    embed.addFields = helpData
 
     // Update Embed and Button
     const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
