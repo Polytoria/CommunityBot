@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import axios from 'axios'
 import { userUtils } from '../../utils/userUtils.js'
 import { v4 } from 'uuid'
@@ -32,10 +32,10 @@ export async function friends (message: Message, args: string[]) {
     return resultString
   }
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: userData.Username + "'s Friends.",
     url: `https://polytoria.com/users/${userData.ID}/friends`,
-    color: '#ff5454',
+    color: 0xFF5454,
     thumbnail: {
       url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
     },
@@ -44,7 +44,7 @@ export async function friends (message: Message, args: string[]) {
 
   // Fetch Friends
   const friendsData: string = await changePage()
-  embed.description = friendsData
+  embed.setDescription(friendsData)
 
   // Generate Button ID base on current time
   const buttonID: string = v4()
@@ -53,13 +53,13 @@ export async function friends (message: Message, args: string[]) {
   const rightBtnID: string = 'right' + buttonID
 
   // Create Buttons
-  const leftBtn: MessageButton = new MessageButton().setCustomId(leftBtnID).setLabel('◀').setStyle('PRIMARY').setDisabled(true)
+  const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: MessageButton = new MessageButton().setCustomId(pageNum).setLabel(`Page ${currentPage.toString()} of ${data.Pages.toString()}`).setStyle('SECONDARY')
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${currentPage.toString()} of ${data.Pages.toString()}`).setStyle(ButtonStyle.Secondary)
 
-  const rightBtn: MessageButton = new MessageButton().setCustomId(rightBtnID).setLabel('▶').setStyle('PRIMARY')
+  const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
-  const row = new MessageActionRow().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
 
   const filter = () => true
 
@@ -101,10 +101,10 @@ export async function friends (message: Message, args: string[]) {
 
     // Fetch Friends
     const friendsData: string = await changePage()
-    embed.description = friendsData
+    embed.setDescription(friendsData)
 
     // Update Embed and Button
-    const updatedRow = new MessageActionRow().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
+    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })

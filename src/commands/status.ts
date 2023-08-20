@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
 import emojiUtils from '../utils/emojiUtils.js'
 import { IStatus } from '../../types/index.js'
@@ -24,7 +24,6 @@ const urlToCheck = [
     name: 'Helpdesk',
     url: 'https://help.polytoria.com/'
   }
-
 ]
 
 function statusToEmoji (status: string): string {
@@ -79,24 +78,21 @@ async function checkStatus (url: string): Promise<IStatus> {
 }
 
 export async function status (message: Message, args: string[]) {
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: 'Polytoria Status',
     description: emojiUtils.loading + ' Checking..',
     url: 'https://status.polytoria.com/',
-    color: '#ff5454',
-    fields: [
-
-    ]
+    color: 0xFF5454
   })
 
-  let index = 0
+  embed.data.fields = []
+
   for (const item of urlToCheck) {
-    embed.fields[index] = {
+    embed.addFields({
       name: item.name,
       value: `${emojiUtils.loading} Checking`,
       inline: true
-    }
-    index++
+    })
   }
 
   const msg = await message.reply({ embeds: [embed] })
@@ -106,13 +102,13 @@ export async function status (message: Message, args: string[]) {
   for (const item of urlToCheck) {
     const mainPageStatus = await checkStatus(item.url)
 
-    embed.fields[index2].value = `${statusToEmoji(mainPageStatus.status)} ${mainPageStatus.status}\n\`${mainPageStatus.statusCode}\` \`${mainPageStatus.responseTime}ms\``
+    embed.data.fields[index2].value = `${statusToEmoji(mainPageStatus.status)} ${mainPageStatus.status}\n\`${mainPageStatus.statusCode}\` \`${mainPageStatus.responseTime}ms\``
     msg.edit({ embeds: [embed] })
     responseTimes.push(mainPageStatus.responseTime)
     index2++
   }
 
-  embed.description = `Average Response time: \`${(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(2)}ms\``
+  embed.setDescription(`Average Response time: \`${(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(2)}ms\``)
   msg.edit({ embeds: [embed] })
 
   return msg

@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton, Interaction } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
@@ -21,9 +21,9 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     return message.channel.send(errResult.displayText)
   }
 
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
     .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
-    .setDescription(data.description)
+    .setDescription(data.description === '' ? 'No description set.' : data.description)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
@@ -65,39 +65,39 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .map((member: any) => `[${member.user.username}](https://polytoria.com/users/${member.user.id})`)
     .join('\n')
 
-  const memberEmbed = new MessageEmbed()
+  const memberEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Members ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setDescription(memberUsernames)
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
-  const guildButton = new MessageButton()
+  const guildButton = new ButtonBuilder()
     .setLabel('Guild')
-    .setStyle('PRIMARY')
+    .setStyle(ButtonStyle.Primary)
     .setCustomId('guild_button')
 
-  const membersButton = new MessageButton()
+  const membersButton = new ButtonBuilder()
     .setLabel('Members')
-    .setStyle('PRIMARY')
+    .setStyle(ButtonStyle.Primary)
     .setCustomId('members_button')
 
-  const nextButton = new MessageButton()
+  const nextButton = new ButtonBuilder()
     .setLabel('Next')
-    .setStyle('SUCCESS')
+    .setStyle(ButtonStyle.Success)
     .setCustomId('next_button')
 
-  const prevButton = new MessageButton()
+  const prevButton = new ButtonBuilder()
     .setLabel('Previous')
-    .setStyle('DANGER')
+    .setStyle(ButtonStyle.Danger)
     .setCustomId('prev_button')
 
-  const actionRow: MessageActionRow = new MessageActionRow()
+  const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
-      new MessageButton()
+      new ButtonBuilder()
         .setURL(`https://polytoria.com/guilds/${data.id}`)
         .setLabel('View on Polytoria')
-        .setStyle('LINK')
+        .setStyle(ButtonStyle.Link)
     )
     .addComponents(
       membersButton
@@ -111,8 +111,8 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   let memberPage = 1
 
   const collector = reply.createMessageComponentCollector({
-    componentType: 'BUTTON',
-    filter: (interaction: Interaction) => (
+    componentType: ComponentType.Button,
+    filter: (interaction: BaseInteraction) => (
       interaction.isButton() && interaction.user.id === message.author.id
     ),
     time: 60000
@@ -129,13 +129,13 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       await reply.edit({
         embeds: [memberEmbed],
         components: [
-          new MessageActionRow().addComponents(guildButton, prevButton, nextButton)
+          new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
         ]
       })
 
       const guildButtonCollector = reply.createMessageComponentCollector({
-        componentType: 'BUTTON',
-        filter: (btnInteraction: Interaction) => (
+        componentType: ComponentType.Button,
+        filter: (btnInteraction: BaseInteraction) => (
           btnInteraction.isButton() &&
           btnInteraction.customId === 'guild_button' &&
           btnInteraction.user.id === message.author.id
@@ -154,8 +154,8 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       })
 
       const nextButtonCollector = reply.createMessageComponentCollector({
-        componentType: 'BUTTON',
-        filter: (btnInteraction: Interaction) => (
+        componentType: ComponentType.Button,
+        filter: (btnInteraction: BaseInteraction) => (
           btnInteraction.isButton() &&
           btnInteraction.customId === 'next_button' &&
           btnInteraction.user.id === message.author.id
@@ -178,14 +178,14 @@ export async function guild (message: Message, args: string[]): Promise<Message 
         await reply.edit({
           embeds: [memberEmbed],
           components: [
-            new MessageActionRow().addComponents(guildButton, prevButton, nextButton)
+            new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
           ]
         })
       })
 
       const prevButtonCollector = reply.createMessageComponentCollector({
-        componentType: 'BUTTON',
-        filter: (btnInteraction: Interaction) => (
+        componentType: ComponentType.Button,
+        filter: (btnInteraction: BaseInteraction) => (
           btnInteraction.isButton() &&
           btnInteraction.customId === 'prev_button' &&
           btnInteraction.user.id === message.author.id
@@ -209,7 +209,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
           await reply.edit({
             embeds: [memberEmbed],
             components: [
-              new MessageActionRow().addComponents(guildButton, prevButton, nextButton)
+              new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
             ]
           })
         }

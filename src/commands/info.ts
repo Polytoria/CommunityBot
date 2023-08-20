@@ -1,16 +1,29 @@
-import { MessageEmbed, Message } from 'discord.js'
+import { EmbedBuilder, Message, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export async function info (message: Message) {
-  const embed: MessageEmbed = new MessageEmbed()
+  const invite = new ButtonBuilder()
+    .setLabel('Invite us!')
+    .setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
+    .setStyle(ButtonStyle.Link)
 
-  embed.setThumbnail('https://starmanthegamer.com/icon.png')
-  embed.setColor('#fe5953')
-  embed.setTitle('Polytoria Community Bot')
-  embed.setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
-  embed.addField('Version', `Running version ${process.env.npm_package_version}`)
-  embed.addField('Invite our Bot', 'Tap the title to invite our bot directly to your server!')
-  embed.addField('We are open-sourced!', 'https://github.com/Polytoria/Polytoria-Community-Bot')
-  embed.addField('Rewritten by', 'Shiggy, DevPixels, baggy, and more!')
-  embed.setFooter('Thanks to all collaborators of the project!')
-  await message.channel.send({ embeds: [embed] })
+  const github = new ButtonBuilder()
+    .setLabel('GitHub')
+    .setURL('https://github.com/Polytoria/CommunityBot')
+    .setStyle(ButtonStyle.Link)
+
+  const row = new ActionRowBuilder<ButtonBuilder>()
+    .addComponents(github, invite)
+
+  const embed: EmbedBuilder = new EmbedBuilder()
+    .setColor(0xFF5454)
+    .setTitle('Polytoria Community Bot')
+    .setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
+    .setThumbnail('https://starmanthegamer.com/icon.png')
+    .addFields(
+      { name: 'Version', value: `Currently running version: ${process.env.npm_package_version}` },
+      { name: 'Contributed by:', value: 'baggy, Hu Tao, Shiggy, and many more!', inline: true }
+    )
+    .setFooter({ text: 'Thank you for using Polytoria Community Bot!', iconURL: 'https://starmanthegamer.com/icon.png' })
+
+  await message.channel.send({ embeds: [embed], components: [row] })
 }

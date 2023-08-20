@@ -1,5 +1,5 @@
 // <reference path="index.d.ts"/>
-import { Client } from 'discord.js'
+import { Client, GatewayIntentBits, ActivityType } from 'discord.js'
 import dotenv from 'dotenv'
 import { success, alert, warning } from './utils/log.js'
 import commands from './exports.js'
@@ -15,16 +15,21 @@ const configuration: IConfiguration = {
 }
 
 const client = new Client({
-  intents: ['GUILD_MESSAGES', 'GUILDS', 'GUILD_MEMBERS']
+  intents: [
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.MessageContent
+  ]
 })
 
 client.on('ready', () => {
   // @ts-expect-error
-  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: 'WATCHING' })
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: ActivityType.Watching })
 
   setInterval(function () {
     // @ts-expect-error
-    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: 'WATCHING' })
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: ActivityType.Watching })
   }, 60000)
 })
 success({ context: '[Bot]', message: 'Bot succesfully started.' })

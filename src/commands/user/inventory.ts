@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import axios from 'axios'
 import { userUtils } from '../../utils/userUtils.js'
 import { v4 } from 'uuid'
@@ -16,7 +16,7 @@ export async function inventory (message: Message, args: string[]) {
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
 
-  if (response.status === 500) {
+  if (response.status === 403) {
     return message.reply("This user's inventory is private, and cannot be viewed.")
   }
 
@@ -37,10 +37,10 @@ export async function inventory (message: Message, args: string[]) {
     return resultString
   }
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: userData.username + "'s Inventory.",
     url: `https://polytoria.com/users/${userData.id}/inventory`,
-    color: '#ff5454',
+    color: 0xFF5454,
     thumbnail: {
       url: userData.thumbnail.avatar
     },
@@ -49,7 +49,7 @@ export async function inventory (message: Message, args: string[]) {
 
   // Fetch Inventory
   const inventoryData: string = await changePage()
-  embed.description = inventoryData
+  embed.setDescription(inventoryData)
 
   // Generate Button ID base on current time
   const buttonID: string = v4()
@@ -58,13 +58,13 @@ export async function inventory (message: Message, args: string[]) {
   const rightBtnID: string = 'right' + buttonID
 
   // Create Buttons
-  const leftBtn: MessageButton = new MessageButton().setCustomId(leftBtnID).setLabel('◀').setStyle('PRIMARY').setDisabled(true)
+  const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: MessageButton = new MessageButton().setCustomId(pageNum).setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.lastPage.toString()}`).setStyle('SECONDARY')
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.lastPage.toString()}`).setStyle(ButtonStyle.Secondary)
 
-  const rightBtn: MessageButton = new MessageButton().setCustomId(rightBtnID).setLabel('▶').setStyle('PRIMARY')
+  const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
-  const row = new MessageActionRow().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
 
   const filter = () => true
 
@@ -106,10 +106,10 @@ export async function inventory (message: Message, args: string[]) {
 
     // Fetch Inventory
     const inventoryData: string = await changePage()
-    embed.description = inventoryData
+    embed.setDescription(inventoryData)
 
     // Update Embed and Button
-    const updatedRow = new MessageActionRow().addComponents(leftBtn).addComponents(pageNumBtn).addComponents(rightBtn)
+    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })

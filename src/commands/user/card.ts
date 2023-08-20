@@ -1,4 +1,4 @@
-import { Message, MessageAttachment } from 'discord.js'
+import { Message, AttachmentBuilder } from 'discord.js'
 import { userUtils } from '../../utils/userUtils.js'
 import { stringUtils } from '../../utils/stringUtils.js'
 import pkg from 'canvas'
@@ -96,7 +96,7 @@ export async function card (message: Message, args: string[]) {
     ctx.fillRect(85, 525, 1, 14)
   }
 
-  const attachment = new MessageAttachment(canvas.toBuffer(), 'Card.png')
+  const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'Card.png' })
 
   return message.channel.send({ files: [attachment] })
 }

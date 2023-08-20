@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -36,14 +36,14 @@ export async function randomStore (message: Message, args: string[]) {
     ? `https://polytoria.com/users/${creator.id}`
     : `https://polytoria.com/guilds/${creator.id}`
 
-  const embed = new MessageEmbed({
+  const embed = new EmbedBuilder({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
     description: data.description === '' ? 'No description set.' : data.description,
     url: `https://polytoria.com/store/${data.id}`,
     thumbnail: {
       url: thumbnailURL
     },
-    color: '#ff5454',
+    color: 0xFF5454,
     fields: [
       {
         name: 'Creator',
@@ -60,7 +60,7 @@ export async function randomStore (message: Message, args: string[]) {
 
   const assetType = data.type.toLowerCase()
   if (!['audio', 'decal', 'mesh'].includes(assetType)) {
-    embed.fields.push(
+    embed.addFields(
       {
         name: 'Price',
         value: emojiUtils.brick + ' ' + data.price.toString(),
@@ -74,14 +74,16 @@ export async function randomStore (message: Message, args: string[]) {
     )
   }
 
-  // Create the action row and button
-  const actionRow = new MessageActionRow()
+  const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
-      new MessageButton()
+      new ButtonBuilder()
         .setURL(`https://polytoria.com/store/${data.id}`)
         .setLabel('View on Polytoria')
-        .setStyle('LINK')
+        .setStyle(ButtonStyle.Link)
     )
 
-  return message.reply({ embeds: [embed], components: [actionRow] })
+  return message.reply({
+    embeds: [embed],
+    components: [actionRow]
+  })
 }

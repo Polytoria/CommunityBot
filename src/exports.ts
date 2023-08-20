@@ -1,5 +1,4 @@
 import { lookUp, card, level, inventory } from './commands/user.js'
-import { ping } from './commands/ping.js'
 import { cookie } from './commands/cookie.js'
 import { help } from './commands/help.js'
 import { guild } from './commands/guild.js'
@@ -14,7 +13,6 @@ import { place } from './commands/place.js'
 export default {
   lookup: lookUp,
   inventory: inventory,
-  ping: ping,
   place: place,
   cookie: cookie,
   guild: guild,
