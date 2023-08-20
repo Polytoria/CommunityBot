@@ -73,7 +73,7 @@ async function checkStatus (url: string): Promise<IStatus> {
   return {
     status: statusText,
     statusCode: response.status,
-    responseTime: responseTime
+    responseTime
   }
 }
 

@@ -20,7 +20,7 @@ export async function level (message: Message, args: string[]) {
   const embed = new EmbedBuilder({
     title: userData.username + "'s level",
     url: `https://polytoria.com/users/${userData.id}`,
-    description: description,
+    description,
     color: 0xFF5454,
     thumbnail: {
       url: userData.thumbnail.avatar
