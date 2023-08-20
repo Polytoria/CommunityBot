@@ -18,10 +18,10 @@ export class dateUtils {
   }
 
   /**
- * atom Time To Display Time
- * @param atomTime Atom time format
- * @returns {string} formatted date as string
- */
+   * atom Time To Display Time
+   * @param atomTime Atom time format
+   * @returns {string} formatted date as string
+   */
   public static atomTimeToDisplayTime (atomTime: string): string {
     const date = new Date(atomTime)
 
@@ -29,7 +29,7 @@ export class dateUtils {
     if (day < 10) {
       day = day.toString()
       day = '0' + day
-    };
+    }
 
     let month: string | number = date.getMonth() + 1
     if (month < 10) {

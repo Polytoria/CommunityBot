@@ -5,7 +5,9 @@ import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function level (message: Message, args: string[]) {
   if (!args[0]) {
-    return message.reply('Please tell me the username so I can calculate the level.')
+    return message.reply(
+      'Please tell me the username so I can calculate the level.'
+    )
   }
   const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
@@ -15,13 +17,15 @@ export async function level (message: Message, args: string[]) {
   description += `\n\n${emojiUtils.forum} Forum level is ${levelData.levels.forum}`
   description += `\n${emojiUtils.shop} Economy level is ${levelData.levels.economy}`
   description += `\n${emojiUtils.users} Fame level is ${levelData.levels.fame}`
-  description += `\n\nNoob 🤓 ${progressBar.splitBar(75, levelData.final, 8, '▬', '🟢')[0]} Pro 😎`
+  description += `\n\nNoob 🤓 ${
+    progressBar.splitBar(75, levelData.final, 8, '▬', '🟢')[0]
+  } Pro 😎`
 
   const embed = new EmbedBuilder({
     title: userData.username + "'s level",
     url: `https://polytoria.com/users/${userData.id}`,
     description,
-    color: 0xFF5454,
+    color: 0xff5454,
     thumbnail: {
       url: userData.thumbnail.avatar
     },

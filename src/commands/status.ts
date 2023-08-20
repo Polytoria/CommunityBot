@@ -48,7 +48,10 @@ function statusToEmoji (status: string): string {
 
 async function checkStatus (url: string): Promise<IStatus> {
   const startTime = new Date().getTime()
-  const response = await axios.get(url, { validateStatus: () => true, timeout: 20000 })
+  const response = await axios.get(url, {
+    validateStatus: () => true,
+    timeout: 20000
+  })
   const endTime = new Date().getTime()
 
   let statusText = 'Unknown'
@@ -82,7 +85,7 @@ export async function status (message: Message, args: string[]) {
     title: 'Polytoria Status',
     description: emojiUtils.loading + ' Checking..',
     url: 'https://status.polytoria.com/',
-    color: 0xFF5454
+    color: 0xff5454
   })
 
   embed.data.fields = []
@@ -102,13 +105,21 @@ export async function status (message: Message, args: string[]) {
   for (const item of urlToCheck) {
     const mainPageStatus = await checkStatus(item.url)
 
-    embed.data.fields[index2].value = `${statusToEmoji(mainPageStatus.status)} ${mainPageStatus.status}\n\`${mainPageStatus.statusCode}\` \`${mainPageStatus.responseTime}ms\``
+    embed.data.fields[index2].value = `${statusToEmoji(
+      mainPageStatus.status
+    )} ${mainPageStatus.status}\n\`${mainPageStatus.statusCode}\` \`${
+      mainPageStatus.responseTime
+    }ms\``
     msg.edit({ embeds: [embed] })
     responseTimes.push(mainPageStatus.responseTime)
     index2++
   }
 
-  embed.setDescription(`Average Response time: \`${(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(2)}ms\``)
+  embed.setDescription(
+    `Average Response time: \`${(
+      responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length
+    ).toFixed(2)}ms\``
+  )
   msg.edit({ embeds: [embed] })
 
   return msg

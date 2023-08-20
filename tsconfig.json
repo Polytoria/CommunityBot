@@ -1,23 +1,23 @@
 {
-	"compilerOptions": {
-		"forceConsistentCasingInFileNames": true,
-		"allowJs": true,
-		"checkJs": true,
-		"noEmit": false,
-		"target": "es6",
-		"importHelpers": true,
-		"module": "es6",
-		"esModuleInterop": true,
-		"outDir": "dist",
-		"baseUrl": "src", // This must be specified if "paths" is.
-		"paths": {
-			"tslib": ["./../node_modules/tslib/tslib.d.ts"],
-			"@utils/*" : ["utils/*"],
-			"@types/*" : ["types/*"]
-		},
-		"moduleResolution": "node",
-		// TBD it is desired to enabled strict type checking at some point:
-		"strict": true,
-		"typeRoots": ["./types", "./node_modules/@types"]
-	}
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": false,
+    "target": "es6",
+    "importHelpers": true,
+    "module": "es6",
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "baseUrl": "src", // This must be specified if "paths" is.
+    "paths": {
+      "tslib": ["./../node_modules/tslib/tslib.d.ts"],
+      "@utils/*": ["utils/*"],
+      "@types/*": ["types/*"]
+    },
+    "moduleResolution": "node",
+    // TBD it is desired to enabled strict type checking at some point:
+    "strict": true,
+    "typeRoots": ["./types", "./node_modules/@types"]
+  }
 }

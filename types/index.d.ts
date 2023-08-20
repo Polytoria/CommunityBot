@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { Message } from "discord.js";
 
 /**
  * Type for the commands
@@ -8,7 +8,7 @@ export type ICommand = (message: Message, arguments: string[]) => void | any;
 /**
  * Context at which we are logging.
  */
-export type IContext = '[Bot]' | '[Client]' | '[Server]';
+export type IContext = "[Bot]" | "[Client]" | "[Server]";
 
 /**
  * Configuration of your bot.
@@ -80,7 +80,7 @@ export type ICreator = {
   /**
    * Creator Type of the asset
    */
-  creatorType: 'User' | 'Guild';
+  creatorType: "User" | "Guild";
   /**
    * ID of the asset
    */
@@ -119,7 +119,7 @@ export type ILevel = {
      * Fame Level
      */
     fame: number;
-  },
+  };
   /**
    * Final rank as string
    */
@@ -136,20 +136,20 @@ export type ILevel = {
      * Account age as month
      */
     accountAgeMonth: number;
-  }
+  };
 };
 
 export type IStatus = {
   /**
    * Status as String
    */
-  status: string,
+  status: string;
   /**
    * Status code
    */
-  statusCode: number,
+  statusCode: number;
   /**
    * Response Time
    */
-  responseTime: number
-}
+  responseTime: number;
+};

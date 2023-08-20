@@ -1,4 +1,10 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import {
+  Message,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle
+} from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
@@ -8,12 +14,17 @@ export async function store (message: Message, args: string[]) {
   const assetID = parseInt(args[0])
 
   if (args.length === 0) {
-    return message.reply('Please provide me with a store ID before I can continue!')
+    return message.reply(
+      'Please provide me with a store ID before I can continue!'
+    )
   }
 
-  const response = await axios.get(`https://api.polytoria.com/v1/store/${assetID}`, {
-    validateStatus: () => true
-  })
+  const response = await axios.get(
+    `https://api.polytoria.com/v1/store/${assetID}`,
+    {
+      validateStatus: () => true
+    }
+  )
   const data = response.data
   const creator = data.creator
 
@@ -26,21 +37,24 @@ export async function store (message: Message, args: string[]) {
   let thumbnailURL = data.thumbnail
 
   if (data.type.toLowerCase() === 'audio') {
-    thumbnailURL = 'https://c0.ptacdn.com/static/images/placeholders/audio.88cff071.png'
+    thumbnailURL =
+      'https://c0.ptacdn.com/static/images/placeholders/audio.88cff071.png'
   }
 
-  const creatorLink = creator.type === 'user'
-    ? `https://polytoria.com/users/${creator.id}`
-    : `https://polytoria.com/guilds/${creator.id}`
+  const creatorLink =
+    creator.type === 'user'
+      ? `https://polytoria.com/users/${creator.id}`
+      : `https://polytoria.com/guilds/${creator.id}`
 
   const embed = new EmbedBuilder({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
-    description: data.description === '' ? 'No description set.' : data.description,
+    description:
+      data.description === '' ? 'No description set.' : data.description,
     url: `https://polytoria.com/store/${data.id}`,
     thumbnail: {
       url: thumbnailURL
     },
-    color: 0xFF5454,
+    color: 0xff5454,
     fields: [
       {
         name: 'Creator',
@@ -71,13 +85,12 @@ export async function store (message: Message, args: string[]) {
     )
   }
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/store/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
-    )
+  const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setURL(`https://polytoria.com/store/${data.id}`)
+      .setLabel('View on Polytoria')
+      .setStyle(ButtonStyle.Link)
+  )
 
   return message.reply({
     embeds: [embed],

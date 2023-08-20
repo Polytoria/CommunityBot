@@ -32,7 +32,7 @@ export async function avatar (message: Message, args: string[]) {
   const embed = new EmbedBuilder({
     title: userData.username + "'s Avatar",
     url: `https://polytoria.com/users/${data.id}`,
-    color: 0xFF5454,
+    color: 0xff5454,
     fields: [
       {
         name: 'Currently Wearing',
@@ -55,9 +55,14 @@ export async function avatar (message: Message, args: string[]) {
   const oldMessage = await message.channel.send({ embeds: [embed] })
 
   for (const item of Object.values(hats)) {
-    const itemData = await axios.get('https://api.polytoria.com/v1/store/' + item, { validateStatus: () => true })
+    const itemData = await axios.get(
+      'https://api.polytoria.com/v1/store/' + item,
+      { validateStatus: () => true }
+    )
     if (itemData.data.Success) {
-      wearablesString += `👒 [${itemData.data.name}](https://polytoria.com/store/${itemData.data.id.toString()})\n`
+      wearablesString += `👒 [${
+        itemData.data.name
+      }](https://polytoria.com/store/${itemData.data.id.toString()})\n`
 
       // Add to price
       if (itemData.data.price !== 0) {
@@ -70,7 +75,10 @@ export async function avatar (message: Message, args: string[]) {
 
   for (const item of Object.values(hats)) {
     if (typeof item === 'number') {
-      const itemData = await axios.get('https://api.polytoria.com/v1/store/' + item, { validateStatus: () => true })
+      const itemData = await axios.get(
+        'https://api.polytoria.com/v1/store/' + item,
+        { validateStatus: () => true }
+      )
       if (itemData.data.Success) {
         let emoji = '❓'
         switch (itemData.data.type) {
@@ -88,7 +96,9 @@ export async function avatar (message: Message, args: string[]) {
             break
         }
 
-        wearablesString += `${emoji} [${itemData.data.name}](https://polytoria.com/store/${itemData.data.id.toString()})\n`
+        wearablesString += `${emoji} [${
+          itemData.data.name
+        }](https://polytoria.com/store/${itemData.data.id.toString()})\n`
 
         // Add to price
         if (itemData.data.Price !== -1) {

@@ -1,4 +1,10 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import {
+  Message,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle
+} from 'discord.js'
 import axios from 'axios'
 import { v4 } from 'uuid'
 
@@ -10,14 +16,19 @@ export async function toolbox (message: Message, args: string[]) {
     searchQuery = '&q=' + args[0]
   }
 
-  const apiURL = 'https://api.polytoria.com/v1/models/toolbox?page=0' + searchQuery
+  const apiURL =
+    'https://api.polytoria.com/v1/models/toolbox?page=0' + searchQuery
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const data = response.data
 
   // Change Page Function, Fetch current page
   async function changePage (): Promise<string> {
-    const apiURL = 'https://api.polytoria.com/v1/models/toolbox' + '?page=' + currentPage + searchQuery
+    const apiURL =
+      'https://api.polytoria.com/v1/models/toolbox' +
+      '?page=' +
+      currentPage +
+      searchQuery
 
     const response = await axios.get(apiURL, { validateStatus: () => true })
     let resultString: string = ''
@@ -32,7 +43,7 @@ export async function toolbox (message: Message, args: string[]) {
 
   const embed = new EmbedBuilder({
     title: 'Toolbox',
-    color: 0xFF5454,
+    color: 0xff5454,
     thumbnail: {
       url: 'https://polytoria.com/assets/img/model-temp.png'
     },
@@ -50,20 +61,42 @@ export async function toolbox (message: Message, args: string[]) {
   const rightBtnID: string = 'right' + buttonID
 
   // Create Buttons
-  const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
+  const leftBtn: ButtonBuilder = new ButtonBuilder()
+    .setCustomId(leftBtnID)
+    .setLabel('◀')
+    .setStyle(ButtonStyle.Primary)
+    .setDisabled(true)
 
-  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${(currentPage + 1).toString()} of ${data.Pages.toString()}`).setStyle(ButtonStyle.Secondary)
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder()
+    .setCustomId(pageNum)
+    .setLabel(
+      `Page ${(currentPage + 1).toString()} of ${data.Pages.toString()}`
+    )
+    .setStyle(ButtonStyle.Secondary)
 
-  const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
+  const rightBtn: ButtonBuilder = new ButtonBuilder()
+    .setCustomId(rightBtnID)
+    .setLabel('▶')
+    .setStyle(ButtonStyle.Primary)
 
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    leftBtn,
+    pageNumBtn,
+    rightBtn
+  )
 
   const filter = () => true
 
   // Create Interaction event for 2 minutes
-  const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
+  const collector = message.channel.createMessageComponentCollector({
+    filter,
+    time: 120000
+  })
 
-  const msg = await message.channel.send({ embeds: [embed], components: [row] })
+  const msg = await message.channel.send({
+    embeds: [embed],
+    components: [row]
+  })
 
   // Listen for Button Interaction
   collector.on('collect', async (i) => {
@@ -94,14 +127,20 @@ export async function toolbox (message: Message, args: string[]) {
     }
 
     // Set Page
-    pageNumBtn.setLabel(`Page ${(currentPage + 1).toString()} of ${data.Pages.toString()}`)
+    pageNumBtn.setLabel(
+      `Page ${(currentPage + 1).toString()} of ${data.Pages.toString()}`
+    )
 
     // Fetch toolbox
     const toolboxData: string = await changePage()
     embed.setDescription(toolboxData)
 
     // Update Embed and Button
-    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
+    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+      leftBtn,
+      pageNumBtn,
+      rightBtn
+    )
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })

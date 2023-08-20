@@ -7,7 +7,12 @@ import { status } from './commands/status.js'
 import { storeSearch } from './commands/store-search.js'
 import { commands } from './commands/commands.js'
 import { store } from './commands/store.js'
-import { randomUser, randomPlace, randomGuild, randomStore } from './commands/random.js'
+import {
+  randomUser,
+  randomPlace,
+  randomGuild,
+  randomStore
+} from './commands/random.js'
 import { place } from './commands/place.js'
 
 export default {

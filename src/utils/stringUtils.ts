@@ -1,10 +1,14 @@
 export class stringUtils {
   /**
- * ### URL Parse
- * @param { string } URL that want to be parsed.
- * @returns { urlData: string, searchParams: URLSearchParams, splitted: string[] }
- */
-  public static urlParse (url: string): {urlData: URL; searchParams: URLSearchParams; splitted: string[]} {
+   * ### URL Parse
+   * @param { string } URL that want to be parsed.
+   * @returns { urlData: string, searchParams: URLSearchParams, splitted: string[] }
+   */
+  public static urlParse (url: string): {
+    urlData: URL;
+    searchParams: URLSearchParams;
+    splitted: string[];
+  } {
     const urlConstruct = new URL(url)
 
     return {
@@ -15,10 +19,10 @@ export class stringUtils {
   }
 
   /**
- * ### Get Numbers From URL
- * @param { string } URL that want to be parsed
- * @returns { number[] } Numbers that has been found in URL
- */
+   * ### Get Numbers From URL
+   * @param { string } URL that want to be parsed
+   * @returns { number[] } Numbers that has been found in URL
+   */
   public static getNumbersFromURL (url: string): number[] {
     const parsed = stringUtils.urlParse(url)
     const result: number[] = []
@@ -35,10 +39,10 @@ export class stringUtils {
   }
 
   /**
- *
- * @param {string} string String that you want to be capitalize
- * @returns {string} capitalized string
- */
+   *
+   * @param {string} string String that you want to be capitalize
+   * @returns {string} capitalized string
+   */
   public static capitalizeString (string: string): string {
     const arr = string.toLowerCase().split(' ')
 
@@ -102,7 +106,11 @@ export class stringUtils {
    * @param {string} replace Replace string with
    * @returns {string} Replaced string
    */
-  public static replaceAll (str: string, find: string | RegExp, replace: string): string {
+  public static replaceAll (
+    str: string,
+    find: string | RegExp,
+    replace: string
+  ): string {
     return str.replace(new RegExp(find, 'g'), replace)
   }
 }

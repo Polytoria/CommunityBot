@@ -1,4 +1,10 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import {
+  Message,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle
+} from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
@@ -8,10 +14,15 @@ export async function place (message: Message, args: string[]) {
   const placeID = parseInt(args[0])
 
   if (args.length === 0) {
-    return message.reply('Please provide me with a place ID before I can continue!')
+    return message.reply(
+      'Please provide me with a place ID before I can continue!'
+    )
   }
 
-  const response = await axios.get(`https://api.polytoria.com/v1/places/${placeID}`, { validateStatus: () => true })
+  const response = await axios.get(
+    `https://api.polytoria.com/v1/places/${placeID}`,
+    { validateStatus: () => true }
+  )
   const data = response.data
   const rating = data.rating
   const creator = data.creator
@@ -37,13 +48,13 @@ export async function place (message: Message, args: string[]) {
   }
 
   const embed = new EmbedBuilder({
-    title: (data.name + ' ' + (data.isFeatured === true ? emojiUtils.star : '')),
+    title: data.name + ' ' + (data.isFeatured === true ? emojiUtils.star : ''),
     description: externalDesc,
     thumbnail: {
       url: `${data.thumbnail}`
     },
     url: `https://polytoria.com/places/${data.id}`,
-    color: 0xFF5454,
+    color: 0xff5454,
     fields: [
       {
         name: 'Creator',
@@ -93,13 +104,12 @@ export async function place (message: Message, args: string[]) {
     ]
   })
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/places/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
-    )
+  const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setURL(`https://polytoria.com/places/${data.id}`)
+      .setLabel('View on Polytoria')
+      .setStyle(ButtonStyle.Link)
+  )
 
   return message.reply({
     embeds: [embed],
