@@ -48,12 +48,17 @@ export default [
       inline: false
     },
     {
-      name: 'info',
-      value: 'Information about Polytoria Community Bot',
+      name: 'toolbox `name`',
+      value: "Gives you a list of all of the models in the toolbox of your search\n`name` - Name of the model",
       inline: false
     }
   ],
   [
+    {
+      name: 'info',
+      value: 'Information about Polytoria Community Bot',
+      inline: false
+    },
     {
       name: 'random-user',
       value: 'Gives you a random user from Polytoria',
