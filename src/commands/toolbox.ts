@@ -12,7 +12,6 @@ export async function toolbox (message: Message, args: string[]) {
 
   const apiURL = 'https://polytoria.com/api/library?page=1' + searchQuery + '&type=model'
 
-  console.log('API URL:', apiURL)
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const meta = response.data.meta
 
@@ -21,8 +20,12 @@ export async function toolbox (message: Message, args: string[]) {
     const apiURL = 'https://polytoria.com/api/library' + '?page=' + currentPage + searchQuery + '&type=model'
 
     const response = await axios.get(apiURL, { validateStatus: () => true })
-    console.log(response.data)
     let resultString: string = ''
+
+    if (response.data.data.length === 0) {
+      // If data is empty, set the description accordingly
+      return 'There are no results for your toolbox search.'
+    }
 
     // @ts-expect-error
     response.data.data.forEach((data) => {
@@ -36,7 +39,7 @@ export async function toolbox (message: Message, args: string[]) {
     title: 'Toolbox',
     color: 0xFF5454,
     thumbnail: {
-      url: 'https://polytoria.com/assets/img/model-temp.png'
+      url: 'https://starmanthegamer.com/Blocks.png'
     },
     description: ''
   })
@@ -107,6 +110,12 @@ export async function toolbox (message: Message, args: string[]) {
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })
+
+  // Hide buttons if there are no results
+  if (toolboxData === 'There are no results for your toolbox search.') {
+    leftBtn.setDisabled(true)
+    rightBtn.setDisabled(true)
+  }
 
   return msg
 }
