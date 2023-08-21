@@ -60,7 +60,7 @@ export async function inventory (message: Message, args: string[]) {
   // Create Buttons
   const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.lastPage.toString()}`).setStyle(ButtonStyle.Secondary)
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.lastPage.toString()}`).setStyle(ButtonStyle.Secondary).setDisabled(true)
 
   const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 

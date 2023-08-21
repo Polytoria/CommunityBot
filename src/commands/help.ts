@@ -32,7 +32,7 @@ export async function help (message: Message, args: string[]) {
   // Create Buttons
   const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${currentPage + 1} of ${pagesCount}`).setStyle(ButtonStyle.Secondary)
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${currentPage + 1} of ${pagesCount}`).setStyle(ButtonStyle.Secondary).setDisabled(true)
 
   const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
