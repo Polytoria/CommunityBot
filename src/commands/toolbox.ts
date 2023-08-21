@@ -3,28 +3,30 @@ import axios from 'axios'
 import { v4 } from 'uuid'
 
 export async function toolbox (message: Message, args: string[]) {
-  let currentPage = 0
+  let currentPage = 1
   let searchQuery = ''
 
   if (args[0]) {
-    searchQuery = '&q=' + args[0]
+    searchQuery = '&search=' + args[0]
   }
 
-  const apiURL = 'https://api.polytoria.com/v1/models/toolbox?page=0' + searchQuery
+  const apiURL = 'https://polytoria.com/api/library?page=1' + searchQuery + '&type=model'
 
+  console.log('API URL:', apiURL)
   const response = await axios.get(apiURL, { validateStatus: () => true })
-  const data = response.data
+  const meta = response.data.meta
 
   // Change Page Function, Fetch current page
   async function changePage (): Promise<string> {
-    const apiURL = 'https://api.polytoria.com/v1/models/toolbox' + '?page=' + currentPage + searchQuery
+    const apiURL = 'https://polytoria.com/api/library' + '?page=' + currentPage + searchQuery + '&type=model'
 
     const response = await axios.get(apiURL, { validateStatus: () => true })
+    console.log(response.data)
     let resultString: string = ''
 
     // @ts-expect-error
-    response.data.Items.forEach((item) => {
-      resultString += `[${item.Name}](https://polytoria.com/library/${item.ID})\n`
+    response.data.data.forEach((data) => {
+      resultString += `[${data.name}](https://polytoria.com/models/${data.id})\n`
     })
 
     return resultString
@@ -52,7 +54,7 @@ export async function toolbox (message: Message, args: string[]) {
   // Create Buttons
   const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${(currentPage + 1).toString()} of ${data.Pages.toString()}`).setStyle(ButtonStyle.Secondary)
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${(currentPage).toString()} of ${meta.lastPage.toString()}`).setStyle(ButtonStyle.Secondary)
 
   const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
@@ -79,14 +81,14 @@ export async function toolbox (message: Message, args: string[]) {
     }
 
     // Update button state
-    if (currentPage + 1 >= data.Pages) {
+    if (currentPage >= meta.lastPage) {
       rightBtn.setDisabled(true)
-      currentPage = data.Pages
+      currentPage = meta.lastPage
     } else {
       rightBtn.setDisabled(false)
     }
 
-    if (currentPage + 1 <= 1) {
+    if (currentPage <= 1) {
       leftBtn.setDisabled(true)
       currentPage = 1
     } else {
@@ -94,7 +96,7 @@ export async function toolbox (message: Message, args: string[]) {
     }
 
     // Set Page
-    pageNumBtn.setLabel(`Page ${(currentPage + 1).toString()} of ${data.Pages.toString()}`)
+    pageNumBtn.setLabel(`Page ${(currentPage).toString()} of ${meta.lastPage.toString()}`)
 
     // Fetch toolbox
     const toolboxData: string = await changePage()

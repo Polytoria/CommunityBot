@@ -9,6 +9,7 @@ import { commands } from './commands/commands.js'
 import { store } from './commands/store.js'
 import { randomUser, randomPlace, randomGuild, randomStore } from './commands/random.js'
 import { place } from './commands/place.js'
+import { toolbox } from './commands/toolbox.js'
 
 export default {
   lookup: lookUp,
@@ -29,6 +30,6 @@ export default {
   card,
   status,
   'store-search': storeSearch,
-  toolbox: commands,
+  toolbox,
   commands
 }
