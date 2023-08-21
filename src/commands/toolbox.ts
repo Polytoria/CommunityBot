@@ -57,13 +57,19 @@ export async function toolbox (message: Message, args: string[]) {
   // Create Buttons
   const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${(currentPage).toString()} of ${meta.lastPage.toString()}`).setStyle(ButtonStyle.Secondary)
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${(currentPage).toString()} of ${meta.lastPage.toString()}`).setStyle(ButtonStyle.Secondary).setDisabled(true)
 
   const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
 
   const filter = () => true
+
+  // Hide buttons if there are no results
+  if (toolboxData === 'There are no results for your toolbox search.') {
+    leftBtn.setDisabled(true)
+    rightBtn.setDisabled(true)
+  }
 
   // Create Interaction event for 2 minutes
   const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
@@ -110,12 +116,6 @@ export async function toolbox (message: Message, args: string[]) {
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })
-
-  // Hide buttons if there are no results
-  if (toolboxData === 'There are no results for your toolbox search.') {
-    leftBtn.setDisabled(true)
-    rightBtn.setDisabled(true)
-  }
 
   return msg
 }
