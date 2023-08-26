@@ -59,6 +59,7 @@ export default [
       value: 'Information about Polytoria Community Bot',
       inline: false
     },
+    /*
     {
       name: 'random-user',
       value: 'Gives you a random user from Polytoria',
@@ -77,6 +78,12 @@ export default [
     {
       name: 'random-guild',
       value: 'Gives you a random guild from Polytoria',
+      inline: false
+    }
+    */
+    {
+      name: 'random `asset type (optional)`',
+      value: 'Gives you a random asset on Polytoria',
       inline: false
     }
   ]

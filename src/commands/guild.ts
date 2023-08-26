@@ -21,6 +21,20 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     return message.channel.send(errResult.displayText)
   }
 
+  let joinType: string
+
+  switch (data.joinType) {
+    case 'public':
+      joinType = '🔓 (public)'
+      break
+    case 'private':
+      joinType = '🔒 (private)'
+      break
+    case 'request':
+      joinType = '🖐️ (request to join)'
+      break
+  }
+
   const embed = new EmbedBuilder()
     .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setDescription(data.description === '' ? 'No description set.' : data.description)
@@ -40,7 +54,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       },
       {
         name: 'Join Type',
-        value: data.joinType.toLocaleString(),
+        value: joinType,
         inline: true
       },
       {
@@ -72,6 +86,19 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
+  const storeResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/store?page=1&limit=15`)
+  const storeData = storeResponse.data.assets
+  const storeItems = storeData
+    .map((item: any, index: number) => '``' + (index + 1) + '``' + ` [${item.name}](https://polytoria.com/store/${item.id})`)
+    .join('\n')
+
+  const storeEmbed = new EmbedBuilder()
+    .setTitle(data.name + ' - Store ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
+    .setDescription(storeItems)
+    .setThumbnail(data.thumbnail)
+    .setColor(data.color)
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
+
   const guildButton = new ButtonBuilder()
     .setLabel('Guild')
     .setStyle(ButtonStyle.Primary)
@@ -81,6 +108,11 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .setLabel('Members')
     .setStyle(ButtonStyle.Primary)
     .setCustomId('members_button')
+
+  const storeButton = new ButtonBuilder()
+    .setLabel('Guild Store')
+    .setStyle(ButtonStyle.Success)
+    .setCustomId('store_button')
 
   const nextButton = new ButtonBuilder()
     .setLabel('Next')
@@ -102,6 +134,9 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .addComponents(
       membersButton
     )
+    .addComponents(
+      storeButton
+    )
 
   const reply = await message.reply({
     embeds: [embed],
@@ -109,6 +144,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   })
 
   let memberPage = 1
+  let storePage = 1
 
   const collector = reply.createMessageComponentCollector({
     componentType: ComponentType.Button,
@@ -123,6 +159,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
     if (interaction.customId === 'members_button') {
       membersButton.setDisabled(true)
+      storeButton.setDisabled(true)
       nextButton.setDisabled(false)
       prevButton.setDisabled(true)
 
@@ -208,6 +245,103 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
           await reply.edit({
             embeds: [memberEmbed],
+            components: [
+              new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
+            ]
+          })
+        }
+      })
+    }
+
+    if (interaction.customId === 'store_button') {
+      membersButton.setDisabled(true)
+      storeButton.setDisabled(true)
+      nextButton.setDisabled(false)
+      prevButton.setDisabled(true)
+
+      await reply.edit({
+        embeds: [storeEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
+        ]
+      })
+
+      const guildButtonCollector = reply.createMessageComponentCollector({
+        componentType: ComponentType.Button,
+        filter: (btnInteraction: BaseInteraction) => (
+          btnInteraction.isButton() &&
+          btnInteraction.customId === 'guild_button' &&
+          btnInteraction.user.id === message.author.id
+        ),
+        time: 60000
+      })
+
+      guildButtonCollector.on('collect', async () => {
+        membersButton.setDisabled(false)
+        storeButton.setDisabled(false)
+        nextButton.setDisabled(true)
+        prevButton.setDisabled(true)
+        await reply.edit({
+          embeds: [embed],
+          components: [actionRow]
+        })
+      })
+
+      const nextButtonCollector = reply.createMessageComponentCollector({
+        componentType: ComponentType.Button,
+        filter: (btnInteraction: BaseInteraction) => (
+          btnInteraction.isButton() &&
+          btnInteraction.customId === 'next_button' &&
+          btnInteraction.user.id === message.author.id
+        ),
+        time: 60000
+      })
+
+      nextButtonCollector.on('collect', async () => {
+        const newPage = storePage + 1
+        const newStoreResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/store?page=${newPage}&limit=15`)
+        const newStoreData = newStoreResponse.data.assets
+        const newStoreItems: string = newStoreData.map((item: any, index: number) => '``' + (index + 1) + '``' + ` [${item.name}](https://polytoria.com/store/${item.id})`).join('\n')
+
+        storePage = newPage
+        storeEmbed.setDescription(newStoreItems)
+
+        nextButton.setDisabled(false)
+        prevButton.setDisabled(false)
+
+        await reply.edit({
+          embeds: [storeEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
+          ]
+        })
+      })
+
+      const prevButtonCollector = reply.createMessageComponentCollector({
+        componentType: ComponentType.Button,
+        filter: (btnInteraction: BaseInteraction) => (
+          btnInteraction.isButton() &&
+          btnInteraction.customId === 'prev_button' &&
+          btnInteraction.user.id === message.author.id
+        ),
+        time: 60000
+      })
+
+      prevButtonCollector.on('collect', async () => {
+        if (memberPage > 1) {
+          const newPage = storePage - 1
+          const newStoreResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/store?page=${newPage}&limit=15`)
+          const newStoreData = newStoreResponse.data.assets
+          const newStoreItems: string = newStoreData.map((item: any, index: number) => '``' + (index + 1) + '``' + ` [${item.name}](https://polytoria.com/store/${item.id})`).join('\n')
+
+          storePage = newPage
+          storeEmbed.setDescription(newStoreItems)
+
+          nextButton.setDisabled(false)
+          prevButton.setDisabled(false)
+
+          await reply.edit({
+            embeds: [storeEmbed],
             components: [
               new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
             ]

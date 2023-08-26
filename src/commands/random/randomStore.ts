@@ -74,16 +74,22 @@ export async function randomStore (message: Message, args: string[]) {
     )
   }
 
+  const redoButton = new ButtonBuilder()
+    .setLabel('Re-do Randomize')
+    .setStyle(ButtonStyle.Primary)
+    .setCustomId('redo_button')
+
   const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
       new ButtonBuilder()
         .setURL(`https://polytoria.com/store/${data.id}`)
         .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
+        .setStyle(ButtonStyle.Link),
+      redoButton
     )
 
-  return message.reply({
+  return {
     embeds: [embed],
     components: [actionRow]
-  })
+  }
 }
