@@ -189,9 +189,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
       nextButtonCollector.on('collect', async () => {
         const newPage = memberPage + 1
-        const newMemberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/members?page=${newPage}&limit=15`)
-        const newMemberData = newMemberResponse.data.members
-        const newMemberUsernames: string = newMemberData.map((member: any) => member.user.username).join('\n')
+        const newMemberUsernames: string = await fetchMembers(guildID, newPage)
 
         memberPage = newPage
         memberEmbed.setDescription(newMemberUsernames)
@@ -220,9 +218,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       prevButtonCollector.on('collect', async () => {
         if (memberPage > 1) {
           const newPage = memberPage - 1
-          const newMemberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/members?page=${newPage}&limit=15`)
-          const newMemberData = newMemberResponse.data.members
-          const newMemberUsernames: string = newMemberData.map((member: any) => member.user.username).join('\n')
+          const newMemberUsernames: string = await fetchMembers(guildID, newPage)
 
           memberPage = newPage
           memberEmbed.setDescription(newMemberUsernames)
@@ -286,9 +282,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
       nextButtonCollector.on('collect', async () => {
         const newPage = storePage + 1
-        const newStoreResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/store?page=${newPage}&limit=15`)
-        const newStoreData = newStoreResponse.data.assets
-        const newStoreItems: string = newStoreData.map((item: any, index: number) => '``' + (index + 1) + '``' + ` [${item.name}](https://polytoria.com/store/${item.id})`).join('\n')
+        const newStoreItems: string = await fetchStore(guildID, newPage)
 
         storePage = newPage
         storeEmbed.setDescription(newStoreItems)
@@ -317,9 +311,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       prevButtonCollector.on('collect', async () => {
         if (memberPage > 1) {
           const newPage = storePage - 1
-          const newStoreResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/store?page=${newPage}&limit=15`)
-          const newStoreData = newStoreResponse.data.assets
-          const newStoreItems: string = newStoreData.map((item: any, index: number) => '``' + (index + 1) + '``' + ` [${item.name}](https://polytoria.com/store/${item.id})`).join('\n')
+          const newStoreItems: string = await fetchStore(guildID, newPage)
 
           storePage = newPage
           storeEmbed.setDescription(newStoreItems)
