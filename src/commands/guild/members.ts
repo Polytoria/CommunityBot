@@ -7,5 +7,9 @@ export async function fetchMembers (id: number, page: number) {
     .map((member: any) => `[${member.user.username}](https://polytoria.com/users/${member.user.id})`)
     .join('\n')
 
+    if (memberData.length === 0) {
+      return 'There are no members in this guild.'
+    }
+
   return memberUsernames
 }

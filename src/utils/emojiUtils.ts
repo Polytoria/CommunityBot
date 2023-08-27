@@ -17,5 +17,8 @@ export default {
   creation: '<:Creation:914059883031175198>',
   error: '<:error:920132962887028788>',
   plus: '<:plus:1111789336074133565>',
-  plusdeluxe: '<:plusdeluxe:1111789389664755743>'
+  plusdeluxe: '<:plusdeluxe:1111789389664755743>',
+  request: '🤚',
+  private: '🔒',
+  public: '🔓'
 }
