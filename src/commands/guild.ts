@@ -27,13 +27,13 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
   switch (data.joinType) {
     case 'public':
-      joinType = '🔓 (public)'
+      joinType = '🔓'
       break
     case 'private':
-      joinType = '🔒 (private)'
+      joinType = '🔒'
       break
     case 'request':
-      joinType = '🖐️ (request to join)'
+      joinType = '🖐️'
       break
   }
 
