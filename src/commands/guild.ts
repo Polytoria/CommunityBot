@@ -3,6 +3,8 @@ import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 import emojiUtils from '../utils/emojiUtils.js'
+import { fetchMembers } from './guild/members.js'
+import { fetchStore } from './guild/store.js'
 
 export async function guild (message: Message, args: string[]): Promise<Message | null> {
   const guildID: number = parseInt(args[0])
@@ -73,28 +75,16 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     embed.setImage(data.banner)
   }
 
-  const memberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/members?page=1&limit=15`)
-  const memberData = memberResponse.data.members
-  const memberUsernames = memberData
-    .map((member: any) => `[${member.user.username}](https://polytoria.com/users/${member.user.id})`)
-    .join('\n')
-
   const memberEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Members ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
-    .setDescription(memberUsernames)
+    .setDescription(await fetchMembers(guildID, 1))
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
-  const storeResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}/store?page=1&limit=15`)
-  const storeData = storeResponse.data.assets
-  const storeItems = storeData
-    .map((item: any, index: number) => '``' + (index + 1) + '``' + ` [${item.name}](https://polytoria.com/store/${item.id})`)
-    .join('\n')
-
   const storeEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Store ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
-    .setDescription(storeItems)
+    .setDescription(await fetchStore(guildID, 1))
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
@@ -129,12 +119,8 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       new ButtonBuilder()
         .setURL(`https://polytoria.com/guilds/${data.id}`)
         .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
-    )
-    .addComponents(
-      membersButton
-    )
-    .addComponents(
+        .setStyle(ButtonStyle.Link),
+      membersButton,
       storeButton
     )
 
@@ -182,6 +168,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
       guildButtonCollector.on('collect', async () => {
         membersButton.setDisabled(false)
+        storeButton.setDisabled(false)
         nextButton.setDisabled(true)
         prevButton.setDisabled(true)
         await reply.edit({

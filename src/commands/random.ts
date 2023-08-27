@@ -1,43 +1,52 @@
-import { Message, EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder, ComponentType, BaseInteraction } from 'discord.js'
+import { Message, EmbedBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, BaseInteraction, StringSelectMenuOptionBuilder } from 'discord.js'
+
+// Import Random Files
 import { randomPlace } from './random/randomPlace.js'
 import { randomUser } from './random/randomUser.js'
 import { randomGuild } from './random/randomGuild.js'
 import { randomStore } from './random/randomStore.js'
-import { store } from './store.js'
 
-export async function random (message: Message, args: any[]): Promise<Message<boolean>> {
-  let InitialType = null
+export async function random (message: Message, args: any[]) {
+  let InitialType: any = null
   if (args.length === 0) {
     const embed = new EmbedBuilder()
       .setTitle('Randomizer!')
-      .setDescription('Pick an asset type to get a random one! (or specify "place", "user", "guild", or "store" when executing the command!)')
+      .setColor(0xFF5454)
+      .setDescription('Pick an asset type to get a random one! (or specify "place", "user", "guild", or "store" when executing the command)')
 
-    const placeButton = new ButtonBuilder()
+    const placeOption = new StringSelectMenuOptionBuilder()
       .setLabel('Place')
-      .setStyle(ButtonStyle.Primary)
-      .setCustomId('place_button')
+      .setDescription('https://polytoria.com/places/')
+      .setValue('place')
 
-    const userButton = new ButtonBuilder()
+    const userOption = new StringSelectMenuOptionBuilder()
       .setLabel('User')
-      .setStyle(ButtonStyle.Primary)
-      .setCustomId('user_button')
+      .setDescription('https://polytoria.com/users/')
+      .setValue('user')
 
-    const guildButton = new ButtonBuilder()
+    const guildOption = new StringSelectMenuOptionBuilder()
       .setLabel('Guild')
-      .setStyle(ButtonStyle.Primary)
-      .setCustomId('guild_button')
+      .setDescription('https://polytoria.com/guilds/')
+      .setValue('guild')
 
-    const storeButton = new ButtonBuilder()
+    const storeOption = new StringSelectMenuOptionBuilder()
       .setLabel('Store')
-      .setStyle(ButtonStyle.Primary)
-      .setCustomId('store_button')
+      .setDescription('https://polytoria.com/store/')
+      .setValue('store')
 
-    const actionRow = new ActionRowBuilder<ButtonBuilder>()
+    const selectMenu = new StringSelectMenuBuilder()
+      .setPlaceholder('Asset Type...')
+      .setCustomId('select')
+      .addOptions(
+        placeOption,
+        userOption,
+        guildOption,
+        storeOption
+      )
+
+    const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
       .addComponents(
-        placeButton,
-        userButton,
-        guildButton,
-        storeButton
+        selectMenu
       )
 
     const reply = await message.reply({
@@ -45,7 +54,21 @@ export async function random (message: Message, args: any[]): Promise<Message<bo
       components: [actionRow]
     })
 
-    const collector = reply.createMessageComponentCollector({
+    const selectCollector = reply.createMessageComponentCollector({
+      componentType: ComponentType.StringSelect,
+      filter: (interaction: BaseInteraction) => (
+        interaction.isStringSelectMenu() && interaction.user.id === message.author.id
+      ),
+      time: 60000
+    })
+
+    selectCollector.on('collect', async (interaction) => {
+      if (interaction.customId === 'select') { 
+        update(interaction.values[0], reply)
+      }
+    })
+
+    const buttonCollector = reply.createMessageComponentCollector({
       componentType: ComponentType.Button,
       filter: (interaction: BaseInteraction) => (
         interaction.isButton() && interaction.user.id === message.author.id
@@ -53,20 +76,22 @@ export async function random (message: Message, args: any[]): Promise<Message<bo
       time: 60000
     })
 
-    collector.on('collect', async (interaction) => {
-      if (InitialType === null) {
-        console.log(interaction.customId, interaction.customId.replace('_button', ''))
-        update(interaction.customId.replace('_button', ''), reply)
-      } else {
+    buttonCollector.on('collect', async (interaction) => {
+      if (interaction.customId === 'redo_button') { 
         update(InitialType, reply)
       }
     })
   } else if (args[0]) {
-    update(args[0], null)
+    if (args[0] === 'place' || args[0] === 'user' || args[0] === 'guild' || args[0] === 'store') {
+      update(args[0], null)
+    } else {
+      message.reply('That asset type doesn\'t exist! Please try again...')
+    }
   }
 
-  async function update(id, reply) {
-    let Response = null
+  async function update(id: string, reply: any) {
+    if (InitialType === null) {InitialType = id}
+    let Response: any = null
     switch(id) {
       case 'place':
         Response = await randomPlace(message, args)
@@ -87,33 +112,11 @@ export async function random (message: Message, args: any[]): Promise<Message<bo
     }
     
     if (Response !== null) {
-      console.log(Response)
       if (reply !== null) {
         await reply.edit(Response)
-
-        /*
-        if (Response.components[0]) {
-          const resCollector = reply.createMessageComponentCollector({
-            componentType: ComponentType.Button,
-            filter: (interaction: BaseInteraction) => (
-              interaction.isButton() && interaction.user.id === message.author.id
-            ),
-            time: 60000
-          })
-      
-          resCollector.on('collect', async (interaction) => {
-            if (interaction.customId === 'redo_button') {
-              update(id, reply)
-              return
-            } 
-          })
-        }
-        */
       } else {
         message.reply(Response)
       }
-    } else {
-      reply.edit('That asset type doesn\'t exist! Please try again...')
     }
   }
 }
