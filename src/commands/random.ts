@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, BaseInteraction, StringSelectMenuOptionBuilder } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, BaseInteraction, StringSelectMenuOptionBuilder } from 'discord.js'
 
 // Import Random Files
 import { randomPlace } from './random/randomPlace.js'
@@ -63,7 +63,7 @@ export async function random (message: Message, args: any[]) {
     })
 
     selectCollector.on('collect', async (interaction) => {
-      if (interaction.customId === 'select') { 
+      if (interaction.customId === 'select') {
         update(interaction.values[0], reply)
       }
     })
@@ -77,7 +77,7 @@ export async function random (message: Message, args: any[]) {
     })
 
     buttonCollector.on('collect', async (interaction) => {
-      if (interaction.customId === 'redo_button') { 
+      if (interaction.customId === 'redo_button') {
         update(InitialType, reply)
       }
     })
@@ -89,10 +89,10 @@ export async function random (message: Message, args: any[]) {
     }
   }
 
-  async function update(id: string, reply: any) {
-    if (InitialType === null) {InitialType = id}
+  async function update (id: string, reply: any) {
+    if (InitialType === null) { InitialType = id }
     let Response: any = null
-    switch(id) {
+    switch (id) {
       case 'place':
         Response = await randomPlace(message, args)
         InitialType = 'place'
@@ -110,7 +110,7 @@ export async function random (message: Message, args: any[]) {
         InitialType = 'store'
         break
     }
-    
+
     if (Response !== null) {
       if (reply !== null) {
         await reply.edit(Response)
