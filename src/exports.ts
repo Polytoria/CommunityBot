@@ -4,12 +4,12 @@ import { help } from './commands/help.js'
 import { guild } from './commands/guild/guilds.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
-import { storeSearch } from './commands/store-search.js'
+import { storeSearch } from './commands/search/store-search.js'
 import { commands } from './commands/commands.js'
 import { store } from './commands/store.js'
 import { random } from './commands/random.js'
 import { place } from './commands/place.js'
-import { toolbox } from './commands/toolbox.js'
+import { toolbox } from './commands/search/toolbox.js'
 
 export default {
   lookup: lookUp,

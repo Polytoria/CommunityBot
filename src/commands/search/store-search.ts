@@ -1,7 +1,7 @@
 import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
-import { responseHandler } from '../utils/responseHandler.js'
-import emojiUtils from '../utils/emojiUtils.js'
+import { responseHandler } from '../../utils/responseHandler.js'
+import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function storeSearch (message: Message, args: string[]) {
   const serachData = message.content.replace('p!store-search ', '').replace(/ /g, '%20')
