@@ -15,23 +15,23 @@ export async function random (message: Message, args: any[]) {
       .setDescription('Pick an asset type to get a random one! (or specify "place", "user", "guild", or "store" when executing the command)')
 
     const placeOption = new StringSelectMenuOptionBuilder()
-      .setLabel('Place')
-      .setDescription('https://polytoria.com/places/')
+      .setLabel('Places')
+      .setDescription('Get a random place that is available on Polytoria!')
       .setValue('place')
 
     const userOption = new StringSelectMenuOptionBuilder()
-      .setLabel('User')
-      .setDescription('https://polytoria.com/users/')
+      .setLabel('Users')
+      .setDescription('Get a random user that is on Polytoria!')
       .setValue('user')
 
     const guildOption = new StringSelectMenuOptionBuilder()
-      .setLabel('Guild')
-      .setDescription('https://polytoria.com/guilds/')
+      .setLabel('Guilds')
+      .setDescription('Get a random guild that is available on Polytoria!')
       .setValue('guild')
 
     const storeOption = new StringSelectMenuOptionBuilder()
       .setLabel('Store')
-      .setDescription('https://polytoria.com/store/')
+      .setDescription('Get a random asset that is available on Polytoria!')
       .setValue('store')
 
     const selectMenu = new StringSelectMenuBuilder()
