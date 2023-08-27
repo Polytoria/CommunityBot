@@ -59,31 +59,9 @@ export default [
       value: 'Information about Polytoria Community Bot',
       inline: false
     },
-    /*
     {
-      name: 'random-user',
-      value: 'Gives you a random user from Polytoria',
-      inline: false
-    },
-    {
-      name: 'random-place',
-      value: 'Gives you a random place from Polytoria',
-      inline: false
-    },
-    {
-      name: 'random-store',
-      value: 'Gives you a random asset from Polytoria',
-      inline: false
-    },
-    {
-      name: 'random-guild',
-      value: 'Gives you a random guild from Polytoria',
-      inline: false
-    }
-    */
-    {
-      name: 'random `asset type (optional)`',
-      value: 'Gives you a random asset on Polytoria',
+      name: 'random `option`',
+      value: 'Get random things from Polytoria\n`option` - The requested feature on Polytoria',
       inline: false
     }
   ]
