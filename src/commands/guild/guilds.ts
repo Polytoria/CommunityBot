@@ -1,10 +1,10 @@
 import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction } from 'discord.js'
 import axios from 'axios'
-import { responseHandler } from '../utils/responseHandler.js'
-import { dateUtils } from '../utils/dateUtils.js'
-import emojiUtils from '../utils/emojiUtils.js'
-import { fetchMembers } from './guild/members.js'
-import { fetchStore } from './guild/store.js'
+import { responseHandler } from '../../utils/responseHandler.js'
+import { dateUtils } from '../../utils/dateUtils.js'
+import emojiUtils from '../../utils/emojiUtils.js'
+import { fetchMembers } from './GuildMembers.js'
+import { fetchStore } from './GuildStore.js'
 
 export async function guild (message: Message, args: string[]): Promise<Message | null> {
   const guildID: number = parseInt(args[0])

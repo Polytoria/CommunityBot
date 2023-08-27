@@ -1,7 +1,7 @@
 import { lookUp, card, level, inventory } from './commands/user.js'
 import { cookie } from './commands/cookie.js'
 import { help } from './commands/help.js'
-import { guild } from './commands/guild.js'
+import { guild } from './commands/guild/guilds.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
 import { storeSearch } from './commands/store-search.js'
