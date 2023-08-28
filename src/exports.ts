@@ -5,6 +5,7 @@ import { guild } from './commands/guild/guilds.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
 import { storeSearch } from './commands/search/store-search.js'
+import { userSearch } from './commands/search/user-search.js'
 import { commands } from './commands/commands.js'
 import { store } from './commands/store.js'
 import { random } from './commands/random.js'
@@ -28,5 +29,6 @@ export default {
   'store-search': storeSearch,
   toolbox,
   commands,
-  random
+  random,
+  'user-search': userSearch
 }
