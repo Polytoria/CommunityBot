@@ -11,6 +11,7 @@ import { store } from './commands/store.js'
 import { random } from './commands/random.js'
 import { place } from './commands/place.js'
 import { toolbox } from './commands/search/toolbox.js'
+import { placeSearch } from './commands/search/place-search.js'
 
 export default {
   lookup: lookUp,
@@ -30,5 +31,6 @@ export default {
   toolbox,
   commands,
   random,
-  'user-search': userSearch
+  'user-search': userSearch,
+  'place-search': placeSearch
 }
