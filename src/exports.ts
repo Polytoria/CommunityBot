@@ -10,7 +10,7 @@ import { commands } from './commands/commands.js'
 import { store } from './commands/store.js'
 import { random } from './commands/random.js'
 import { place } from './commands/place.js'
-import { toolbox } from './commands/search/toolbox.js'
+import { toolbox } from './commands/search/toolbox-search.js'
 import { placeSearch } from './commands/search/place-search.js'
 
 export default {
