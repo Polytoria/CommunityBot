@@ -23,7 +23,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     return message.channel.send(errResult.displayText)
   }
 
-  let joinType: string
+  let joinType!: string
 
   switch (data.joinType) {
     case 'public':
