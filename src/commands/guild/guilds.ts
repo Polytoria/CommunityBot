@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
@@ -89,40 +89,40 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
-  const guildButton = new ButtonBuilder()
-    .setLabel('Guild')
-    .setStyle(ButtonStyle.Primary)
-    .setCustomId('guild_button')
-
-  const membersButton = new ButtonBuilder()
-    .setLabel('Members')
-    .setStyle(ButtonStyle.Primary)
-    .setCustomId('members_button')
-
-  const storeButton = new ButtonBuilder()
-    .setLabel('Guild Store')
-    .setStyle(ButtonStyle.Success)
-    .setCustomId('store_button')
-
-  const nextButton = new ButtonBuilder()
-    .setLabel('Next')
-    .setStyle(ButtonStyle.Success)
-    .setCustomId('next_button')
+  const dropdown = new StringSelectMenuBuilder()
+    .setCustomId('dropdown_menu')
+    .setPlaceholder('Choose a guild feature to view!')
+    .addOptions([
+      {
+        label: '🛡️ Guild',
+        value: 'guild_option'
+      },
+      {
+        label: '🧑‍🤝‍🧑 Members',
+        value: 'members_option'
+      },
+      {
+        label: '🏪 Guild Store',
+        value: 'store_option'
+      },
+      {
+        label: '📢 Shouts',
+        value: 'shouts_option'
+      }
+    ])
 
   const prevButton = new ButtonBuilder()
     .setLabel('Previous')
     .setStyle(ButtonStyle.Danger)
     .setCustomId('prev_button')
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/guilds/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link),
-      membersButton,
-      storeButton
-    )
+  const nextButton = new ButtonBuilder()
+    .setLabel('Next')
+    .setStyle(ButtonStyle.Success)
+    .setCustomId('next_button')
+
+  const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
+    .addComponents(dropdown)
 
   const reply = await message.reply({
     embeds: [embed],
@@ -130,12 +130,13 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   })
 
   let memberPage = 1
-  let storePage = 1
+  const storePage = 1
 
   const collector = reply.createMessageComponentCollector({
-    componentType: ComponentType.Button,
+    componentType: ComponentType.SelectMenu,
     filter: (interaction: BaseInteraction) => (
-      interaction.isButton() && interaction.user.id === message.author.id
+      interaction.isStringSelectMenu() && interaction.customId === 'dropdown_menu' &&
+      interaction.user.id === message.author.id
     ),
     time: 60000
   })
@@ -143,191 +144,86 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   collector.on('collect', async (interaction) => {
     await interaction.deferUpdate() // Defer the interaction
 
-    if (interaction.customId === 'members_button') {
-      membersButton.setDisabled(true)
-      storeButton.setDisabled(true)
-      nextButton.setDisabled(false)
-      prevButton.setDisabled(true)
+    const selectedOption = interaction.values[0]
+
+    if (selectedOption === 'guild_option') {
+      await reply.edit({
+        embeds: [embed],
+        components: [actionRow]
+      })
+    } else if (selectedOption === 'members_option') {
+      const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
+      memberEmbed.setDescription(newMemberUsernames)
 
       await reply.edit({
         embeds: [memberEmbed],
         components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
         ]
       })
-
-      const guildButtonCollector = reply.createMessageComponentCollector({
-        componentType: ComponentType.Button,
-        filter: (btnInteraction: BaseInteraction) => (
-          btnInteraction.isButton() &&
-          btnInteraction.customId === 'guild_button' &&
-          btnInteraction.user.id === message.author.id
-        ),
-        time: 60000
-      })
-
-      guildButtonCollector.on('collect', async () => {
-        membersButton.setDisabled(false)
-        storeButton.setDisabled(false)
-        nextButton.setDisabled(true)
-        prevButton.setDisabled(true)
-        await reply.edit({
-          embeds: [embed],
-          components: [actionRow]
-        })
-      })
-
-      const nextButtonCollector = reply.createMessageComponentCollector({
-        componentType: ComponentType.Button,
-        filter: (btnInteraction: BaseInteraction) => (
-          btnInteraction.isButton() &&
-          btnInteraction.customId === 'next_button' &&
-          btnInteraction.user.id === message.author.id
-        ),
-        time: 60000
-      })
-
-      nextButtonCollector.on('collect', async () => {
-        const newPage = memberPage + 1
-        const newMemberUsernames: string = await fetchMembers(guildID, newPage)
-
-        memberPage = newPage
-        memberEmbed.setDescription(newMemberUsernames)
-
-        nextButton.setDisabled(false)
-        prevButton.setDisabled(false)
-
-        await reply.edit({
-          embeds: [memberEmbed],
-          components: [
-            new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
-          ]
-        })
-      })
-
-      const prevButtonCollector = reply.createMessageComponentCollector({
-        componentType: ComponentType.Button,
-        filter: (btnInteraction: BaseInteraction) => (
-          btnInteraction.isButton() &&
-          btnInteraction.customId === 'prev_button' &&
-          btnInteraction.user.id === message.author.id
-        ),
-        time: 60000
-      })
-
-      prevButtonCollector.on('collect', async () => {
-        if (memberPage > 1) {
-          const newPage = memberPage - 1
-          const newMemberUsernames: string = await fetchMembers(guildID, newPage)
-
-          memberPage = newPage
-          memberEmbed.setDescription(newMemberUsernames)
-
-          nextButton.setDisabled(false)
-          prevButton.setDisabled(false)
-
-          await reply.edit({
-            embeds: [memberEmbed],
-            components: [
-              new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
-            ]
-          })
-        }
-      })
-    }
-
-    if (interaction.customId === 'store_button') {
-      membersButton.setDisabled(true)
-      storeButton.setDisabled(true)
-      nextButton.setDisabled(false)
-      prevButton.setDisabled(true)
+    } else if (selectedOption === 'store_option') {
+      const newStoreItems: string = await fetchStore(guildID, storePage)
+      storeEmbed.setDescription(newStoreItems)
 
       await reply.edit({
         embeds: [storeEmbed],
         components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
         ]
       })
+    }
+  })
 
-      const guildButtonCollector = reply.createMessageComponentCollector({
-        componentType: ComponentType.Button,
-        filter: (btnInteraction: BaseInteraction) => (
-          btnInteraction.isButton() &&
-          btnInteraction.customId === 'guild_button' &&
-          btnInteraction.user.id === message.author.id
-        ),
-        time: 60000
-      })
+  const prevButtonCollector = reply.createMessageComponentCollector({
+    componentType: ComponentType.Button,
+    filter: (btnInteraction: BaseInteraction) => (
+      btnInteraction.isButton() &&
+      btnInteraction.customId === 'prev_button' &&
+      btnInteraction.user.id === message.author.id
+    ),
+    time: 60000
+  })
 
-      guildButtonCollector.on('collect', async () => {
-        membersButton.setDisabled(false)
-        storeButton.setDisabled(false)
-        nextButton.setDisabled(true)
-        prevButton.setDisabled(true)
-        await reply.edit({
-          embeds: [embed],
-          components: [actionRow]
-        })
-      })
+  prevButtonCollector.on('collect', async () => {
+    if (memberPage > 1) {
+      memberPage--
+      const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
+      memberEmbed.setDescription(newMemberUsernames)
 
-      const nextButtonCollector = reply.createMessageComponentCollector({
-        componentType: ComponentType.Button,
-        filter: (btnInteraction: BaseInteraction) => (
-          btnInteraction.isButton() &&
-          btnInteraction.customId === 'next_button' &&
-          btnInteraction.user.id === message.author.id
-        ),
-        time: 60000
-      })
-
-      nextButtonCollector.on('collect', async () => {
-        const newPage = storePage + 1
-        const newStoreItems: string = await fetchStore(guildID, newPage)
-
-        storePage = newPage
-        storeEmbed.setDescription(newStoreItems)
-
-        nextButton.setDisabled(false)
-        prevButton.setDisabled(false)
-
-        await reply.edit({
-          embeds: [storeEmbed],
-          components: [
-            new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
-          ]
-        })
-      })
-
-      const prevButtonCollector = reply.createMessageComponentCollector({
-        componentType: ComponentType.Button,
-        filter: (btnInteraction: BaseInteraction) => (
-          btnInteraction.isButton() &&
-          btnInteraction.customId === 'prev_button' &&
-          btnInteraction.user.id === message.author.id
-        ),
-        time: 60000
-      })
-
-      prevButtonCollector.on('collect', async () => {
-        if (memberPage > 1) {
-          const newPage = storePage - 1
-          const newStoreItems: string = await fetchStore(guildID, newPage)
-
-          storePage = newPage
-          storeEmbed.setDescription(newStoreItems)
-
-          nextButton.setDisabled(false)
-          prevButton.setDisabled(false)
-
-          await reply.edit({
-            embeds: [storeEmbed],
-            components: [
-              new ActionRowBuilder<ButtonBuilder>().addComponents(guildButton, prevButton, nextButton)
-            ]
-          })
-        }
+      await reply.edit({
+        embeds: [memberEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
+        ]
       })
     }
+  })
+
+  const nextButtonCollector = reply.createMessageComponentCollector({
+    componentType: ComponentType.Button,
+    filter: (btnInteraction: BaseInteraction) => (
+      btnInteraction.isButton() &&
+      btnInteraction.customId === 'next_button' &&
+      btnInteraction.user.id === message.author.id
+    ),
+    time: 60000
+  })
+
+  nextButtonCollector.on('collect', async () => {
+    memberPage++
+    const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
+    memberEmbed.setDescription(newMemberUsernames)
+
+    await reply.edit({
+      embeds: [memberEmbed],
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+        actionRow
+      ]
+    })
   })
 
   return reply
