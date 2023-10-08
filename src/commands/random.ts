@@ -65,6 +65,7 @@ export async function random (message: Message, args: any[]) {
   selectCollector.on('collect', async (interaction) => {
     if (interaction.customId === 'select') {
       InitialType = interaction.values[0] // Update InitialType here
+      await interaction.deferUpdate()
       update(InitialType, reply)
     }
   })
@@ -80,6 +81,7 @@ export async function random (message: Message, args: any[]) {
   buttonCollector.on('collect', async (interaction) => {
     if (InitialType !== null) {
       update(InitialType, reply)
+      await interaction.deferUpdate()
     }
   })
 
