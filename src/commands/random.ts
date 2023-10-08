@@ -12,7 +12,7 @@ export async function random (message: Message, args: any[]) {
   const embed = new EmbedBuilder()
     .setTitle('Randomizer!')
     .setColor(0xFF5454)
-    .setDescription("Welcome to the randomizer! Pick a feature on Polytoria that you would like us to randomize for you.")
+    .setDescription('Welcome to the randomizer! Pick a feature on Polytoria that you would like us to randomize for you.')
 
   const placeOption = new StringSelectMenuOptionBuilder()
     .setLabel('🎮 Places')
