@@ -5,6 +5,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { fetchMembers } from './GuildMembers.js'
 import { fetchStore } from './GuildStore.js'
+import { fetchShouts } from './GuildShouts.js' // Import the fetchShouts function
 
 export async function guild (message: Message, args: string[]): Promise<Message | null> {
   const guildID: number = parseInt(args[0])
@@ -77,14 +78,22 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
   const memberEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Members ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
-    .setDescription(await fetchMembers(guildID, 1))
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
+  // Declare storePage
+  let storePage = 1
+
   const storeEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Store ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
-    .setDescription(await fetchStore(guildID, 1))
+    .setThumbnail(data.thumbnail)
+    .setColor(data.color)
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
+
+  // Add a shouts section
+  const shoutsEmbed = new EmbedBuilder()
+    .setTitle(data.name + ' - Shouts')
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
@@ -105,6 +114,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
         label: '🏪 Guild Store',
         value: 'store_option'
       },
+      // Add shouts option to the dropdown
       {
         label: '📢 Shouts',
         value: 'shouts_option'
@@ -129,8 +139,11 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     components: [actionRow]
   })
 
+  // Add separate page variables for members and shouts
   let memberPage = 1
-  const storePage = 1
+  let shoutPage = 1
+
+  let selectedOption: string = 'guild_option' // Initialize selectedOption
 
   const collector = reply.createMessageComponentCollector({
     componentType: ComponentType.SelectMenu,
@@ -144,7 +157,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   collector.on('collect', async (interaction) => {
     await interaction.deferUpdate() // Defer the interaction
 
-    const selectedOption = interaction.values[0]
+    selectedOption = interaction.values[0] // Update the selected option
 
     if (selectedOption === 'guild_option') {
       await reply.edit({
@@ -173,9 +186,21 @@ export async function guild (message: Message, args: string[]): Promise<Message 
           actionRow
         ]
       })
+    } else if (selectedOption === 'shouts_option') {
+      const newShouts: string = await fetchShouts(guildID, shoutPage)
+      shoutsEmbed.setDescription(newShouts)
+
+      await reply.edit({
+        embeds: [shoutsEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
+        ]
+      })
     }
   })
 
+  // Update the button collectors to check for their respective pages
   const prevButtonCollector = reply.createMessageComponentCollector({
     componentType: ComponentType.Button,
     filter: (btnInteraction: BaseInteraction) => (
@@ -187,13 +212,39 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   })
 
   prevButtonCollector.on('collect', async () => {
-    if (memberPage > 1) {
+    if (selectedOption === 'members_option' && memberPage > 1) {
       memberPage--
       const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
       memberEmbed.setDescription(newMemberUsernames)
 
       await reply.edit({
         embeds: [memberEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
+        ]
+      })
+    }
+    if (selectedOption === 'shouts_option' && shoutPage > 1) {
+      shoutPage--
+      const newShouts: string = await fetchShouts(guildID, shoutPage)
+      shoutsEmbed.setDescription(newShouts)
+
+      await reply.edit({
+        embeds: [shoutsEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
+        ]
+      })
+    }
+    if (selectedOption === 'store_option' && storePage > 1) {
+      storePage--
+      const newStoreItems: string = await fetchStore(guildID, storePage)
+      storeEmbed.setDescription(newStoreItems)
+
+      await reply.edit({
+        embeds: [storeEmbed],
         components: [
           new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
           actionRow
@@ -213,17 +264,45 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   })
 
   nextButtonCollector.on('collect', async () => {
-    memberPage++
-    const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
-    memberEmbed.setDescription(newMemberUsernames)
+    if (selectedOption === 'members_option') {
+      memberPage++
+      const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
+      memberEmbed.setDescription(newMemberUsernames)
 
-    await reply.edit({
-      embeds: [memberEmbed],
-      components: [
-        new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-        actionRow
-      ]
-    })
+      await reply.edit({
+        embeds: [memberEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
+        ]
+      })
+    }
+    if (selectedOption === 'shouts_option') {
+      shoutPage++
+      const newShouts: string = await fetchShouts(guildID, shoutPage)
+      shoutsEmbed.setDescription(newShouts)
+
+      await reply.edit({
+        embeds: [shoutsEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
+        ]
+      })
+    }
+    if (selectedOption === 'store_option') {
+      storePage++
+      const newStoreItems: string = await fetchStore(guildID, storePage)
+      storeEmbed.setDescription(newStoreItems)
+
+      await reply.edit({
+        embeds: [storeEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRow
+        ]
+      })
+    }
   })
 
   return reply
