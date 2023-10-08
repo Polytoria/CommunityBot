@@ -88,7 +88,6 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
-  // Add a shouts section
   const shoutsEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Shouts')
     .setThumbnail(data.thumbnail)
