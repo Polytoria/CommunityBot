@@ -155,7 +155,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     selectedOption = interaction.values[0]
 
     if (selectedOption === 'guild_option') {
-      await reply.edit({
+      await interaction.editReply({
         embeds: [embed],
         components: [actionRow]
       })
@@ -163,7 +163,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
       memberEmbed.setDescription(newMemberUsernames)
 
-      await reply.edit({
+      await interaction.editReply({
         embeds: [memberEmbed],
         components: [
           new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
@@ -174,7 +174,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       const newStoreItems: string = await fetchStore(guildID, storePage)
       storeEmbed.setDescription(newStoreItems)
 
-      await reply.edit({
+      await interaction.editReply({
         embeds: [storeEmbed],
         components: [
           new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
@@ -185,7 +185,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       const newShouts: string = await fetchShouts(guildID, shoutPage)
       shoutsEmbed.setDescription(newShouts)
 
-      await reply.edit({
+      await interaction.editReply({
         embeds: [shoutsEmbed],
         components: [
           new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
@@ -205,45 +205,51 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     time: 60000
   })
 
-  prevButtonCollector.on('collect', async () => {
-    if (selectedOption === 'members_option' && memberPage > 1) {
-      memberPage--
-      const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
-      memberEmbed.setDescription(newMemberUsernames)
+  prevButtonCollector.on('collect', async (interaction) => {
+    try {
+      await interaction.deferUpdate()
 
-      await reply.edit({
-        embeds: [memberEmbed],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-          actionRow
-        ]
-      })
-    }
-    if (selectedOption === 'shouts_option' && shoutPage > 1) {
-      shoutPage--
-      const newShouts: string = await fetchShouts(guildID, shoutPage)
-      shoutsEmbed.setDescription(newShouts)
+      if (selectedOption === 'members_option' && memberPage > 1) {
+        memberPage--
+        const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
+        memberEmbed.setDescription(newMemberUsernames)
 
-      await reply.edit({
-        embeds: [shoutsEmbed],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-          actionRow
-        ]
-      })
-    }
-    if (selectedOption === 'store_option' && storePage > 1) {
-      storePage--
-      const newStoreItems: string = await fetchStore(guildID, storePage)
-      storeEmbed.setDescription(newStoreItems)
+        await interaction.editReply({
+          embeds: [memberEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRow
+          ]
+        })
+      }
+      if (selectedOption === 'shouts_option' && shoutPage > 1) {
+        shoutPage--
+        const newShouts: string = await fetchShouts(guildID, shoutPage)
+        shoutsEmbed.setDescription(newShouts)
 
-      await reply.edit({
-        embeds: [storeEmbed],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-          actionRow
-        ]
-      })
+        await interaction.editReply({
+          embeds: [shoutsEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRow
+          ]
+        })
+      }
+      if (selectedOption === 'store_option' && storePage > 1) {
+        storePage--
+        const newStoreItems: string = await fetchStore(guildID, storePage)
+        storeEmbed.setDescription(newStoreItems)
+
+        await interaction.editReply({
+          embeds: [storeEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRow
+          ]
+        })
+      }
+    } catch (error) {
+      console.error('Error handling interaction:', error)
     }
   })
 
@@ -257,45 +263,51 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     time: 60000
   })
 
-  nextButtonCollector.on('collect', async () => {
-    if (selectedOption === 'members_option') {
-      memberPage++
-      const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
-      memberEmbed.setDescription(newMemberUsernames)
+  nextButtonCollector.on('collect', async (interaction) => {
+    try {
+      await interaction.deferUpdate()
 
-      await reply.edit({
-        embeds: [memberEmbed],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-          actionRow
-        ]
-      })
-    }
-    if (selectedOption === 'shouts_option') {
-      shoutPage++
-      const newShouts: string = await fetchShouts(guildID, shoutPage)
-      shoutsEmbed.setDescription(newShouts)
+      if (selectedOption === 'members_option') {
+        memberPage++
+        const newMemberUsernames: string = await fetchMembers(guildID, memberPage)
+        memberEmbed.setDescription(newMemberUsernames)
 
-      await reply.edit({
-        embeds: [shoutsEmbed],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-          actionRow
-        ]
-      })
-    }
-    if (selectedOption === 'store_option') {
-      storePage++
-      const newStoreItems: string = await fetchStore(guildID, storePage)
-      storeEmbed.setDescription(newStoreItems)
+        await interaction.editReply({
+          embeds: [memberEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRow
+          ]
+        })
+      }
+      if (selectedOption === 'shouts_option') {
+        shoutPage++
+        const newShouts: string = await fetchShouts(guildID, shoutPage)
+        shoutsEmbed.setDescription(newShouts)
 
-      await reply.edit({
-        embeds: [storeEmbed],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-          actionRow
-        ]
-      })
+        await interaction.editReply({
+          embeds: [shoutsEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRow
+          ]
+        })
+      }
+      if (selectedOption === 'store_option') {
+        storePage++
+        const newStoreItems: string = await fetchStore(guildID, storePage)
+        storeEmbed.setDescription(newStoreItems)
+
+        await interaction.editReply({
+          embeds: [storeEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRow
+          ]
+        })
+      }
+    } catch (error) {
+      console.error('Error handling interaction:', error)
     }
   })
 
