@@ -5,7 +5,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { fetchMembers } from './GuildMembers.js'
 import { fetchStore } from './GuildStore.js'
-import { fetchShouts } from './GuildShouts.js' // Import the fetchShouts function
+import { fetchShouts } from './GuildShouts.js'
 
 export async function guild (message: Message, args: string[]): Promise<Message | null> {
   const guildID: number = parseInt(args[0])
@@ -82,9 +82,6 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
-  // Declare storePage
-  let storePage = 1
-
   const storeEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Store ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setThumbnail(data.thumbnail)
@@ -114,7 +111,6 @@ export async function guild (message: Message, args: string[]): Promise<Message 
         label: '🏪 Guild Store',
         value: 'store_option'
       },
-      // Add shouts option to the dropdown
       {
         label: '📢 Shouts',
         value: 'shouts_option'
@@ -139,11 +135,11 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     components: [actionRow]
   })
 
-  // Add separate page variables for members and shouts
+  let storePage = 1
   let memberPage = 1
   let shoutPage = 1
 
-  let selectedOption: string = 'guild_option' // Initialize selectedOption
+  let selectedOption: string = 'guild_option'
 
   const collector = reply.createMessageComponentCollector({
     componentType: ComponentType.SelectMenu,
@@ -155,9 +151,9 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   })
 
   collector.on('collect', async (interaction) => {
-    await interaction.deferUpdate() // Defer the interaction
+    await interaction.deferUpdate()
 
-    selectedOption = interaction.values[0] // Update the selected option
+    selectedOption = interaction.values[0]
 
     if (selectedOption === 'guild_option') {
       await reply.edit({
@@ -200,7 +196,6 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     }
   })
 
-  // Update the button collectors to check for their respective pages
   const prevButtonCollector = reply.createMessageComponentCollector({
     componentType: ComponentType.Button,
     filter: (btnInteraction: BaseInteraction) => (
