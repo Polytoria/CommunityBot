@@ -1,15 +1,17 @@
 import { lookUp, card, level, inventory } from './commands/user.js'
 import { cookie } from './commands/cookie.js'
 import { help } from './commands/help.js'
-import { guild } from './commands/guild.js'
+import { guild } from './commands/guild/guilds.js'
 import { info } from './commands/info.js'
 import { status } from './commands/status.js'
-import { storeSearch } from './commands/store-search.js'
+import { storeSearch } from './commands/search/store-search.js'
+import { userSearch } from './commands/search/user-search.js'
 import { commands } from './commands/commands.js'
 import { store } from './commands/store.js'
-import { randomUser, randomPlace, randomGuild, randomStore } from './commands/random.js'
+import { random } from './commands/random.js'
 import { place } from './commands/place.js'
-import { toolbox } from './commands/toolbox.js'
+import { toolbox } from './commands/search/toolbox-search.js'
+import { placeSearch } from './commands/search/place-search.js'
 
 export default {
   lookup: lookUp,
@@ -20,10 +22,6 @@ export default {
   store,
   friends: commands,
   avatar: commands,
-  'random-place': randomPlace,
-  'random-user': randomUser,
-  'random-guild': randomGuild,
-  'random-store': randomStore,
   help,
   level,
   info,
@@ -31,5 +29,8 @@ export default {
   status,
   'store-search': storeSearch,
   toolbox,
-  commands
+  commands,
+  random,
+  'user-search': userSearch,
+  'place-search': placeSearch
 }

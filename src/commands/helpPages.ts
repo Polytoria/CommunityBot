@@ -22,7 +22,7 @@ export default [
     },
     {
       name: 'guild `id`',
-      value: "View guild's information and members \n`id` - Guild's ID",
+      value: "View all information relating to the specified guild \n`id` - Guild's ID",
       inline: false
     }
   ],
@@ -60,23 +60,8 @@ export default [
       inline: false
     },
     {
-      name: 'random-user',
-      value: 'Gives you a random user from Polytoria',
-      inline: false
-    },
-    {
-      name: 'random-place',
-      value: 'Gives you a random place from Polytoria',
-      inline: false
-    },
-    {
-      name: 'random-store',
-      value: 'Gives you a random asset from Polytoria',
-      inline: false
-    },
-    {
-      name: 'random-guild',
-      value: 'Gives you a random guild from Polytoria',
+      name: 'random',
+      value: 'Get random things from Polytoria',
       inline: false
     }
   ]

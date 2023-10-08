@@ -7,8 +7,6 @@ export async function randomGuild (message: Message, args: string[]) {
   const randomId = randomUtils.randomInt(1, 507)
   const apiUrl = `https://api.polytoria.com/v1/guilds/${randomId}`
 
-  console.log('API URL:', apiUrl) // Log the API URL to the console
-
   const randomData = await randomUtils.randomize(
     apiUrl,
     function (response: any) {
@@ -65,16 +63,22 @@ export async function randomGuild (message: Message, args: string[]) {
     embed.setImage(data.banner)
   }
 
+  const redoButton = new ButtonBuilder()
+    .setLabel('Re-do Randomize')
+    .setStyle(ButtonStyle.Primary)
+    .setCustomId('redo_button')
+
   const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
       new ButtonBuilder()
         .setURL(`https://polytoria.com/guilds/${data.id}`)
         .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
+        .setStyle(ButtonStyle.Link),
+      redoButton
     )
 
-  return message.reply({
+  return {
     embeds: [embed],
     components: [actionRow]
-  })
+  }
 }
