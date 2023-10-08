@@ -22,7 +22,7 @@ export default [
     },
     {
       name: 'guild `id`',
-      value: "View guild's information and members \n`id` - Guild's ID",
+      value: "View all information relating to the specified guild \n`id` - Guild's ID",
       inline: false
     }
   ],
@@ -60,8 +60,8 @@ export default [
       inline: false
     },
     {
-      name: 'random `option`',
-      value: 'Get random things from Polytoria\n`option` - The requested feature on Polytoria',
+      name: 'random',
+      value: 'Get random things from Polytoria',
       inline: false
     }
   ]
