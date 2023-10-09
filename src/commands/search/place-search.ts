@@ -3,10 +3,10 @@ import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 
 export async function placeSearch (message: Message, args: string[]) {
-  const serachData = message.content.replace('p!place-search ', '').replace(/ /g, '%20')
+  const searchData = args[0]
 
   const response = await axios.get(
-    `https://polytoria.com/api/places?page=1&search=${serachData}&genre=all&sort=popular`,
+    `https://polytoria.com/api/places?page=1&search=${searchData}&genre=all&sort=popular`,
     { params: {}, validateStatus: () => true }
   )
   const data = response.data.data
@@ -18,7 +18,7 @@ export async function placeSearch (message: Message, args: string[]) {
   }
 
   const embed = new EmbedBuilder({
-    title: `Search results for "${serachData}"`,
+    title: `Search results for "${searchData}"`,
     color: 0xFF5454
   })
 
@@ -35,7 +35,8 @@ export async function placeSearch (message: Message, args: string[]) {
 
   embed.setDescription(description)
 
-  return message.channel.send({
-    embeds: [embed]
-  })
+  return {
+    embeds: [embed],
+    components: []
+  }
 }

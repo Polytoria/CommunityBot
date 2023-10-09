@@ -2,7 +2,7 @@ import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } f
 import axios from 'axios'
 import { v4 } from 'uuid'
 
-export async function toolbox (message: Message, args: string[]) {
+export async function toolboxSearch (message: Message, args: string[]) {
   let currentPage = 1
   let searchQuery = ''
 
@@ -28,15 +28,15 @@ export async function toolbox (message: Message, args: string[]) {
     }
 
     // @ts-expect-error
-    response.data.data.forEach((data) => {
-      resultString += `[${data.name}](https://polytoria.com/models/${data.id})\n`
+    response.data.data.forEach((data, index) => {
+      resultString += `\`${index}\` [${data.name}](https://polytoria.com/models/${data.id})\n`
     })
 
     return resultString
   }
 
   const embed = new EmbedBuilder({
-    title: 'Toolbox',
+    title: `Search results for "${searchQuery}"`,
     color: 0xFF5454,
     thumbnail: {
       url: 'https://starmanthegamer.com/Blocks.png'
@@ -74,9 +74,10 @@ export async function toolbox (message: Message, args: string[]) {
   // Create Interaction event for 2 minutes
   const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
 
-  const msg = await message.channel.send({ embeds: [embed], components: [row] })
+  //const msg = await message.channel.send({ embeds: [embed], components: [row] })
 
   // Listen for Button Interaction
+  /*
   collector.on('collect', async (i) => {
     if (i.user.id !== message.author.id) {
       await i.reply({ content: ' ', ephemeral: true })
@@ -116,6 +117,10 @@ export async function toolbox (message: Message, args: string[]) {
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })
+  */
 
-  return msg
+  return {
+    embeds: [embed],
+    components: []
+  }
 }

@@ -35,7 +35,8 @@ export async function storeSearch (message: Message, args: string[]) {
 
   embed.setDescription(description)
 
-  return message.channel.send({
-    embeds: [embed]
-  })
+  return {
+    embeds: [embed],
+    components: []
+  }
 }
