@@ -36,7 +36,7 @@ export async function toolboxSearch (message: Message, args: string[]) {
   }
 
   const embed = new EmbedBuilder({
-    title: `Search results for "${searchQuery}"`,
+    title: `Search results for "${args}"`,
     color: 0xFF5454,
     thumbnail: {
       url: 'https://starmanthegamer.com/Blocks.png'
@@ -74,10 +74,10 @@ export async function toolboxSearch (message: Message, args: string[]) {
   // Create Interaction event for 2 minutes
   const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
 
-  //const msg = await message.channel.send({ embeds: [embed], components: [row] })
+  const msg = await message.channel.send({ embeds: [embed], components: [row] })
 
   // Listen for Button Interaction
-  /*
+  
   collector.on('collect', async (i) => {
     if (i.user.id !== message.author.id) {
       await i.reply({ content: ' ', ephemeral: true })
@@ -117,7 +117,6 @@ export async function toolboxSearch (message: Message, args: string[]) {
     await msg.edit({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })
-  */
 
   return {
     embeds: [embed],
