@@ -60,6 +60,11 @@ export async function randomStore (message: Message, args: string[]) {
 
   const assetType = data.type.toLowerCase()
   if (!['audio', 'decal', 'mesh'].includes(assetType)) {
+    if (data.tags && data.tags.length > 0 && data.tags[0] !== '') {
+      embed.setDescription(data.description === '' ? 'No description set.' : data.description + '\n\n**Tags:** ' + (data.tags as string[]).map(tag => `\`${tag}\``).join(', '))
+    } else {
+      embed.setDescription(data.description === '' ? 'No description set.' : data.description)
+    }
     embed.addFields(
       {
         name: 'Price',
