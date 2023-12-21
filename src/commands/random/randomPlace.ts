@@ -4,7 +4,7 @@ import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function randomPlace (message: Message, args: string[]) {
-  const randomId = randomUtils.randomInt(1, 5988)
+  const randomId = randomUtils.randomInt(1, 7667)
   const apiUrl = `https://api.polytoria.com/v1/places/${randomId}`
 
   const randomData = await randomUtils.randomize(
