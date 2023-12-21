@@ -26,9 +26,41 @@ export async function randomPlace (message: Message, args: string[]) {
   const rating = data.rating
   const creator = data.creator
 
+  let externalDesc = ''
+
+  if (data.isActive === false) {
+    externalDesc += `${emojiUtils.private} **This place is currently private. Only the creator can join it.**\n`
+  }
+
+  externalDesc += '\n'
+
+  if (data.description === '') {
+    externalDesc += '*No description set.*'
+  } else {
+    externalDesc += data.description
+  }
+
+  let accessMessage = ''
+
+  switch (data.accessType) {
+    case 'everyone':
+      accessMessage = `${emojiUtils.public} **This place is currently joinable by everyone!**`
+      break
+    case 'purchase': {
+      const accessPrice = data.accessPrice || 0
+      accessMessage = `${emojiUtils.brick} **This place requires payment of ${accessPrice.toLocaleString()} bricks.**`
+      break
+    }
+    case 'whitelist':
+      accessMessage = `${emojiUtils.request} **This place is currently whitelisted.**`
+      break
+    default:
+      break
+  }
+
   const embed = new EmbedBuilder({
     title: data.name + (data.isFeatured === true ? emojiUtils.star : ''),
-    description: data.description,
+    description: `${accessMessage}\n${externalDesc}`,
     thumbnail: {
       url: `${data.thumbnail}`
     },
