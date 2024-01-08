@@ -5,7 +5,7 @@ Polytoria's Discord community bot rewritten in TypeScript.
 
 ### Installation instructions.
 
-**To run this bot it is recommended to use Node v16 LTS release.**
+**To run this bot it is recommended to use Node v20.10.0 LTS release.**
 
 #### Clone & Install dependencies.
 
