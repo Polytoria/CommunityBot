@@ -4,7 +4,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 
 export async function randomGuild (message: Message, args: string[]) {
-  const randomId = randomUtils.randomInt(1, 507)
+  const randomId = randomUtils.randomInt(1, 545)
   const apiUrl = `https://api.polytoria.com/v1/guilds/${randomId}`
 
   const randomData = await randomUtils.randomize(

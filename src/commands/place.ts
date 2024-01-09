@@ -25,10 +25,10 @@ export async function place (message: Message, args: string[]) {
   let externalDesc = ''
 
   if (data.isActive === false) {
-    externalDesc += `${emojiUtils.warning}  This place is currently private. Only the creator can join it.\n`
+    externalDesc += `${emojiUtils.private} **This place is currently private. Only the creator can join it.**\n`
   }
 
-  externalDesc += '\n\n'
+  externalDesc += '\n'
 
   if (data.description === '') {
     externalDesc += '*No description set.*'
@@ -36,9 +36,27 @@ export async function place (message: Message, args: string[]) {
     externalDesc += data.description
   }
 
+  let accessMessage = ''
+
+  switch (data.accessType) {
+    case 'everyone':
+      accessMessage = `${emojiUtils.public} **This place is currently joinable by everyone!**`
+      break
+    case 'purchase': {
+      const accessPrice = data.accessPrice || 0
+      accessMessage = `${emojiUtils.brick} **This place requires payment of ${accessPrice.toLocaleString()} bricks.**`
+      break
+    }
+    case 'whitelist':
+      accessMessage = `${emojiUtils.request} **This place is currently whitelisted.**`
+      break
+    default:
+      break
+  }
+
   const embed = new EmbedBuilder({
     title: (data.name + ' ' + (data.isFeatured === true ? emojiUtils.star : '')),
-    description: externalDesc,
+    description: `${accessMessage}\n${externalDesc}`,
     thumbnail: {
       url: `${data.thumbnail}`
     },
