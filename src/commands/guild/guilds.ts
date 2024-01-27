@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction, CommandInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
@@ -7,12 +7,15 @@ import { fetchMembers } from './GuildMembers.js'
 import { fetchStore } from './GuildStore.js'
 import { fetchShouts } from './GuildShouts.js'
 
-export async function guild (message: Message, args: string[]): Promise<Message | null> {
-  const guildID: number = parseInt(args[0])
+export async function guild (interaction:CommandInteraction) {
+  // @ts-expect-error
+  const guildID = interaction.options.getInteger("id")
 
-  if (args.length === 0) {
-    return message.reply('Please provide me with a guild ID before I can continue!')
+  if (guildID.length === 0) {
+    return await interaction.reply('Please provide me with a guild ID before I can continue!')
   }
+
+  await interaction.deferReply()
 
   const response = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}`, { validateStatus: () => true })
   const data = response.data
@@ -21,7 +24,11 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    return message.channel.send(errResult.displayText)
+    if(errResult.statusCode == 404){
+      return await interaction.editReply("Couldn't find the requested guild. Did you type in the correct guild ID?")
+    } else {
+      return await interaction.editReply(errResult.displayText)
+    }
   }
 
   let joinType!: string
@@ -129,7 +136,7 @@ export async function guild (message: Message, args: string[]): Promise<Message 
   const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
     .addComponents(dropdown)
 
-  const reply = await message.reply({
+  const reply = await interaction.editReply({
     embeds: [embed],
     components: [actionRow]
   })
@@ -142,17 +149,17 @@ export async function guild (message: Message, args: string[]): Promise<Message 
 
   const collector = reply.createMessageComponentCollector({
     componentType: ComponentType.SelectMenu,
-    filter: (interaction: BaseInteraction) => (
-      interaction.isStringSelectMenu() && interaction.customId === 'dropdown_menu' &&
-      interaction.user.id === message.author.id
+    filter: (messageInteraction: BaseInteraction) => (
+      messageInteraction.isStringSelectMenu() && messageInteraction.customId === 'dropdown_menu' &&
+      messageInteraction.user.id === interaction.user.id
     ),
     time: 60000
   })
 
-  collector.on('collect', async (interaction) => {
-    await interaction.deferUpdate()
+  collector.on('collect', async (messageInteraction) => {
+    await messageInteraction.deferUpdate()
 
-    selectedOption = interaction.values[0]
+    selectedOption = messageInteraction.values[0]
 
     if (selectedOption === 'guild_option') {
       await interaction.editReply({
@@ -200,14 +207,14 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     filter: (btnInteraction: BaseInteraction) => (
       btnInteraction.isButton() &&
       btnInteraction.customId === 'prev_button' &&
-      btnInteraction.user.id === message.author.id
+      btnInteraction.user.id === interaction.user.id
     ),
     time: 60000
   })
 
-  prevButtonCollector.on('collect', async (interaction) => {
+  prevButtonCollector.on('collect', async (buttonInteraction) => {
     try {
-      await interaction.deferUpdate()
+      await buttonInteraction.deferUpdate()
 
       if (selectedOption === 'members_option' && memberPage > 1) {
         memberPage--
@@ -258,14 +265,14 @@ export async function guild (message: Message, args: string[]): Promise<Message 
     filter: (btnInteraction: BaseInteraction) => (
       btnInteraction.isButton() &&
       btnInteraction.customId === 'next_button' &&
-      btnInteraction.user.id === message.author.id
+      btnInteraction.user.id === interaction.user.id
     ),
     time: 60000
   })
 
-  nextButtonCollector.on('collect', async (interaction) => {
+  nextButtonCollector.on('collect', async (buttonInteraction) => {
     try {
-      await interaction.deferUpdate()
+      await buttonInteraction.deferUpdate()
 
       if (selectedOption === 'members_option') {
         memberPage++
@@ -310,6 +317,4 @@ export async function guild (message: Message, args: string[]): Promise<Message 
       console.error('Error handling interaction:', error)
     }
   })
-
-  return reply
 }

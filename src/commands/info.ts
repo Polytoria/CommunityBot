@@ -1,13 +1,13 @@
-import { EmbedBuilder, Message, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
 
-export async function info (message: Message) {
+export async function info (interaction:CommandInteraction) {
   const invite = new ButtonBuilder()
-    .setLabel('Invite us!')
+    .setLabel('Invite the bot to your server!')
     .setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
     .setStyle(ButtonStyle.Link)
 
   const github = new ButtonBuilder()
-    .setLabel('GitHub')
+    .setLabel('GitHub Repository')
     .setURL('https://github.com/Polytoria/CommunityBot')
     .setStyle(ButtonStyle.Link)
 
@@ -25,5 +25,5 @@ export async function info (message: Message) {
     )
     .setFooter({ text: 'Thank you for using Polytoria Community Bot!', iconURL: 'https://starmanthegamer.com/icon.png' })
 
-  await message.channel.send({ embeds: [embed], components: [row] })
+  await interaction.reply({ embeds: [embed], components: [row] })
 }

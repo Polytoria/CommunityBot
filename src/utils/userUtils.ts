@@ -32,9 +32,13 @@ export class userUtils {
     const response = await axios.get('https://api.polytoria.com/v1/users/find', {
       params: { username },
       validateStatus: function (status) {
-        return status >= 200 && status < 300 // default
+        return true
       }
     })
+
+    if(response.status < 200 || response.status > 300){
+      return null
+    }
 
     const id = response.data.id
     const user = userUtils.getUserData(id)

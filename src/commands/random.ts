@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, BaseInteraction, StringSelectMenuOptionBuilder } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, BaseInteraction, StringSelectMenuOptionBuilder, CommandInteraction } from 'discord.js'
 
 // Import Random Files
 import { randomPlace } from './random/randomPlace.js'
@@ -6,7 +6,7 @@ import { randomUser } from './random/randomUser.js'
 import { randomGuild } from './random/randomGuild.js'
 import { randomStore } from './random/randomStore.js'
 
-export async function random (message: Message, args: any[]) {
+export async function random (interaction:CommandInteraction) {
   let InitialType: any = null
 
   const embed = new EmbedBuilder()
@@ -49,39 +49,39 @@ export async function random (message: Message, args: any[]) {
       selectMenu
     )
 
-  const reply = await message.reply({
+  const reply = await interaction.reply({
     embeds: [embed],
     components: [actionRow]
   })
 
   const selectCollector = reply.createMessageComponentCollector({
     componentType: ComponentType.StringSelect,
-    filter: (interaction: BaseInteraction) => (
-      interaction.isStringSelectMenu() && interaction.user.id === message.author.id
+    filter: (selectInteraction: BaseInteraction) => (
+      selectInteraction.isStringSelectMenu() && selectInteraction.user.id === interaction.user.id
     ),
     time: 60000
   })
 
-  selectCollector.on('collect', async (interaction) => {
-    if (interaction.customId === 'select') {
-      InitialType = interaction.values[0] // Update InitialType here
-      await interaction.deferUpdate()
+  selectCollector.on('collect', async (selectInteraction) => {
+    if (selectInteraction.customId === 'select') {
+      InitialType = selectInteraction.values[0] // Update InitialType here
+      await selectInteraction.deferUpdate()
       update(InitialType, reply)
     }
   })
 
   const buttonCollector = reply.createMessageComponentCollector({
     componentType: ComponentType.Button,
-    filter: (interaction: BaseInteraction) => (
-      interaction.isButton() && interaction.user.id === message.author.id && interaction.customId === 'redo_button'
+    filter: (buttonInteraction: BaseInteraction) => (
+      buttonInteraction.isButton() && buttonInteraction.user.id === interaction.user.id && buttonInteraction.customId === 'redo_button'
     ),
     time: 60000
   })
 
-  buttonCollector.on('collect', async (interaction) => {
+  buttonCollector.on('collect', async (buttonInteraction) => {
     if (InitialType !== null) {
       update(InitialType, reply)
-      await interaction.deferUpdate()
+      await buttonInteraction.deferUpdate()
     }
   })
 
@@ -89,16 +89,16 @@ export async function random (message: Message, args: any[]) {
     let Response: any = null
     switch (id) {
       case 'place':
-        Response = await randomPlace(message, args)
+        Response = await randomPlace(interaction)
         break
       case 'user':
-        Response = await randomUser(message, args)
+        Response = await randomUser(interaction)
         break
       case 'guild':
-        Response = await randomGuild(message, args)
+        Response = await randomGuild(interaction)
         break
       case 'store':
-        Response = await randomStore(message, args)
+        Response = await randomStore(interaction)
         break
     }
 

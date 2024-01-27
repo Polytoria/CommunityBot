@@ -1,9 +1,9 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 
-export async function randomGuild (message: Message, args: string[]) {
+export async function randomGuild (interaction:CommandInteraction) {
   const randomId = randomUtils.randomInt(1, 545)
   const apiUrl = `https://api.polytoria.com/v1/guilds/${randomId}`
 
@@ -19,7 +19,7 @@ export async function randomGuild (message: Message, args: string[]) {
   )
 
   if (randomData == null) {
-    return message.channel.send('Guild not found, Please try again..')
+    return await randomGuild(interaction)
   }
 
   const data = randomData.data

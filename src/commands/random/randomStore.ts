@@ -1,9 +1,9 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function randomStore (message: Message, args: string[]) {
+export async function randomStore (interaction:CommandInteraction) {
   const randomId = randomUtils.randomInt(7674, 30361)
   const apiUrl = `https://api.polytoria.com/v1/store/${randomId}`
 
@@ -19,7 +19,7 @@ export async function randomStore (message: Message, args: string[]) {
   )
 
   if (randomData == null) {
-    return message.channel.send('Store item not found, Please try again..')
+    return await randomStore(interaction)
   }
 
   const data = randomData.data

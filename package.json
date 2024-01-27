@@ -7,7 +7,9 @@
 		"start": "node dist/index.js",
 		"build": "tsc",
 		"format": "prettier --write .",
-		"lint": "npx eslint \"src/**\" --fix"
+		"lint": "npx eslint \"src/**\" --fix",
+		"deploy": "node dist/deploy-commands.js",
+		"dev": "npm run build && npm run start"
 	},
 	"license": "MIT",
 	"dependencies": {
