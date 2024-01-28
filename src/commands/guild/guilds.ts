@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction, CommandInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
@@ -24,7 +24,7 @@ export async function guild (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    if (errResult.statusCode == 404) {
+    if (errResult.statusCode === 404) {
       return await interaction.editReply("Couldn't find the requested guild. Did you type in the correct guild ID?")
     } else {
       return await interaction.editReply(errResult.displayText)

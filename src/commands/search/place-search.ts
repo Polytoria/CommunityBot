@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, CommandInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 

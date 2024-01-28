@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
@@ -8,7 +8,7 @@ import { userUtils } from '../../utils/userUtils.js'
 export async function lookUp (interaction:CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
-  if (!username || username.length == 0) {
+  if (!username || username.length === 0) {
     return await interaction.reply('Please tell me the username so I can make you a card.')
   }
 
@@ -29,7 +29,7 @@ export async function lookUp (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(lookupResponse)
 
   if (errResult.hasError === true) {
-    if (errResult.statusCode == 404) {
+    if (errResult.statusCode === 404) {
       return await interaction.editReply("Couldn't find the requested user. Did you type in the correct username?")
     } else {
       return await interaction.editReply(errResult.displayText)

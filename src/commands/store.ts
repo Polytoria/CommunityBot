@@ -23,7 +23,7 @@ export async function store (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    if (errResult.statusCode == 404) {
+    if (errResult.statusCode === 404) {
       return await interaction.editReply("Couldn't find the requested store item. Did you type in the correct store ID?")
     } else {
       return await interaction.editReply(errResult.displayText)

@@ -1,4 +1,4 @@
-import { Message, AttachmentBuilder, CommandInteraction } from 'discord.js'
+import { AttachmentBuilder, CommandInteraction } from 'discord.js'
 import { userUtils } from '../../utils/userUtils.js'
 import { stringUtils } from '../../utils/stringUtils.js'
 import pkg from 'canvas'
@@ -8,7 +8,7 @@ const { createCanvas, loadImage, registerFont } = pkg
 export async function card (interaction:CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
-  if (!username || username.length == 0) {
+  if (!username || username.length === 0) {
     return await interaction.reply('Please tell me the username so I can make you a card.')
   }
 

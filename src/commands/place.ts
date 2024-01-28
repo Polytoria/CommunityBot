@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
@@ -22,7 +22,7 @@ export async function place (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    if (errResult.statusCode == 404) {
+    if (errResult.statusCode === 404) {
       return await interaction.editReply("Couldn't find the requested place. Did you type in the correct place ID?")
     } else {
       return await interaction.editReply(errResult.displayText)

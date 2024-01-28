@@ -8,13 +8,13 @@ export async function search (interaction:CommandInteraction) {
   // @ts-expect-error
   const category = interaction.options.getSubcommand()
 
-  if (category == 'place') {
+  if (category === 'place') {
     placeSearch(interaction)
-  } else if (category == 'store') {
+  } else if (category === 'store') {
     storeSearch(interaction)
-  } else if (category == 'toolbox') {
+  } else if (category === 'toolbox') {
     toolbox(interaction)
-  } else if (category == 'user') {
+  } else if (category === 'user') {
     userSearch(interaction)
   } else {
     await interaction.reply('No valid category supplied')

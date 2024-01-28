@@ -1,7 +1,7 @@
 // <reference path="index.d.ts"/>
-import { Client, GatewayIntentBits, ActivityType, Events, Collection, CommandInteraction, BaseInteraction } from 'discord.js'
+import { Client, GatewayIntentBits, ActivityType, Events, Collection, BaseInteraction } from 'discord.js'
 import dotenv from 'dotenv'
-import { success, alert, warning } from './utils/log.js'
+import { success, warning } from './utils/log.js'
 import commandsData from './commandsData.js'
 import { IConfiguration } from '../types'
 

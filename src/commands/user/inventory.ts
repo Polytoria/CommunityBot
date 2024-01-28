@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ButtonInteraction } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ButtonInteraction } from 'discord.js'
 import axios from 'axios'
 import { userUtils } from '../../utils/userUtils.js'
 import { v4 } from 'uuid'
@@ -6,7 +6,7 @@ import { v4 } from 'uuid'
 export async function inventory (interaction:CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
-  if (!username || username.length == 0) {
+  if (!username || username.length === 0) {
     return await interaction.reply('Please tell me the username so I can calculate the level.')
   }
 

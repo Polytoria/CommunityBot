@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, CommandInteraction } from 'discord.js'
 import { userUtils } from '../../utils/userUtils.js'
 import progressBar from 'string-progressbar'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -6,7 +6,7 @@ import emojiUtils from '../../utils/emojiUtils.js'
 export async function level (interaction:CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
-  if (!username || username.length == 0) {
+  if (!username || username.length === 0) {
     return await interaction.reply('Please tell me the username so I can calculate the level.')
   }
 

@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, BaseInteraction, StringSelectMenuOptionBuilder, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, BaseInteraction, StringSelectMenuOptionBuilder, CommandInteraction } from 'discord.js'
 
 // Import Random Files
 import { randomPlace } from './random/randomPlace.js'
