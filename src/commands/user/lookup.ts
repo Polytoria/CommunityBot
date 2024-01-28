@@ -1,31 +1,39 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
+import { userUtils } from '../../utils/userUtils.js'
 
-export async function lookUp (message: Message, args: string[]) {
-  // Check if a username was provided
-  if (args.length === 0) {
-    return message.reply('You need to type a username for me to lookup!')
+export async function lookUp (interaction:CommandInteraction) {
+  // @ts-expect-error
+  const username = interaction.options.getString('username')
+  if (!username || username.length === 0) {
+    return await interaction.reply('Please tell me the username so I can make you a card.')
   }
 
-  const username = args[0]
+  await interaction.deferReply()
+
+  const userData = await userUtils.getUserDataFromUsername(username)
+
+  if (!userData) {
+    return await interaction.editReply('User not found!')
+  }
 
   // Get the user ID using the first API
   const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
-    validateStatus: (status) => status === 404 || status === 200 // Allow 404 response
+    validateStatus: (status) => status === 200 // Allow 404 response
   })
   const lookupData = lookupResponse.data
-
-  if (lookupResponse.status === 404) {
-    return message.reply('Couldn\'t find a user! Did you type the right name?')
-  }
 
   const errResult = responseHandler.checkError(lookupResponse)
 
   if (errResult.hasError === true) {
-    return message.reply(errResult.displayText)
+    if (errResult.statusCode === 404) {
+      return await interaction.editReply("Couldn't find the requested user. Did you type in the correct username?")
+    } else {
+      return await interaction.editReply(errResult.displayText)
+    }
   }
 
   const userID = lookupData.id
@@ -40,7 +48,7 @@ export async function lookUp (message: Message, args: string[]) {
   const errResult2 = responseHandler.checkError(response)
 
   if (errResult2.hasError === true) {
-    return message.reply(errResult2.displayText)
+    return await interaction.editReply(errResult2.displayText)
   }
 
   if (data.membershipType === 'plusDeluxe') {
@@ -110,7 +118,7 @@ export async function lookUp (message: Message, args: string[]) {
         .setStyle(ButtonStyle.Link)
     )
 
-  return message.reply({
+  return await interaction.editReply({
     embeds: [embed],
     components: [actionRow]
   })

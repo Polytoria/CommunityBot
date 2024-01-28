@@ -1,6 +1,6 @@
-import { EmbedBuilder, Message } from 'discord.js'
+import { CommandInteraction, EmbedBuilder } from 'discord.js'
 
-export async function commands (message: Message) {
+export async function commands (interaction:CommandInteraction) {
   const embed: EmbedBuilder = new EmbedBuilder()
     .setColor(0xFF5454)
     .setTitle('This command is currently unavailable.')
@@ -11,5 +11,5 @@ export async function commands (message: Message) {
     )
     .setFooter({ text: 'Thank you for your patience.', iconURL: 'https://starmanthegamer.com/icon.png' })
 
-  await message.channel.send({ embeds: [embed] })
+  await interaction.reply({ embeds: [embed] })
 }

@@ -1,15 +1,24 @@
-import { Message, AttachmentBuilder } from 'discord.js'
+import { AttachmentBuilder, CommandInteraction } from 'discord.js'
 import { userUtils } from '../../utils/userUtils.js'
 import { stringUtils } from '../../utils/stringUtils.js'
 import pkg from 'canvas'
 import path from 'path'
 const { createCanvas, loadImage, registerFont } = pkg
 
-export async function card (message: Message, args: string[]) {
-  if (!args[0]) {
-    return message.reply('Please tell me the username so I can make you a card.')
+export async function card (interaction:CommandInteraction) {
+  // @ts-expect-error
+  const username = interaction.options.getString('username')
+  if (!username || username.length === 0) {
+    return await interaction.reply('Please tell me the username so I can make you a card.')
   }
-  const userData = await userUtils.getUserDataFromUsername(args.join(' '))
+
+  await interaction.deferReply()
+
+  const userData = await userUtils.getUserDataFromUsername(username)
+
+  if (!userData) {
+    return await interaction.editReply('User not found!')
+  }
 
   const canvas = createCanvas(500, 700)
   const ctx = canvas.getContext('2d')
@@ -98,5 +107,5 @@ export async function card (message: Message, args: string[]) {
 
   const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'Card.png' })
 
-  return message.channel.send({ files: [attachment] })
+  return await interaction.editReply({ files: [attachment] })
 }

@@ -1,9 +1,9 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function randomUser (message: Message, args: string[]) {
+export async function randomUser (interaction: CommandInteraction): Promise<any> {
   const randomId = randomUtils.randomInt(1, 42260)
   const apiUrl = `https://api.polytoria.com/v1/users/${randomId}`
 
@@ -19,7 +19,7 @@ export async function randomUser (message: Message, args: string[]) {
   )
 
   if (randomData == null) {
-    return message.channel.send('User not found, Please try again..')
+    return await randomUser(interaction)
   }
 
   const data = randomData.data
