@@ -21,7 +21,7 @@ export async function info (interaction:CommandInteraction) {
     .setThumbnail('https://starmanthegamer.com/icon.png')
     .addFields(
       { name: 'Version', value: `Currently running version: ${process.env.npm_package_version}` },
-      { name: 'Contributed by:', value: 'baggy, DevPixels, InsertSoda, Index, and many more!', inline: true }
+      { name: 'Contributed by:', value: 'baggy, DevPixels, Index, InsertSoda, and many more!', inline: true }
     )
     .setFooter({ text: 'Thank you for using Polytoria Community Bot!', iconURL: 'https://starmanthegamer.com/icon.png' })
 
