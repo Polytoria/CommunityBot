@@ -137,7 +137,7 @@ export default [
   {
     data: new SlashCommandBuilder()
       .setName('info')
-      .setDescription('Information about Polytoria Community Bo'),
+      .setDescription('Information about Polytoria Community Bot'),
     execute: info
   }
 
