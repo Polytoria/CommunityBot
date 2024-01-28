@@ -3,7 +3,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function randomStore (interaction:CommandInteraction) {
+export async function randomStore(interaction: CommandInteraction): Promise<any> {
   const randomId = randomUtils.randomInt(7674, 30361)
   const apiUrl = `https://api.polytoria.com/v1/store/${randomId}`
 

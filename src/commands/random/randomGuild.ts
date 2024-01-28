@@ -3,7 +3,7 @@ import emojiUtils from '../../utils/emojiUtils.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 
-export async function randomGuild (interaction:CommandInteraction) {
+export async function randomGuild(interaction: CommandInteraction): Promise<any> {
   const randomId = randomUtils.randomInt(1, 545)
   const apiUrl = `https://api.polytoria.com/v1/guilds/${randomId}`
 
