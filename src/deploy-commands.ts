@@ -1,18 +1,18 @@
 // Script to deploy the commands to discord
 import dotenv from 'dotenv'
 import commandsData from './commandsData.js'
-import { REST, Routes } from "discord.js"
+import { REST, Routes } from 'discord.js'
 
 dotenv.config()
 
 // @ts-expect-error
 const rest = new REST().setToken(process.env.TOKEN)
 
-async function deploy(){
+async function deploy () {
   try {
-    console.log("Deploying commands")
+    console.log('Deploying commands')
 
-    let commands: any = []
+    const commands: any = []
 
     commandsData.forEach((commandData, index) => {
       commands.push(commandData.data.toJSON())
@@ -25,8 +25,8 @@ async function deploy(){
     )
 
     console.log(`Deployed ${data.length} commands`)
-  } catch(error){
-    console.log("Failed deployment")
+  } catch (error) {
+    console.log('Failed deployment')
     console.error(error)
   }
 }

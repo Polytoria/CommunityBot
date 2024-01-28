@@ -7,7 +7,7 @@ import { userUtils } from '../../utils/userUtils.js'
 
 export async function lookUp (interaction:CommandInteraction) {
   // @ts-expect-error
-  const username = interaction.options.getString("username")
+  const username = interaction.options.getString('username')
   if (!username || username.length == 0) {
     return await interaction.reply('Please tell me the username so I can make you a card.')
   }
@@ -20,8 +20,6 @@ export async function lookUp (interaction:CommandInteraction) {
     return await interaction.editReply('User not found!')
   }
 
-  
-
   // Get the user ID using the first API
   const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
     validateStatus: (status) => status === 200 // Allow 404 response
@@ -31,7 +29,7 @@ export async function lookUp (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(lookupResponse)
 
   if (errResult.hasError === true) {
-    if(errResult.statusCode == 404){
+    if (errResult.statusCode == 404) {
       return await interaction.editReply("Couldn't find the requested user. Did you type in the correct username?")
     } else {
       return await interaction.editReply(errResult.displayText)

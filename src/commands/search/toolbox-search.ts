@@ -7,7 +7,7 @@ export async function toolbox (interaction:CommandInteraction) {
   let searchQuery = ''
 
   // @ts-expect-error
-  const queryInput = interaction.options.getString("query")
+  const queryInput = interaction.options.getString('query')
 
   if (queryInput && queryInput.length > 0) {
     searchQuery = '&search=' + queryInput

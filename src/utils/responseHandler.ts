@@ -26,10 +26,10 @@ export class responseHandler {
       result.hasError = true
       result.displayText = 'An unexpected error happen while sending request to Polytoria API. Please try again in a few minutes.'
       result.actualError = 'API error.'
-    } else if (response.status == 404){
+    } else if (response.status == 404) {
       result.hasError = true
       result.displayText = "Couldn't find it on Polytoria"
-      result.actualError = "Not found"
+      result.actualError = 'Not found'
     } else if (response.data.Success === false) {
       result.hasError = true
       result.actualError = response.data.Errors[0]

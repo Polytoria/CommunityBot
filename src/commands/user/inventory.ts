@@ -5,7 +5,7 @@ import { v4 } from 'uuid'
 
 export async function inventory (interaction:CommandInteraction) {
   // @ts-expect-error
-  const username = interaction.options.getString("username")
+  const username = interaction.options.getString('username')
   if (!username || username.length == 0) {
     return await interaction.reply('Please tell me the username so I can calculate the level.')
   }
@@ -121,7 +121,6 @@ export async function inventory (interaction:CommandInteraction) {
     const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
     await interaction.editReply({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
-    
   })
 
   return msg

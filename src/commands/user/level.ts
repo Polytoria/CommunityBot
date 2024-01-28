@@ -5,7 +5,7 @@ import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function level (interaction:CommandInteraction) {
   // @ts-expect-error
-  const username = interaction.options.getString("username")
+  const username = interaction.options.getString('username')
   if (!username || username.length == 0) {
     return await interaction.reply('Please tell me the username so I can calculate the level.')
   }
@@ -14,8 +14,8 @@ export async function level (interaction:CommandInteraction) {
 
   const userData = await userUtils.getUserDataFromUsername(username)
 
-  if(!userData){
-    return await interaction.editReply("User not found!")
+  if (!userData) {
+    return await interaction.editReply('User not found!')
   }
 
   const levelData = await userUtils.getLevel(userData.id)

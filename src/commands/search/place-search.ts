@@ -3,9 +3,9 @@ import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 
 export async function placeSearch (interaction:CommandInteraction) {
-  let searchQuery = ""
+  let searchQuery = ''
   // @ts-expect-error
-  const queryInput = interaction.options.getString("query")
+  const queryInput = interaction.options.getString('query')
 
   if (queryInput) {
     searchQuery = queryInput

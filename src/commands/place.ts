@@ -6,7 +6,7 @@ import emojiUtils from '../utils/emojiUtils.js'
 
 export async function place (interaction:CommandInteraction) {
   // @ts-expect-error
-  const placeID = interaction.options.getInteger("id")
+  const placeID = interaction.options.getInteger('id')
 
   if (placeID.length === 0) {
     return await interaction.reply('Please provide me with a place ID before I can continue!')
@@ -22,7 +22,7 @@ export async function place (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    if(errResult.statusCode == 404){
+    if (errResult.statusCode == 404) {
       return await interaction.editReply("Couldn't find the requested place. Did you type in the correct place ID?")
     } else {
       return await interaction.editReply(errResult.displayText)

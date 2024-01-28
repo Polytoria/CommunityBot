@@ -4,9 +4,9 @@ import { responseHandler } from '../../utils/responseHandler.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function userSearch (interaction:CommandInteraction) {
-  let searchQuery = ""
+  let searchQuery = ''
   // @ts-expect-error
-  const queryInput = interaction.options.getString("query")
+  const queryInput = interaction.options.getString('query')
 
   if (queryInput) {
     searchQuery = queryInput

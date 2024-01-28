@@ -9,7 +9,7 @@ import { fetchShouts } from './GuildShouts.js'
 
 export async function guild (interaction:CommandInteraction) {
   // @ts-expect-error
-  const guildID = interaction.options.getInteger("id")
+  const guildID = interaction.options.getInteger('id')
 
   if (guildID.length === 0) {
     return await interaction.reply('Please provide me with a guild ID before I can continue!')
@@ -24,7 +24,7 @@ export async function guild (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    if(errResult.statusCode == 404){
+    if (errResult.statusCode == 404) {
       return await interaction.editReply("Couldn't find the requested guild. Did you type in the correct guild ID?")
     } else {
       return await interaction.editReply(errResult.displayText)

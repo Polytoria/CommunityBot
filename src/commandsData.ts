@@ -12,23 +12,23 @@ import { search } from './commands/search/search.js'
 export default [
   {
     data: new SlashCommandBuilder()
-      .setName("cookie")
-      .setDescription("🍪"),
+      .setName('cookie')
+      .setDescription('🍪'),
     execute: cookie
   },
   {
     data: new SlashCommandBuilder()
-      .setName("status")
-      .setDescription("Checks to see if Polytoria is online/offline"),
+      .setName('status')
+      .setDescription('Checks to see if Polytoria is online/offline'),
     execute: status
   },
   {
     data: new SlashCommandBuilder()
-      .setName("store")
-      .setDescription("View the info of a store item via its store ID")
-      .addIntegerOption(option => 
-        option.setName("id")
-          .setDescription("ID of the store item to view")
+      .setName('store')
+      .setDescription('View the info of a store item via its store ID')
+      .addIntegerOption(option =>
+        option.setName('id')
+          .setDescription('ID of the store item to view')
           .setMinValue(1)
           .setRequired(true)
       ),
@@ -36,11 +36,11 @@ export default [
   },
   {
     data: new SlashCommandBuilder()
-      .setName("place")
-      .setDescription("View the info of a place via its place ID")
-      .addIntegerOption(option => 
-        option.setName("id")
-          .setDescription("ID of the place to view")
+      .setName('place')
+      .setDescription('View the info of a place via its place ID')
+      .addIntegerOption(option =>
+        option.setName('id')
+          .setDescription('ID of the place to view')
           .setMinValue(1)
           .setRequired(true)
       ),
@@ -48,11 +48,11 @@ export default [
   },
   {
     data: new SlashCommandBuilder()
-      .setName("guild")
-      .setDescription("View the info of a guild via its guild ID")
-      .addIntegerOption(option => 
-        option.setName("id")
-          .setDescription("ID of the guild to view")
+      .setName('guild')
+      .setDescription('View the info of a guild via its guild ID')
+      .addIntegerOption(option =>
+        option.setName('id')
+          .setDescription('ID of the guild to view')
           .setMinValue(1)
           .setRequired(true)
       ),
@@ -60,10 +60,10 @@ export default [
   },
   {
     data: new SlashCommandBuilder()
-      .setName("card")
-      .setDescription("Gives you an image with information about the specified user")
-      .addStringOption(option => 
-        option.setName("username")
+      .setName('card')
+      .setDescription('Gives you an image with information about the specified user')
+      .addStringOption(option =>
+        option.setName('username')
           .setDescription("User's username you want to view")
           .setRequired(true)
       ),
@@ -71,10 +71,10 @@ export default [
   },
   {
     data: new SlashCommandBuilder()
-      .setName("lookup")
-      .setDescription("Lookup information about the specified user")
-      .addStringOption(option => 
-        option.setName("username")
+      .setName('lookup')
+      .setDescription('Lookup information about the specified user')
+      .addStringOption(option =>
+        option.setName('username')
           .setDescription("User's username you want to view")
           .setRequired(true)
       ),
@@ -82,10 +82,10 @@ export default [
   },
   {
     data: new SlashCommandBuilder()
-      .setName("inventory")
-      .setDescription("View the inventory of the specified user")
-      .addStringOption(option => 
-        option.setName("username")
+      .setName('inventory')
+      .setDescription('View the inventory of the specified user')
+      .addStringOption(option =>
+        option.setName('username')
           .setDescription("User's username you want to view")
           .setRequired(true)
       ),
@@ -93,10 +93,10 @@ export default [
   },
   {
     data: new SlashCommandBuilder()
-      .setName("level")
-      .setDescription("View the level of the specified user")
-      .addStringOption(option => 
-        option.setName("username")
+      .setName('level')
+      .setDescription('View the level of the specified user')
+      .addStringOption(option =>
+        option.setName('username')
           .setDescription("User's username you want to view")
           .setRequired(true)
       ),
@@ -104,41 +104,41 @@ export default [
   },
   {
     data: new SlashCommandBuilder()
-      .setName("search")
-      .setDescription("Search Polytoria")
-      .addSubcommand(subCommand => 
-        subCommand.setName("place")
-          .setDescription("Search for places")
-          .addStringOption(option => option.setName("query").setDescription("The search query"))
-        )
-      .addSubcommand(subCommand => 
-        subCommand.setName("store")
-          .setDescription("Search for store items")
-          .addStringOption(option => option.setName("query").setDescription("The search query"))
-        )
-      .addSubcommand(subCommand => 
-        subCommand.setName("toolbox")
-          .setDescription("Search for toolbox items")
-          .addStringOption(option => option.setName("query").setDescription("The search query"))
-        )
-      .addSubcommand(subCommand => 
-        subCommand.setName("user")
-          .setDescription("Search for users")
-          .addStringOption(option => option.setName("query").setDescription("The search query"))
-        ),
+      .setName('search')
+      .setDescription('Search Polytoria')
+      .addSubcommand(subCommand =>
+        subCommand.setName('place')
+          .setDescription('Search for places')
+          .addStringOption(option => option.setName('query').setDescription('The search query'))
+      )
+      .addSubcommand(subCommand =>
+        subCommand.setName('store')
+          .setDescription('Search for store items')
+          .addStringOption(option => option.setName('query').setDescription('The search query'))
+      )
+      .addSubcommand(subCommand =>
+        subCommand.setName('toolbox')
+          .setDescription('Search for toolbox items')
+          .addStringOption(option => option.setName('query').setDescription('The search query'))
+      )
+      .addSubcommand(subCommand =>
+        subCommand.setName('user')
+          .setDescription('Search for users')
+          .addStringOption(option => option.setName('query').setDescription('The search query'))
+      ),
     execute: search
   },
   {
     data: new SlashCommandBuilder()
-      .setName("random")
-      .setDescription("Get random things from Polytoria"),
+      .setName('random')
+      .setDescription('Get random things from Polytoria'),
     execute: random
   },
   {
     data: new SlashCommandBuilder()
-      .setName("info")
-      .setDescription("Information about Polytoria Community Bo"),
+      .setName('info')
+      .setDescription('Information about Polytoria Community Bo'),
     execute: info
-  },
+  }
 
 ]

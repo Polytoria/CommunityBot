@@ -42,25 +42,25 @@ client.on('ready', () => {
 })
 success({ context: '[Bot]', message: 'Bot succesfully started.' })
 
-client.on("messageCreate", async (message) => {
-  if(message.author.bot) return
-  if(!message.content.startsWith("p!")) return
-  if(!message.inGuild) return
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return
+  if (!message.content.startsWith('p!')) return
+  if (!message.inGuild) return
 
-  await message.reply("The Polytoria Community Bot has switched to slash commands!")
+  await message.reply('The Polytoria Community Bot has switched to slash commands!')
 })
 
 client.on(Events.InteractionCreate, async (interaction:BaseInteraction) => {
-  if(!interaction.isCommand()){
-    return;
+  if (!interaction.isCommand()) {
+    return
   }
 
   // @ts-expect-error
   const command:any = interaction.client.commands.get(interaction.commandName)
 
-  if(!command){
+  if (!command) {
     interaction.reply("Command doesn't exist")
-    return;
+    return
   }
 
   success({
@@ -80,10 +80,10 @@ client.on(Events.InteractionCreate, async (interaction:BaseInteraction) => {
       command.execute(interaction)
     }
   } catch (error: any) {
-    if(interaction.replied){
-      await interaction.followUp("Failed to execute command: " + error)
+    if (interaction.replied) {
+      await interaction.followUp('Failed to execute command: ' + error)
     } else {
-      await interaction.reply("Failed to execute command: " + error)
+      await interaction.reply('Failed to execute command: ' + error)
     }
     warning({
       context: '[Bot]',
