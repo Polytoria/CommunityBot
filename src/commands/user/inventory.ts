@@ -1,13 +1,21 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ButtonInteraction } from 'discord.js'
 import axios from 'axios'
 import { userUtils } from '../../utils/userUtils.js'
 import { v4 } from 'uuid'
 
-export async function inventory (message: Message, args: string[]) {
-  const userData = await userUtils.getUserDataFromUsername(args.join(' '))
+export async function inventory (interaction:CommandInteraction) {
+  // @ts-expect-error
+  const username = interaction.options.getString('username')
+  if (!username || username.length === 0) {
+    return await interaction.reply('Please tell me the username so I can calculate the level.')
+  }
 
-  if (!userData.id) {
-    return message.reply('User not found!')
+  await interaction.deferReply()
+
+  const userData = await userUtils.getUserDataFromUsername(username)
+
+  if (!userData) {
+    return interaction.editReply('User not found!')
   }
 
   let currentPage = 1
@@ -17,7 +25,7 @@ export async function inventory (message: Message, args: string[]) {
   const response = await axios.get(apiURL, { validateStatus: () => true })
 
   if (response.status === 403) {
-    return message.reply("This user's inventory is private, and cannot be viewed.")
+    return interaction.editReply("This user's inventory is private, and cannot be viewed.")
   }
 
   const data = response.data
@@ -69,13 +77,14 @@ export async function inventory (message: Message, args: string[]) {
   const filter = () => true
 
   // Create Interaction event for 2 minutes
-  const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
+  // @ts-expect-error
+  const collector = interaction.channel.createMessageComponentCollector({ filter, time: 120000 })
 
-  const msg = await message.channel.send({ embeds: [embed], components: [row] })
+  const msg = await interaction.editReply({ embeds: [embed], components: [row] })
 
   // Listen for Button Interaction
-  collector.on('collect', async (i) => {
-    if (i.user.id !== message.author.id) {
+  collector.on('collect', async (i:ButtonInteraction) => {
+    if (i.user.id !== interaction.user.id) {
       await i.reply({ content: ' ', ephemeral: true })
       return
     }
@@ -110,7 +119,7 @@ export async function inventory (message: Message, args: string[]) {
 
     // Update Embed and Button
     const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
-    await msg.edit({ embeds: [embed], components: [updatedRow] })
+    await interaction.editReply({ embeds: [embed], components: [updatedRow] })
     await i.reply({ content: ' ', ephemeral: true })
   })
 

@@ -1,10 +1,10 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import { randomUtils } from '../../utils/randomUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function randomPlace (message: Message, args: string[]) {
-  const randomId = randomUtils.randomInt(1, 7667)
+export async function randomPlace (interaction: CommandInteraction): Promise<any> {
+  const randomId = randomUtils.randomInt(1, 7940)
   const apiUrl = `https://api.polytoria.com/v1/places/${randomId}`
 
   const randomData = await randomUtils.randomize(
@@ -19,7 +19,7 @@ export async function randomPlace (message: Message, args: string[]) {
   )
 
   if (!randomData || !randomData.data) {
-    return message.channel.send('Place not found, please try again.')
+    return await randomPlace(interaction)
   }
 
   const data = randomData.data

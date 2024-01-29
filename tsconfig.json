@@ -4,7 +4,7 @@
 		"allowJs": true,
 		"checkJs": true,
 		"noEmit": false,
-		"target": "es6",
+		"target": "es2020",
 		"importHelpers": true,
 		"module": "es6",
 		"esModuleInterop": true,
