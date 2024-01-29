@@ -1,8 +1,8 @@
 // <reference path="index.d.ts"/>
-import { Client, GatewayIntentBits, ActivityType, Events, Collection, BaseInteraction } from 'discord.js'
+import { Client, GatewayIntentBits, ActivityType } from 'discord.js'
 import dotenv from 'dotenv'
-import { success, warning } from './utils/log.js'
-import commandsData from './commandsData.js'
+import { success, alert, warning } from './utils/log.js'
+import commands from './exports.js'
 import { IConfiguration } from '../types'
 
 // Initialize .env file.
@@ -10,7 +10,7 @@ dotenv.config()
 
 const configuration: IConfiguration = {
   token: process.env.TOKEN,
-  clientId: process.env.CLIENTID,
+  prefix: 'p!',
   coolDown: 3
 }
 
@@ -23,44 +23,28 @@ const client = new Client({
   ]
 })
 
-// @ts-expect-error
-client.commands = new Collection()
-
-commandsData.forEach((commandData, index) => {
-  // @ts-expect-error
-  client.commands.set(commandData.data.name, commandData)
-})
-
 client.on('ready', () => {
   // @ts-expect-error
-  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users`, { type: ActivityType.Watching })
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: ActivityType.Watching })
 
   setInterval(function () {
     // @ts-expect-error
-    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users`, { type: ActivityType.Watching })
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | p!help`, { type: ActivityType.Watching })
   }, 60000)
 })
 success({ context: '[Bot]', message: 'Bot succesfully started.' })
 
-client.on('messageCreate', async (message) => {
-  if (message.author.bot) return
-  if (!message.content.startsWith('p!')) return
-  if (!message.inGuild) return
-
-  await message.reply('The Polytoria Community Bot has switched to slash commands!')
-})
-
-client.on(Events.InteractionCreate, async (interaction:BaseInteraction) => {
-  if (!interaction.isCommand()) {
+client.on('messageCreate', async (message): Promise<any | void> => {
+  if (message.author.bot) {
     return
   }
 
-  // @ts-expect-error
-  const command:any = interaction.client.commands.get(interaction.commandName)
+  if (!message.content.startsWith(configuration.prefix)) {
+    return success({ context: '[Server]', message: 'Message logged.' })
+  }
 
-  if (!command) {
-    interaction.reply("Command doesn't exist")
-    return
+  if (!message.inGuild) {
+    return alert({ context: '[Server]', message: 'Not in guild.' })
   }
 
   success({
@@ -68,27 +52,32 @@ client.on(Events.InteractionCreate, async (interaction:BaseInteraction) => {
     message: 'Command registered.'
   })
 
-  success({
-    context: '[Bot]',
-    message: 'Running command ' + command.data.name
-  })
+  const data = message.content.slice(configuration.prefix.length, message.content.length).trim().split(/ +/g)
 
-  try {
-    if (command.constructor.name === 'AsyncFunction') {
-      await command.execute(interaction)
-    } else {
-      command.execute(interaction)
-    }
-  } catch (error: any) {
-    if (interaction.replied) {
-      await interaction.followUp('Failed to execute command: ' + error)
-    } else {
-      await interaction.reply('Failed to execute command: ' + error)
-    }
-    warning({
+  const command: any = data[0]
+  const argument: any[] = data.splice(1, data.length)
+
+  if (commands.hasOwnProperty(command)) { // eslint-disable-line no-prototype-builtins
+    success({
       context: '[Bot]',
-      message: error.toString()
+      message: 'Running command ' + command
     })
+
+    // @ts-expect-error
+    const invoke = commands[command]
+
+    try {
+      if (invoke.constructor.name === 'AsyncFunction') {
+        await invoke(message, argument)
+      } else {
+        invoke(message, argument)
+      }
+    } catch (err: any) {
+      warning({
+        context: '[Bot]',
+        message: err.toString()
+      })
+    }
   }
 })
 

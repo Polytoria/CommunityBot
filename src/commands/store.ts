@@ -1,18 +1,15 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 import emojiUtils from '../utils/emojiUtils.js'
 
-export async function store (interaction:CommandInteraction) {
-  // @ts-expect-error
-  const assetID = interaction.options.getInteger('id')
+export async function store (message: Message, args: string[]) {
+  const assetID = parseInt(args[0])
 
-  if (assetID.length === 0) {
-    return await interaction.reply('Please provide me with a store ID before I can continue!')
+  if (args.length === 0) {
+    return message.reply('Please provide me with a store ID before I can continue!')
   }
-
-  await interaction.deferReply()
 
   const response = await axios.get(`https://api.polytoria.com/v1/store/${assetID}`, {
     validateStatus: () => true
@@ -23,11 +20,7 @@ export async function store (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    if (errResult.statusCode === 404) {
-      return await interaction.editReply("Couldn't find the requested store item. Did you type in the correct store ID?")
-    } else {
-      return await interaction.editReply(errResult.displayText)
-    }
+    return message.channel.send(errResult.displayText)
   }
 
   let thumbnailURL = data.thumbnail
@@ -92,7 +85,7 @@ export async function store (interaction:CommandInteraction) {
         .setStyle(ButtonStyle.Link)
     )
 
-  await interaction.editReply({
+  return message.reply({
     embeds: [embed],
     components: [actionRow]
   })

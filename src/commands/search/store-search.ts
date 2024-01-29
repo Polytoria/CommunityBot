@@ -1,21 +1,13 @@
-import { EmbedBuilder, CommandInteraction } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function storeSearch (interaction:CommandInteraction) {
-  let searchQuery = ''
-  // @ts-expect-error
-  const queryInput = interaction.options.getString('query')
-
-  if (queryInput) {
-    searchQuery = queryInput
-  }
-
-  await interaction.deferReply()
+export async function storeSearch (message: Message, args: string[]) {
+  const serachData = message.content.replace('p!store-search ', '').replace(/ /g, '%20')
 
   const response = await axios.get(
-    `https://polytoria.com/api/store/items?types[]=hat&types[]=tool&types[]=face&types[]=shirt&types[]=pants&page=1&search=${searchQuery}&sort=createdAt&order=desc&showOffsale=false&collectiblesOnly=false`,
+    `https://polytoria.com/api/store/items?types[]=hat&types[]=tool&types[]=face&types[]=shirt&types[]=pants&page=1&search=${serachData}&sort=createdAt&order=desc&showOffsale=false&collectiblesOnly=false`,
     { params: {}, validateStatus: () => true }
   )
   const data = response.data.data
@@ -23,11 +15,11 @@ export async function storeSearch (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    return await interaction.editReply(errResult.displayText)
+    return message.channel.send(errResult.displayText)
   }
 
   const embed = new EmbedBuilder({
-    title: `Search results for "${searchQuery}"`,
+    title: `Search results for "${serachData}"`,
     color: 0xFF5454
   })
 
@@ -43,7 +35,8 @@ export async function storeSearch (interaction:CommandInteraction) {
 
   embed.setDescription(description)
 
-  return await interaction.editReply({
-    embeds: [embed]
-  })
+  return {
+    embeds: [embed],
+    components: []
+  }
 }

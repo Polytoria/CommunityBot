@@ -1,46 +1,53 @@
 import { Message, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ComponentType, BaseInteraction, StringSelectMenuOptionBuilder } from 'discord.js'
 
-// Import Random Files
-import { randomPlace } from './random/randomPlace.js'
-import { randomUser } from './random/randomUser.js'
-import { randomGuild } from './random/randomGuild.js'
-import { randomStore } from './random/randomStore.js'
+// Import Search Files
+import { placeSearch } from './search/place-search.js'
+import { userSearch } from './search/user-search.js'
+import { storeSearch } from './search/store-search.js'
+import { toolboxSearch } from './search/toolbox-search.js'
 
-export async function random (message: Message, args: any[]) {
+export async function search (message: Message, args: string[]) {
+  if (!args[0]) {
+    message.reply('Please specify a query so I can search for you.')
+  }
+  const SearchQuery = args.join(' ')
+  console.log(SearchQuery)
   let InitialType: any = null
 
   const embed = new EmbedBuilder()
-    .setTitle('Randomizer!')
+    .setTitle('Search!')
     .setColor(0xFF5454)
-    .setDescription('Welcome to the randomizer! Pick a feature on Polytoria that you would like us to randomize for you.')
+    .setDescription(`Welcome to the search-er! I\'ll search the great depths of Polytoria for **"${SearchQuery}"**.`)
 
   const placeOption = new StringSelectMenuOptionBuilder()
     .setLabel('🎮 Places')
-    .setDescription('Get a random place that is available on Polytoria!')
+    .setDescription('Search places on Polytoria for that query!')
     .setValue('place')
 
   const userOption = new StringSelectMenuOptionBuilder()
     .setLabel('🗣️ Users')
-    .setDescription('Get a random user that is on Polytoria!')
+    .setDescription('Search users on Polytoria for that query!')
     .setValue('user')
-
-  const guildOption = new StringSelectMenuOptionBuilder()
-    .setLabel('🫂 Guilds')
-    .setDescription('Get a random guild that is available on Polytoria!')
-    .setValue('guild')
 
   const storeOption = new StringSelectMenuOptionBuilder()
     .setLabel('🏪 Store')
-    .setDescription('Get a random asset that is available on Polytoria!')
+    .setDescription('Search assets in the store on Polytoria for that query!')
     .setValue('store')
 
+
+  const toolboxOption = new StringSelectMenuOptionBuilder()
+    .setLabel('🛠️ Toolbox')
+    .setDescription('Search content in the toolbox on Polytoria for that query!')
+    .setValue('toolbox')
+
   const selectMenu = new StringSelectMenuBuilder()
-    .setPlaceholder('Asset Type...')
+    .setPlaceholder('Search Location...')
     .setCustomId('select')
     .addOptions(
       placeOption,
       userOption,
-      storeOption
+      storeOption,
+      toolboxOption
     )
 
   const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
@@ -88,16 +95,16 @@ export async function random (message: Message, args: any[]) {
     let Response: any = null
     switch (id) {
       case 'place':
-        Response = await randomPlace(message, args)
+        Response = await placeSearch(message, args)
         break
       case 'user':
-        Response = await randomUser(message, args)
-        break
-      case 'guild':
-        Response = await randomGuild(message, args)
+        Response = await userSearch(message, args)
         break
       case 'store':
-        Response = await randomStore(message, args)
+        Response = await storeSearch(message, args)
+        break
+      case 'toolbox':
+        Response = await toolboxSearch(message, args)
         break
     }
 
