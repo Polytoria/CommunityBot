@@ -7,7 +7,7 @@ export async function inventory (interaction:CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
   if (!username || username.length === 0) {
-    return await interaction.reply('Please tell me the username so I can calculate the level.')
+    return await interaction.reply('Please tell me the username so I can fetch their inventory.')
   }
 
   await interaction.deferReply()
