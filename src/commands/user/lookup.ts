@@ -1,11 +1,33 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType, BaseInteraction, StringSelectMenuBuilder } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { userUtils } from '../../utils/userUtils.js'
 
-export async function lookUp (interaction:CommandInteraction) {
+async function fetchWallPosts (userID: number, page: number): Promise<any[]> {
+  const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
+  return response.data.data
+}
+
+function buildWallPostsEmbed (wallPostsData: any[]): EmbedBuilder {
+  const wallPostsEmbed = new EmbedBuilder()
+    .setTitle('Wall Posts')
+    .setColor('#3498db')
+
+  const wallPostsContent = wallPostsData.map((post: any) => {
+    const pinnedEmoji = post.isPinned ? emojiUtils.pin : ''
+    const pinnedMessageText = post.isPinned ? '**Pinned Message**' : ''
+    const postedAt = dateUtils.atomTimeToDisplayTime(post.postedAt)
+
+    return ` ${pinnedEmoji} ${pinnedMessageText}\n${post.content}\n*Posted by [${post.author.username}](https://polytoria.com/users/${post.author.id})* at ${postedAt}`
+  })
+
+  wallPostsEmbed.setDescription(wallPostsContent.join('\n'))
+  return wallPostsEmbed
+}
+
+export async function lookUp (interaction: CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
   if (!username || username.length === 0) {
@@ -20,9 +42,8 @@ export async function lookUp (interaction:CommandInteraction) {
     return await interaction.editReply('User not found!')
   }
 
-  // Get the user ID using the first API
   const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
-    validateStatus: (status) => status === 200 // Allow 404 response
+    validateStatus: (status) => status === 200
   })
   const lookupData = lookupResponse.data
 
@@ -38,7 +59,6 @@ export async function lookUp (interaction:CommandInteraction) {
 
   const userID = lookupData.id
 
-  // Fetch the rest of the user data using the second API
   const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, {
     validateStatus: () => true
   })
@@ -110,16 +130,135 @@ export async function lookUp (interaction:CommandInteraction) {
     ]
   })
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/users/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
-    )
+  const dropdown = new StringSelectMenuBuilder()
+    .setCustomId('dropdown_menu')
+    .setPlaceholder('Choose a lookup feature to view!')
+    .addOptions([
+      {
+        label: '🧑 User',
+        value: 'user_option'
+      },
+      {
+        label: '📝 Wall Posts',
+        value: 'wall_posts_option'
+      }
+    ])
 
-  return await interaction.editReply({
+  const prevButton = new ButtonBuilder()
+    .setLabel('Previous')
+    .setStyle(ButtonStyle.Danger)
+    .setCustomId('prev_button')
+
+  const nextButton = new ButtonBuilder()
+    .setLabel('Next')
+    .setStyle(ButtonStyle.Success)
+    .setCustomId('next_button')
+
+  const actionRowDropdown = new ActionRowBuilder<StringSelectMenuBuilder>()
+    .addComponents(dropdown)
+
+  const reply = await interaction.editReply({
     embeds: [embed],
-    components: [actionRow]
+    components: [actionRowDropdown]
+  })
+
+  let wallPostsPage = 1
+  let selectedOption: string = 'user_option'
+
+  const collector = reply.createMessageComponentCollector({
+    componentType: ComponentType.SelectMenu,
+    filter: (messageInteraction: BaseInteraction) => (
+      messageInteraction.isStringSelectMenu() && messageInteraction.customId === 'dropdown_menu' &&
+      messageInteraction.user.id === interaction.user.id
+    ),
+    time: 60000
+  })
+
+  collector.on('collect', async (messageInteraction) => {
+    await messageInteraction.deferUpdate()
+
+    selectedOption = messageInteraction.values[0]
+
+    if (selectedOption === 'user_option') {
+      await interaction.editReply({
+        embeds: [embed],
+        components: [actionRowDropdown]
+      })
+    } else if (selectedOption === 'wall_posts_option') {
+      const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
+      const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData)
+
+      await interaction.editReply({
+        embeds: [newWallPostsEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRowDropdown
+        ]
+      })
+    }
+  })
+
+  const prevButtonCollector = reply.createMessageComponentCollector({
+    componentType: ComponentType.Button,
+    filter: (btnInteraction: BaseInteraction) => (
+      btnInteraction.isButton() &&
+      btnInteraction.customId === 'prev_button' &&
+      btnInteraction.user.id === interaction.user.id
+    ),
+    time: 60000
+  })
+
+  prevButtonCollector.on('collect', async (buttonInteraction) => {
+    try {
+      await buttonInteraction.deferUpdate()
+
+      if (selectedOption === 'wall_posts_option' && wallPostsPage > 1) {
+        wallPostsPage--
+        const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
+        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData)
+
+        await interaction.editReply({
+          embeds: [newWallPostsEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRowDropdown
+          ]
+        })
+      }
+    } catch (error) {
+      console.error('Error handling interaction:', error)
+    }
+  })
+
+  const nextButtonCollector = reply.createMessageComponentCollector({
+    componentType: ComponentType.Button,
+    filter: (btnInteraction: BaseInteraction) => (
+      btnInteraction.isButton() &&
+      btnInteraction.customId === 'next_button' &&
+      btnInteraction.user.id === interaction.user.id
+    ),
+    time: 60000
+  })
+
+  nextButtonCollector.on('collect', async (buttonInteraction) => {
+    try {
+      await buttonInteraction.deferUpdate()
+
+      if (selectedOption === 'wall_posts_option') {
+        wallPostsPage++
+        const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
+        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData)
+
+        await interaction.editReply({
+          embeds: [newWallPostsEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRowDropdown
+          ]
+        })
+      }
+    } catch (error) {
+      console.error('Error handling interaction:', error)
+    }
   })
 }

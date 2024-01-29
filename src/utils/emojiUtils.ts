@@ -18,6 +18,7 @@ export default {
   error: '<:error:920132962887028788>',
   plus: '<:plus:1111789336074133565>',
   plusdeluxe: '<:plusdeluxe:1111789389664755743>',
+  pin: '📌',
   request: '🤚',
   private: '🔒',
   public: '🔓'
