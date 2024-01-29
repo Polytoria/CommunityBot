@@ -1,18 +1,15 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 import emojiUtils from '../utils/emojiUtils.js'
 
-export async function place (interaction:CommandInteraction) {
-  // @ts-expect-error
-  const placeID = interaction.options.getInteger('id')
+export async function place (message: Message, args: string[]) {
+  const placeID = parseInt(args[0])
 
-  if (placeID.length === 0) {
-    return await interaction.reply('Please provide me with a place ID before I can continue!')
+  if (args.length === 0) {
+    return message.reply('Please provide me with a place ID before I can continue!')
   }
-
-  await interaction.deferReply()
 
   const response = await axios.get(`https://api.polytoria.com/v1/places/${placeID}`, { validateStatus: () => true })
   const data = response.data
@@ -22,11 +19,7 @@ export async function place (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    if (errResult.statusCode === 404) {
-      return await interaction.editReply("Couldn't find the requested place. Did you type in the correct place ID?")
-    } else {
-      return await interaction.editReply(errResult.displayText)
-    }
+    return message.channel.send(errResult.displayText)
   }
 
   let externalDesc = ''
@@ -126,7 +119,7 @@ export async function place (interaction:CommandInteraction) {
         .setStyle(ButtonStyle.Link)
     )
 
-  return await interaction.editReply({
+  return message.reply({
     embeds: [embed],
     components: [actionRow]
   })

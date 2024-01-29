@@ -1,22 +1,13 @@
-import { EmbedBuilder, CommandInteraction } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import { userUtils } from '../../utils/userUtils.js'
 import progressBar from 'string-progressbar'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function level (interaction:CommandInteraction) {
-  // @ts-expect-error
-  const username = interaction.options.getString('username')
-  if (!username || username.length === 0) {
-    return await interaction.reply('Please tell me the username so I can calculate the level.')
+export async function level (message: Message, args: string[]) {
+  if (!args[0]) {
+    return message.reply('Please tell me the username so I can calculate the level.')
   }
-
-  await interaction.deferReply()
-
-  const userData = await userUtils.getUserDataFromUsername(username)
-
-  if (!userData) {
-    return await interaction.editReply('User not found!')
-  }
+  const userData = await userUtils.getUserDataFromUsername(args.join(' '))
 
   const levelData = await userUtils.getLevel(userData.id)
 
@@ -63,5 +54,5 @@ export async function level (interaction:CommandInteraction) {
     ]
   })
 
-  return await interaction.editReply({ embeds: [embed] })
+  return message.channel.send({ embeds: [embed] })
 }

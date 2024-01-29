@@ -1,13 +1,13 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, Message, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
-export async function info (interaction:CommandInteraction) {
+export async function info (message: Message) {
   const invite = new ButtonBuilder()
-    .setLabel('Invite the bot to your server!')
+    .setLabel('Invite us!')
     .setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
     .setStyle(ButtonStyle.Link)
 
   const github = new ButtonBuilder()
-    .setLabel('GitHub Repository')
+    .setLabel('GitHub')
     .setURL('https://github.com/Polytoria/CommunityBot')
     .setStyle(ButtonStyle.Link)
 
@@ -21,9 +21,9 @@ export async function info (interaction:CommandInteraction) {
     .setThumbnail('https://starmanthegamer.com/icon.png')
     .addFields(
       { name: 'Version', value: `Currently running version: ${process.env.npm_package_version}` },
-      { name: 'Contributed by:', value: 'baggy, DevPixels, Index, InsertSoda, and many more!', inline: true }
+      { name: 'Contributed by:', value: 'baggy, Hu Tao, Shiggy, and many more!', inline: true }
     )
     .setFooter({ text: 'Thank you for using Polytoria Community Bot!', iconURL: 'https://starmanthegamer.com/icon.png' })
 
-  await interaction.reply({ embeds: [embed], components: [row] })
+  await message.channel.send({ embeds: [embed], components: [row] })
 }

@@ -1,21 +1,13 @@
-import { EmbedBuilder, CommandInteraction } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function userSearch (interaction:CommandInteraction) {
-  let searchQuery = ''
-  // @ts-expect-error
-  const queryInput = interaction.options.getString('query')
-
-  if (queryInput) {
-    searchQuery = queryInput
-  }
-
-  await interaction.deferReply()
+export async function userSearch (message: Message, args: string[]) {
+  const serachData = message.content.replace('p!user-search ', '').replace(/ /g, '%20')
 
   const response = await axios.get(
-    `https://api.polytoria.com/v1/users?search=${searchQuery}&limit=15`,
+    `https://api.polytoria.com/v1/users?search=${serachData}&limit=15`,
     { params: {}, validateStatus: () => true }
   )
   const data = response.data.users
@@ -23,11 +15,11 @@ export async function userSearch (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    return await interaction.editReply(errResult.displayText)
+    return message.channel.send(errResult.displayText)
   }
 
   const embed = new EmbedBuilder({
-    title: `Search results for "${searchQuery}"`,
+    title: `Search results for "${serachData}"`,
     color: 0xFF5454
   })
 
@@ -43,7 +35,8 @@ export async function userSearch (interaction:CommandInteraction) {
 
   embed.setDescription(description)
 
-  return await interaction.editReply({
-    embeds: [embed]
-  })
+  return {
+    embeds: [embed],
+    components: []
+  }
 }

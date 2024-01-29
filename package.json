@@ -1,15 +1,13 @@
 {
 	"name": "polytoria-community-bot",
-	"version": "3.0.0",
+	"version": "2.7.1",
 	"type": "module",
 	"typings": "./types",
 	"scripts": {
 		"start": "node dist/index.js",
 		"build": "tsc",
 		"format": "prettier --write .",
-		"lint": "npx eslint \"src/**\" --fix",
-		"deploy": "node dist/deploy-commands.js",
-		"dev": "npm run build && npm run start"
+		"lint": "npx eslint \"src/**\" --fix"
 	},
 	"license": "MIT",
 	"dependencies": {

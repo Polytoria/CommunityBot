@@ -1,4 +1,4 @@
-import { EmbedBuilder, CommandInteraction } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
 import emojiUtils from '../utils/emojiUtils.js'
 import { IStatus } from '../../types/index.js'
@@ -77,7 +77,7 @@ async function checkStatus (url: string): Promise<IStatus> {
   }
 }
 
-export async function status (interaction:CommandInteraction) {
+export async function status (message: Message, args: string[]) {
   const embed = new EmbedBuilder({
     title: 'Polytoria Status',
     description: emojiUtils.loading + ' Checking..',
@@ -95,7 +95,7 @@ export async function status (interaction:CommandInteraction) {
     })
   }
 
-  const msg = await interaction.reply({ embeds: [embed] })
+  const msg = await message.reply({ embeds: [embed] })
   const responseTimes = []
 
   let index2 = 0
@@ -109,5 +109,7 @@ export async function status (interaction:CommandInteraction) {
   }
 
   embed.setDescription(`Average Response time: \`${(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length).toFixed(2)}ms\``)
-  await interaction.editReply({ embeds: [embed] })
+  msg.edit({ embeds: [embed] })
+
+  return msg
 }

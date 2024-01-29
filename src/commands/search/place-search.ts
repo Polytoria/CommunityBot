@@ -1,20 +1,12 @@
-import { EmbedBuilder, CommandInteraction } from 'discord.js'
+import { Message, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 
-export async function placeSearch (interaction:CommandInteraction) {
-  let searchQuery = ''
-  // @ts-expect-error
-  const queryInput = interaction.options.getString('query')
-
-  if (queryInput) {
-    searchQuery = queryInput
-  }
-
-  await interaction.deferReply()
+export async function placeSearch (message: Message, args: string[]) {
+  const searchData = args[0]
 
   const response = await axios.get(
-    `https://polytoria.com/api/places?page=1&search=${searchQuery}&genre=all&sort=popular`,
+    `https://polytoria.com/api/places?page=1&search=${searchData}&genre=all&sort=popular`,
     { params: {}, validateStatus: () => true }
   )
   const data = response.data.data
@@ -22,11 +14,11 @@ export async function placeSearch (interaction:CommandInteraction) {
   const errResult = responseHandler.checkError(response)
 
   if (errResult.hasError === true) {
-    return await interaction.editReply(errResult.displayText)
+    return message.channel.send(errResult.displayText)
   }
 
   const embed = new EmbedBuilder({
-    title: `Search results for "${searchQuery}"`,
+    title: `Search results for "${searchData}"`,
     color: 0xFF5454
   })
 
@@ -43,7 +35,8 @@ export async function placeSearch (interaction:CommandInteraction) {
 
   embed.setDescription(description)
 
-  return await interaction.editReply({
-    embeds: [embed]
-  })
+  return {
+    embeds: [embed],
+    components: []
+  }
 }

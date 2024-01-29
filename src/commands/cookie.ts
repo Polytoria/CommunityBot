@@ -1,5 +1,5 @@
-import { CommandInteraction } from 'discord.js'
+import { Message } from 'discord.js'
 
-export async function cookie (interaction:CommandInteraction) {
-  await interaction.reply('🍪')
+export async function cookie (message: Message, args: any[]): Promise<Message<boolean>> {
+  return await message.reply('🍪')
 }

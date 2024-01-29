@@ -36,9 +36,9 @@ export type IConfiguration = {
   token: string | undefined;
 
   /**
-   * ClientId of the bot
+   * Prefix of your bot.
    */
-  clientId: string | undefined;
+  prefix: string;
 
   /**
    * Time to cool down the bot commands.
