@@ -7,7 +7,7 @@ export async function inventory (interaction:CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
   if (!username || username.length === 0) {
-    return await interaction.reply('Please tell me the username so I can calculate the level.')
+    return await interaction.reply('Please tell me the username so I can tell you their inventory.')
   }
 
   await interaction.deferReply()
@@ -39,7 +39,7 @@ export async function inventory (interaction:CommandInteraction) {
 
     // @ts-expect-error
     response.data.data.forEach((item) => {
-      resultString += `[${item.asset.name}](https://polytoria.com/store/${item.id})\n`
+      resultString += `[${item.asset.name}](https://polytoria.com/store/${item.asset.id})\n`
     })
 
     return resultString
