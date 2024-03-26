@@ -13,32 +13,32 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"axios": "^1.4.0",
+		"axios": "^1.6.8",
 		"canvas": "^2.11.2",
 		"chalk": "^5.3.0",
 		"discord.js": "^14.14.1",
-		"dom-parser": "^0.1.6",
-		"dotenv": "^16.3.1",
+		"dom-parser": "^1.1.5",
+		"dotenv": "^16.4.5",
 		"esm": "^3.2.25",
 		"module-alias": "^2.2.3",
 		"string-progressbar": "^1.0.4",
 		"text-table": "^0.2.0",
 		"timestamp-conv": "^3.0.0",
-		"typescript": "^5.1.6",
-		"uuid": "^9.0.0"
+		"typescript": "^5.4.3",
+		"uuid": "^9.0.1"
 	},
 	"devDependencies": {
-		"@types/node": "^20.5.1",
-		"@types/text-table": "^0.2.2",
-		"@types/uuid": "^9.0.2",
-		"@typescript-eslint/eslint-plugin": "^6.4.0",
-		"@typescript-eslint/parser": "^6.4.0",
-		"eslint": "^8.47.0",
+		"@types/node": "^20.11.30",
+		"@types/text-table": "^0.2.5",
+		"@types/uuid": "^9.0.8",
+		"@typescript-eslint/eslint-plugin": "^7.4.0",
+		"@typescript-eslint/parser": "^7.4.0",
+		"eslint": "^8.57.0",
 		"eslint-config-standard": "^17.1.0",
-		"eslint-plugin-import": "^2.28.1",
+		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-promise": "^6.1.1",
-		"prettier": "^3.0.2",
-		"prettier-eslint": "^15.0.1"
+		"prettier": "^3.2.5",
+		"prettier-eslint": "^16.3.0"
 	}
 }
