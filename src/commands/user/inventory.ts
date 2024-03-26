@@ -38,15 +38,15 @@ export async function inventory (interaction:CommandInteraction) {
     let resultString: string = ''
 
     // @ts-expect-error
-    response.data.data.forEach((item) => {
-      resultString += `[${item.asset.name}](https://polytoria.com/store/${item.id})\n`
+    response.data.inventory.forEach((item) => {
+      resultString += `[${item.asset.name}](https://polytoria.com/store/${item.asset.id})\n`
     })
 
     return resultString
   }
 
   const embed = new EmbedBuilder({
-    title: userData.username + "'s Inventory.",
+    title: userData.username + "'s Inventory",
     url: `https://polytoria.com/users/${userData.id}/inventory`,
     color: 0xFF5454,
     thumbnail: {
@@ -68,7 +68,7 @@ export async function inventory (interaction:CommandInteraction) {
   // Create Buttons
   const leftBtn: ButtonBuilder = new ButtonBuilder().setCustomId(leftBtnID).setLabel('◀').setStyle(ButtonStyle.Primary).setDisabled(true)
 
-  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.lastPage.toString()}`).setStyle(ButtonStyle.Secondary).setDisabled(true)
+  const pageNumBtn: ButtonBuilder = new ButtonBuilder().setCustomId(pageNum).setLabel(`Page ${currentPage.toString()} of ${data.pages.toString()}`).setStyle(ButtonStyle.Secondary).setDisabled(true)
 
   const rightBtn: ButtonBuilder = new ButtonBuilder().setCustomId(rightBtnID).setLabel('▶').setStyle(ButtonStyle.Primary)
 
@@ -96,9 +96,9 @@ export async function inventory (interaction:CommandInteraction) {
     }
 
     // Update button state
-    if (currentPage >= data.meta.lastPage) {
+    if (currentPage >= data.pages) {
       rightBtn.setDisabled(true)
-      currentPage = data.meta.lastPage
+      currentPage = data.pages
     } else {
       rightBtn.setDisabled(false)
     }
@@ -111,7 +111,7 @@ export async function inventory (interaction:CommandInteraction) {
     }
 
     // Set Page
-    pageNumBtn.setLabel(`Page ${data.meta.currentPage.toString()} of ${data.meta.lastPage.toString()}`)
+    pageNumBtn.setLabel(`Page ${currentPage.toString()} of ${data.pages.toString()}`)
 
     // Fetch Inventory
     const inventoryData: string = await changePage()
