@@ -27,9 +27,26 @@ export async function randomPlace (interaction: CommandInteraction): Promise<any
   const creator = data.creator
 
   let externalDesc = ''
+  let accessMessage = ''
 
   if (data.isActive === false) {
     externalDesc += `${emojiUtils.private} **This place is currently private. Only the creator can join it.**\n`
+  } else {
+    switch (data.accessType) {
+      case 'everyone':
+        accessMessage = `${emojiUtils.public} **This place is currently joinable by everyone!**`
+        break
+      case 'purchase': {
+        const accessPrice = data.accessPrice || 0
+        accessMessage = `${emojiUtils.brick} **This place requires payment of ${accessPrice.toLocaleString()} bricks.**`
+        break
+      }
+      case 'whitelist':
+        accessMessage = `${emojiUtils.request} **This place is currently whitelisted.**`
+        break
+      default:
+        break
+    }
   }
 
   externalDesc += '\n'
@@ -38,24 +55,6 @@ export async function randomPlace (interaction: CommandInteraction): Promise<any
     externalDesc += '*No description set.*'
   } else {
     externalDesc += data.description
-  }
-
-  let accessMessage = ''
-
-  switch (data.accessType) {
-    case 'everyone':
-      accessMessage = `${emojiUtils.public} **This place is currently joinable by everyone!**`
-      break
-    case 'purchase': {
-      const accessPrice = data.accessPrice || 0
-      accessMessage = `${emojiUtils.brick} **This place requires payment of ${accessPrice.toLocaleString()} bricks.**`
-      break
-    }
-    case 'whitelist':
-      accessMessage = `${emojiUtils.request} **This place is currently whitelisted.**`
-      break
-    default:
-      break
   }
 
   const embed = new EmbedBuilder({
