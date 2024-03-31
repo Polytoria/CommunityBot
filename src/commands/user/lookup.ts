@@ -78,7 +78,7 @@ export async function lookUp (interaction: CommandInteraction) {
     badges += emojiUtils.plus + ' '
   }
 
-  const embed = new EmbedBuilder({
+  const embedInfo = {
     title: data.username + badges,
     url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
@@ -128,7 +128,17 @@ export async function lookUp (interaction: CommandInteraction) {
         inline: true
       }
     ]
-  })
+  }
+
+  if (data.playing !== null) {
+      embedInfo.push({
+          name: 'Playing',
+          value: ':video_game: [' + data.playing.name + '](https://polytoria.com/places/' + data.playing.placeID + ')',
+          inline: true
+      })
+  }
+
+  const embed = new EmbedBuilder(embedInfo)
 
   const dropdown = new StringSelectMenuBuilder()
     .setCustomId('dropdown_menu')
