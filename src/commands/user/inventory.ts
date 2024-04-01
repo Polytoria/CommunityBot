@@ -41,12 +41,7 @@ export async function inventory (interaction:CommandInteraction) {
     // @ts-expect-error
     response.data.inventory.forEach((item, index) => {
       const emoji = emojiUtils[item.asset.type as keyof typeof emojiUtils]
-      resultString += `${emoji} [${item.asset.name}](https://polytoria.com/store/${item.asset.id}) - #${item.serial}`
-
-      // Add a space after each item, except for the last one
-      if (index < response.data.inventory.length - 1) {
-        resultString += ' '
-      }
+      resultString += `${emoji} [${item.asset.name}](https://polytoria.com/store/${item.asset.id}) - #${item.serial} \n\n`
     })
 
     return resultString
