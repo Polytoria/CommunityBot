@@ -27,7 +27,7 @@ export default {
   face: '😀',
   shirt: '👕',
   pants: '👖',
-  gamepass: '🎮',
+  gamePass: '🎮',
   achievement: '🎖️',
   playing: '<:playing:1224251502848245872>'
 }

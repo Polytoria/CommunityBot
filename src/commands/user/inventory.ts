@@ -2,6 +2,7 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInte
 import axios from 'axios'
 import { userUtils } from '../../utils/userUtils.js'
 import { v4 } from 'uuid'
+import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function inventory (interaction:CommandInteraction) {
   // @ts-expect-error
@@ -38,8 +39,14 @@ export async function inventory (interaction:CommandInteraction) {
     let resultString: string = ''
 
     // @ts-expect-error
-    response.data.inventory.forEach((item) => {
-      resultString += `[${item.asset.name}](https://polytoria.com/store/${item.asset.id}) - #${item.serial} \n`
+    response.data.inventory.forEach((item, index) => {
+      const emoji = emojiUtils[item.asset.type as keyof typeof emojiUtils]
+      resultString += `${emoji} [${item.asset.name}](https://polytoria.com/store/${item.asset.id}) - #${item.serial}`
+
+      // Add a space after each item, except for the last one
+      if (index < response.data.inventory.length - 1) {
+        resultString += ' '
+      }
     })
 
     return resultString
