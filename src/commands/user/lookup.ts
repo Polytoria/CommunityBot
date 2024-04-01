@@ -130,6 +130,12 @@ export async function lookUp (interaction: CommandInteraction) {
     ]
   })
 
+  if (data.playing && data.playing.name) {
+    const gameLink = `https://polytoria.com/places/${data.playing.placeID}`
+    const playingMessage = emojiUtils.playing + `** Currently playing [${data.playing.name}](${gameLink})**`
+    embed.setDescription(playingMessage + '\n\n' + data.description)
+  }
+
   const dropdown = new StringSelectMenuBuilder()
     .setCustomId('dropdown_menu')
     .setPlaceholder('Choose a lookup feature to view!')

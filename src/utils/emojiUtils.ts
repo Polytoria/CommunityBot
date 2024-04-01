@@ -21,5 +21,6 @@ export default {
   pin: '📌',
   request: '🤚',
   private: '🔒',
-  public: '🔓'
+  public: '🔓',
+  playing: '<:playing:1224251502848245872>'
 }
