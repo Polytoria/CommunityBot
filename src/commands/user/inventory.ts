@@ -39,7 +39,7 @@ export async function inventory (interaction:CommandInteraction) {
 
     // @ts-expect-error
     response.data.inventory.forEach((item) => {
-      resultString += `[${item.asset.name}](https://polytoria.com/store/${item.asset.id})\n`
+      resultString += `[${item.asset.name}](https://polytoria.com/store/${item.asset.id}) - #${item.serial} \n`
     })
 
     return resultString

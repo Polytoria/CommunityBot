@@ -22,5 +22,12 @@ export default {
   request: '🤚',
   private: '🔒',
   public: '🔓',
+  hat: '👒',
+  tool: '🔧',
+  face: '😀',
+  shirt: '👕',
+  pants: '👖',
+  gamepass: '🎮',
+  achievement: '🎖️',
   playing: '<:playing:1224251502848245872>'
 }
