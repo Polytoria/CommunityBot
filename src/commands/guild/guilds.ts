@@ -96,7 +96,7 @@ export async function guild (interaction:CommandInteraction) {
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
   const shoutsEmbed = new EmbedBuilder()
-    .setTitle(data.name + ' - Shouts')
+    .setTitle(data.name + ' - Shouts ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .setURL('https://polytoria.com/guilds/' + data.id.toString())
