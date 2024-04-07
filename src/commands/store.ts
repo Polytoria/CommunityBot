@@ -1,8 +1,39 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, StringSelectMenuBuilder, ComponentType, BaseInteraction } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 import emojiUtils from '../utils/emojiUtils.js'
+
+interface OwnersData {
+  total: number;
+  inventories: {
+    serial: number;
+    user: {
+      username: string;
+      id: number;
+    };
+  }[];
+  pages: number;
+}
+
+async function fetchOwners (itemID: number, page: number): Promise<OwnersData> {
+  const response = await axios.get(`https://api.polytoria.com/v1/store/${itemID}/owners?limit=10&page=${page}`)
+  return response.data
+}
+
+function buildOwnersEmbed (ownersData: OwnersData, page: number, thumbnail: string): EmbedBuilder {
+  const ownersEmbed = new EmbedBuilder()
+    .setTitle('Item Owners (' + ownersData.total + ')')
+    .setColor('#FF5454')
+    .setThumbnail(thumbnail)
+
+  const ownersContent = ownersData.inventories.map((owner) => {
+    return `Serial #${owner.serial}. [${owner.user.username}](https://polytoria.com/users/${owner.user.id})`
+  })
+
+  ownersEmbed.setDescription(`> **Page ${page}/${ownersData.pages} **\n\n` + ownersContent.join('\n'))
+  return ownersEmbed
+}
 
 export async function store (interaction:CommandInteraction) {
   // @ts-expect-error
@@ -73,27 +104,146 @@ export async function store (interaction:CommandInteraction) {
     embed.addFields(
       {
         name: 'Price',
-        value: emojiUtils.brick + ' ' + data.price.toString(),
+        value: emojiUtils.brick + ' ' + data.price.toLocaleString(),
         inline: true
       },
       {
         name: 'Sales',
-        value: data.sales.toString(),
+        value: data.sales.toLocaleString(),
         inline: true
       }
     )
   }
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/store/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
-    )
+  const dropdown = new StringSelectMenuBuilder()
+    .setCustomId('dropdown_menu')
+    .setPlaceholder('Choose a store feature to view!')
+    .addOptions([
+      {
+        label: '👕 Item',
+        value: 'item_option'
+      },
+      {
+        label: '💼 Owners',
+        value: 'item_owners'
+      }
+    ])
 
-  await interaction.editReply({
+  const prevButton = new ButtonBuilder()
+    .setLabel('Previous')
+    .setStyle(ButtonStyle.Danger)
+    .setCustomId('prev_button')
+
+  const nextButton = new ButtonBuilder()
+    .setLabel('Next')
+    .setStyle(ButtonStyle.Success)
+    .setCustomId('next_button')
+
+  const actionRowDropdown = new ActionRowBuilder<StringSelectMenuBuilder>()
+    .addComponents(dropdown)
+
+  const reply = await interaction.editReply({
     embeds: [embed],
-    components: [actionRow]
+    components: [actionRowDropdown]
+  })
+
+  let ownersPage = 1
+  let selectedOption: string = 'item_option'
+
+  const collector = reply.createMessageComponentCollector({
+    componentType: ComponentType.SelectMenu,
+    filter: (messageInteraction: BaseInteraction) => (
+      messageInteraction.isStringSelectMenu() && messageInteraction.customId === 'dropdown_menu' &&
+      messageInteraction.user.id === interaction.user.id
+    ),
+    time: 60000
+  })
+
+  collector.on('collect', async (messageInteraction) => {
+    await messageInteraction.deferUpdate()
+
+    selectedOption = messageInteraction.values[0]
+
+    if (selectedOption === 'item_option') {
+      await interaction.editReply({
+        embeds: [embed],
+        components: [actionRowDropdown]
+      })
+    } else if (selectedOption === 'item_owners') {
+      const assetOwners = await fetchOwners(assetID, ownersPage)
+      const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
+
+      await interaction.editReply({
+        embeds: [newOwnersEmbed],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+          actionRowDropdown
+        ]
+      })
+    }
+  })
+
+  const prevButtonCollector = reply.createMessageComponentCollector({
+    componentType: ComponentType.Button,
+    filter: (btnInteraction: BaseInteraction) => (
+      btnInteraction.isButton() &&
+      btnInteraction.customId === 'prev_button' &&
+      btnInteraction.user.id === interaction.user.id
+    ),
+    time: 60000
+  })
+
+  prevButtonCollector.on('collect', async (buttonInteraction) => {
+    try {
+      await buttonInteraction.deferUpdate()
+
+      if (selectedOption === 'item_owners' && ownersPage > 1) {
+        ownersPage--
+        const assetOwners = await fetchOwners(assetID, ownersPage)
+        const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
+
+        await interaction.editReply({
+          embeds: [newOwnersEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRowDropdown
+          ]
+        })
+      }
+    } catch (error) {
+      console.error('Error handling interaction:', error)
+    }
+  })
+
+  const nextButtonCollector = reply.createMessageComponentCollector({
+    componentType: ComponentType.Button,
+    filter: (btnInteraction: BaseInteraction) => (
+      btnInteraction.isButton() &&
+      btnInteraction.customId === 'next_button' &&
+      btnInteraction.user.id === interaction.user.id
+    ),
+    time: 60000
+  })
+
+  nextButtonCollector.on('collect', async (buttonInteraction) => {
+    try {
+      await buttonInteraction.deferUpdate()
+
+      if (selectedOption === 'item_owners') {
+        ownersPage++
+        const assetOwners = await fetchOwners(assetID, ownersPage)
+        const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
+
+        await interaction.editReply({
+          embeds: [newOwnersEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRowDropdown
+          ]
+        })
+      }
+    } catch (error) {
+      console.error('Error handling interaction:', error)
+    }
   })
 }
