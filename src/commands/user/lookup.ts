@@ -7,7 +7,7 @@ import { userUtils } from '../../utils/userUtils.js'
 
 async function fetchWallPosts (userID: number, page: number): Promise<any[]> {
   const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
-  return response.data.data
+  return response.data
 }
 
 function buildWallPostsEmbed (wallPostsData: any[]): EmbedBuilder {
@@ -31,7 +31,7 @@ export async function lookUp (interaction: CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
   if (!username || username.length === 0) {
-    return await interaction.reply('Please tell me the username so I can make you a card.')
+    return await interaction.reply('Please enter a username for me to look up.')
   }
 
   await interaction.deferReply()
@@ -78,7 +78,7 @@ export async function lookUp (interaction: CommandInteraction) {
     badges += emojiUtils.plus + ' '
   }
 
-  const embedInfo = {
+  const embed = new EmbedBuilder({
     title: data.username + badges,
     url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
@@ -124,21 +124,11 @@ export async function lookUp (interaction: CommandInteraction) {
       },
       {
         name: 'Networth',
-        value: emojiUtils.brick + ' ' + data.netWorth.toString(),
+        value: emojiUtils.brick + ' ' + data.netWorth.toLocaleString(),
         inline: true
       }
     ]
-  }
-
-  if (data.playing !== null) {
-      embedInfo.push({
-          name: 'Playing',
-          value: ':video_game: [' + data.playing.name + '](https://polytoria.com/places/' + data.playing.placeID + ')',
-          inline: true
-      })
-  }
-
-  const embed = new EmbedBuilder(embedInfo)
+  })
 
   if (data.playing && data.playing.name) {
     const gameLink = `https://polytoria.com/places/${data.playing.placeID}`
@@ -206,15 +196,28 @@ export async function lookUp (interaction: CommandInteraction) {
       })
     } else if (selectedOption === 'wall_posts_option') {
       const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
-      const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData)
+      if (wallPostsData.success === undefined) {
+        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData.data)
 
-      await interaction.editReply({
-        embeds: [newWallPostsEmbed],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-          actionRowDropdown
-        ]
-      })
+        await interaction.editReply({
+          embeds: [newWallPostsEmbed],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
+            actionRowDropdown
+          ]
+        })
+      } else {
+        const errorEmbed = new EmbedBuilder({
+          title: "Wall Posts",
+          url: `https://polytoria.com/users/${data.id}`,
+          description: "This user's wall is either private or restricted to friends-only.",
+          color: 0xFF5454
+        })
+
+        await interaction.editReply({
+          embeds: [errorEmbed]
+        })
+      }
     } else if (selectedOption === 'user_avatar') {
       const avatarResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/avatar`, {
         validateStatus: () => true
