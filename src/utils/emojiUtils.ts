@@ -21,5 +21,13 @@ export default {
   pin: '📌',
   request: '🤚',
   private: '🔒',
-  public: '🔓'
+  public: '🔓',
+  hat: '👒',
+  tool: '🔧',
+  face: '😀',
+  shirt: '👕',
+  pants: '👖',
+  gamePass: '🎮',
+  achievement: '🎖️',
+  playing: '<:playing:1224251502848245872>'
 }

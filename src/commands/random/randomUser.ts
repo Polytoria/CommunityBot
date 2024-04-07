@@ -85,6 +85,12 @@ export async function randomUser (interaction: CommandInteraction): Promise<any>
     ]
   })
 
+  if (data.playing && data.playing.name) {
+    const gameLink = `https://polytoria.com/places/${data.playing.placeID}`
+    const playingMessage = emojiUtils.playing + `** Currently playing [${data.playing.name}](${gameLink})**`
+    embed.setDescription(playingMessage + '\n\n' + data.description)
+  }
+
   const redoButton = new ButtonBuilder()
     .setLabel('Re-do Randomize')
     .setStyle(ButtonStyle.Primary)

@@ -140,6 +140,12 @@ export async function lookUp (interaction: CommandInteraction) {
 
   const embed = new EmbedBuilder(embedInfo)
 
+  if (data.playing && data.playing.name) {
+    const gameLink = `https://polytoria.com/places/${data.playing.placeID}`
+    const playingMessage = emojiUtils.playing + `** Currently playing [${data.playing.name}](${gameLink})**`
+    embed.setDescription(playingMessage + '\n\n' + data.description)
+  }
+
   const dropdown = new StringSelectMenuBuilder()
     .setCustomId('dropdown_menu')
     .setPlaceholder('Choose a lookup feature to view!')
@@ -149,9 +155,13 @@ export async function lookUp (interaction: CommandInteraction) {
         value: 'user_option'
       },
       {
+        label: '👒 Avatar',
+        value: 'user_avatar'
+      },
+      {
         label: '📝 Wall Posts',
         value: 'wall_posts_option'
-      }
+      },
     ])
 
   const prevButton = new ButtonBuilder()
@@ -205,6 +215,42 @@ export async function lookUp (interaction: CommandInteraction) {
           actionRowDropdown
         ]
       })
+    } else if (selectedOption === 'user_avatar') {
+      const avatarResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/avatar`, {
+        validateStatus: () => true
+      })
+      const avatarData = avatarResponse.data
+
+      if (avatarData.colors) {
+        const colors = Object.entries(avatarData.colors)
+          .map(([part, color]) => `**${part.charAt(0).toUpperCase() + part.slice(1)}**: #${color}`)
+          .join('\n')
+
+        let assetsList = ''
+        if (avatarData.assets) {
+          assetsList = avatarData.assets
+            .map((asset: { type: { toString: () => any }; name: any; id: any }) => {
+              const assetType = asset.type.toString()
+              const assetTypeEmoji = emojiUtils[assetType as keyof typeof emojiUtils] ?? ''
+              return `${assetTypeEmoji} [${asset.name}](https://polytoria.com/store/${asset.id})`
+            })
+            .join('\n')
+        }
+
+        const avatarEmbed = new EmbedBuilder()
+          .setTitle(`${userData.username}'s Avatar`)
+          .setURL(`https://polytoria.com/users/${userData.id}`)
+          .setDescription(`**Currently Wearing**\n${assetsList}\n\n**Body Colors**\n${colors}`)
+          .setColor('#3498db')
+          .setThumbnail(userData.thumbnail?.avatar ?? '')
+
+        await interaction.editReply({
+          embeds: [avatarEmbed],
+          components: [actionRowDropdown]
+        })
+      } else {
+        await interaction.editReply('No colors found for this avatar.')
+      }
     }
   })
 
