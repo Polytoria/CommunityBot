@@ -12,7 +12,8 @@ async function fetchOwners (itemID: number, page: number): Promise<any[]> {
 function buildOwnersEmbed (ownersData: any[], page: number): EmbedBuilder {
   const ownersEmbed = new EmbedBuilder()
     .setTitle('Item Owners (' + ownersData.total + ')')
-    .setColor('#3498db')
+    .setColor('#FF5454')
+    .setThumbnail('thumbnailURL')
 
   const ownersContent = ownersData.inventories.map((owner: any) => {
     return `Serial #${owner.serial}. [${owner.user.username}](https://polytoria.com/users/${owner.user.id})`
