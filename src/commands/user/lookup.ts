@@ -5,7 +5,12 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { userUtils } from '../../utils/userUtils.js'
 
-async function fetchWallPosts (userID: number, page: number): Promise<any[]> {
+interface WallPostsResponse {
+  success: boolean;
+  data: any[];
+}
+
+async function fetchWallPosts (userID: number, page: number): Promise<WallPostsResponse> {
   const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
   return response.data
 }
@@ -151,7 +156,7 @@ export async function lookUp (interaction: CommandInteraction) {
       {
         label: '📝 Wall Posts',
         value: 'wall_posts_option'
-      },
+      }
     ])
 
   const prevButton = new ButtonBuilder()
@@ -196,7 +201,7 @@ export async function lookUp (interaction: CommandInteraction) {
       })
     } else if (selectedOption === 'wall_posts_option') {
       const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
-      if (wallPostsData.success === undefined) {
+      if (wallPostsData.success) {
         const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData.data)
 
         await interaction.editReply({
@@ -208,7 +213,7 @@ export async function lookUp (interaction: CommandInteraction) {
         })
       } else {
         const errorEmbed = new EmbedBuilder({
-          title: "Wall Posts",
+          title: 'Wall Posts',
           url: `https://polytoria.com/users/${data.id}`,
           description: "This user's wall is either private or restricted to friends-only.",
           color: 0xFF5454
@@ -274,7 +279,7 @@ export async function lookUp (interaction: CommandInteraction) {
       if (selectedOption === 'wall_posts_option' && wallPostsPage > 1) {
         wallPostsPage--
         const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
-        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData)
+        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData.data)
 
         await interaction.editReply({
           embeds: [newWallPostsEmbed],
@@ -306,7 +311,7 @@ export async function lookUp (interaction: CommandInteraction) {
       if (selectedOption === 'wall_posts_option') {
         wallPostsPage++
         const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
-        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData)
+        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData.data)
 
         await interaction.editReply({
           embeds: [newWallPostsEmbed],
