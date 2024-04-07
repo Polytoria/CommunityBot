@@ -9,11 +9,11 @@ async function fetchOwners (itemID: number, page: number): Promise<any[]> {
   return response.data
 }
 
-function buildOwnersEmbed (ownersData: any[], page: number): EmbedBuilder {
+function buildOwnersEmbed (ownersData: any[], page: number, thumbnail: string): EmbedBuilder {
   const ownersEmbed = new EmbedBuilder()
     .setTitle('Item Owners (' + ownersData.total + ')')
     .setColor('#FF5454')
-    .setThumbnail('thumbnailURL')
+    .setThumbnail(thumbnail)
 
   const ownersContent = ownersData.inventories.map((owner: any) => {
     return `Serial #${owner.serial}. [${owner.user.username}](https://polytoria.com/users/${owner.user.id})`
@@ -159,7 +159,7 @@ export async function store (interaction:CommandInteraction) {
       })
     } else if (selectedOption === 'item_owners') {
       const assetOwners = await fetchOwners(assetID, ownersPage)
-      const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage)
+      const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
 
       await interaction.editReply({
         embeds: [newOwnersEmbed],
@@ -188,7 +188,7 @@ export async function store (interaction:CommandInteraction) {
       if (selectedOption === 'item_owners' && ownersPage > 1) {
         ownersPage--
         const assetOwners = await fetchOwners(assetID, ownersPage)
-        const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage)
+        const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
 
         await interaction.editReply({
           embeds: [newOwnersEmbed],
@@ -220,7 +220,7 @@ export async function store (interaction:CommandInteraction) {
       if (selectedOption === 'item_owners') {
         ownersPage++
         const assetOwners = await fetchOwners(assetID, ownersPage)
-        const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage)
+        const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
 
         console.log('next button clicked')
         await interaction.editReply({
