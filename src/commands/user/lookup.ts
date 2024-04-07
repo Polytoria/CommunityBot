@@ -5,12 +5,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { userUtils } from '../../utils/userUtils.js'
 
-interface WallPostsResponse {
-  success: boolean;
-  data: any[];
-}
-
-async function fetchWallPosts (userID: number, page: number): Promise<WallPostsResponse> {
+async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
   const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
   return response.data
 }
