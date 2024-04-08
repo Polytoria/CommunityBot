@@ -1,124 +1,40 @@
-import { Message, EmbedBuilder } from 'discord.js'
+import { EmbedBuilder, StringSelectMenuBuilder, ActionRowBuilder } from 'discord.js'
 import axios from 'axios'
-import { userUtils } from '../../utils/userUtils.js'
+import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function avatar (message: Message, args: string[]) {
-  const userData = await userUtils.getUserDataFromUsername(args.join(' '))
-
-  if (!userData.id) {
-    return message.reply('User not found!')
-  }
-
-  const apiURL = `https://api.polytoria.com/v1/users/${userData.id.toString()}/avatar`
-
-  const response = await axios.get(apiURL, { validateStatus: () => true })
-  const data = response.data
-  const bodyColors = data.colors
-  const hats = data.assets
-
-  // Make body colors string
-  let bodyColorsString: string = ''
-
-  bodyColorsString += 'Head: ' + bodyColors.head + '\n'
-  bodyColorsString += 'Torso: ' + bodyColors.torso + '\n'
-  bodyColorsString += 'Left Arm: ' + bodyColors.leftArm + '\n'
-  bodyColorsString += 'Right Arm: ' + bodyColors.rightArm + '\n'
-  bodyColorsString += 'Left Leg: ' + bodyColors.leftLeg + '\n'
-  bodyColorsString += 'Right Leg: ' + bodyColors.rightLeg + '\n'
-
-  let wearablesString = ''
-  let brickPrice = 0
-
-  const embed = new EmbedBuilder({
-    title: userData.username + "'s Avatar",
-    url: `https://polytoria.com/users/${data.id}`,
-    color: 0xFF5454,
-    fields: [
-      {
-        name: 'Currently Wearing',
-        value: 'Loading...',
-        inline: false
-      },
-      {
-        name: 'Body colors',
-        value: bodyColorsString,
-        inline: false
-      },
-      {
-        name: 'Total Price',
-        value: 'Calculating..',
-        inline: false
-      }
-    ]
+export async function fetchAvatar (userID: number) {
+  const avatarResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/avatar`, {
+    validateStatus: () => true
   })
+  return avatarResponse.data
+}
 
-  const oldMessage = await message.channel.send({ embeds: [embed] })
+export function buildAvatarEmbed (userData: any, avatarData: any) {
+  const colors = Object.entries(avatarData.colors)
+    .map(([part, color]) => `**${part.charAt(0).toUpperCase() + part.slice(1)}**: #${color}`)
+    .join('\n')
 
-  for (const item of Object.values(hats)) {
-    const itemData = await axios.get('https://api.polytoria.com/v1/store/' + item, { validateStatus: () => true })
-    if (itemData.data.Success) {
-      wearablesString += `👒 [${itemData.data.name}](https://polytoria.com/store/${itemData.data.id.toString()})\n`
-
-      // Add to price
-      if (itemData.data.price !== 0) {
-        if (itemData.data.Currency === 'Bricks') {
-          brickPrice += itemData.data.price
-        }
-      }
-    }
+  let assetsList = ''
+  if (avatarData.assets) {
+    assetsList = avatarData.assets
+      .map((asset: { type: { toString: () => any }; name: any; id: any }) => {
+        const assetType = asset.type.toString()
+        const assetTypeEmoji = emojiUtils[assetType as keyof typeof emojiUtils] ?? ''
+        return `${assetTypeEmoji} [${asset.name}](https://polytoria.com/store/${asset.id})`
+      })
+      .join('\n')
   }
 
-  for (const item of Object.values(hats)) {
-    if (typeof item === 'number') {
-      const itemData = await axios.get('https://api.polytoria.com/v1/store/' + item, { validateStatus: () => true })
-      if (itemData.data.Success) {
-        let emoji = '❓'
-        switch (itemData.data.type) {
-          case 'face':
-            emoji = '🙂'
-            break
-          case 'shirt':
-            emoji = '👕'
-            break
-          case 'pants':
-            emoji = '👖'
-            break
-          case 'tool':
-            emoji = '🥤'
-            break
-        }
+  const embed = new EmbedBuilder()
+    .setTitle(`${userData.username}'s Avatar`)
+    .setURL(`https://polytoria.com/users/${userData.id}`)
+    .setDescription(`**Currently Wearing**\n${assetsList}\n\n**Body Colors**\n${colors}`)
+    .setColor('#3498db')
+    .setThumbnail(userData.thumbnail?.avatar ?? '')
 
-        wearablesString += `${emoji} [${itemData.data.name}](https://polytoria.com/store/${itemData.data.id.toString()})\n`
+  return embed
+}
 
-        // Add to price
-        if (itemData.data.Price !== -1) {
-          brickPrice += itemData.data.price
-        }
-      }
-    }
-  }
-
-  if (wearablesString === '') {
-    wearablesString = "User doesn't wear anything."
-  }
-
-  embed.setFields(
-    {
-      name: 'Currently Wearing',
-      value: wearablesString,
-      inline: false
-    },
-    {
-      name: 'Body colors',
-      value: bodyColorsString,
-      inline: false
-    },
-    {
-      name: 'Total Price',
-      value: `${brickPrice} Brick(s)`,
-      inline: false
-    }
-  )
-
-  return await oldMessage.edit({ embeds: [embed] })
+export function buildAvatarComponents (actionRowDropdown: ActionRowBuilder<StringSelectMenuBuilder>) {
+  return [actionRowDropdown]
 }

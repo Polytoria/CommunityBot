@@ -5,6 +5,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { userUtils } from '../../utils/userUtils.js'
 import { buildWallPostsEmbed } from './wallPosts.js'
+import { fetchAvatar, buildAvatarEmbed, buildAvatarComponents } from './avatar.js'
 
 async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
   const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
@@ -203,41 +204,14 @@ export async function lookUp (interaction: CommandInteraction) {
         })
       }
     } else if (selectedOption === 'user_avatar') {
-      const avatarResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/avatar`, {
-        validateStatus: () => true
+      const avatarData = await fetchAvatar(userID)
+      const avatarEmbed = buildAvatarEmbed(userData, avatarData)
+      const components = buildAvatarComponents(actionRowDropdown)
+
+      await interaction.editReply({
+        embeds: [avatarEmbed],
+        components
       })
-      const avatarData = avatarResponse.data
-
-      if (avatarData.colors) {
-        const colors = Object.entries(avatarData.colors)
-          .map(([part, color]) => `**${part.charAt(0).toUpperCase() + part.slice(1)}**: #${color}`)
-          .join('\n')
-
-        let assetsList = ''
-        if (avatarData.assets) {
-          assetsList = avatarData.assets
-            .map((asset: { type: { toString: () => any }; name: any; id: any }) => {
-              const assetType = asset.type.toString()
-              const assetTypeEmoji = emojiUtils[assetType as keyof typeof emojiUtils] ?? ''
-              return `${assetTypeEmoji} [${asset.name}](https://polytoria.com/store/${asset.id})`
-            })
-            .join('\n')
-        }
-
-        const avatarEmbed = new EmbedBuilder()
-          .setTitle(`${userData.username}'s Avatar`)
-          .setURL(`https://polytoria.com/users/${userData.id}`)
-          .setDescription(`**Currently Wearing**\n${assetsList}\n\n**Body Colors**\n${colors}`)
-          .setColor('#3498db')
-          .setThumbnail(userData.thumbnail?.avatar ?? '')
-
-        await interaction.editReply({
-          embeds: [avatarEmbed],
-          components: [actionRowDropdown]
-        })
-      } else {
-        await interaction.editReply('No colors found for this avatar.')
-      }
     }
   })
 
