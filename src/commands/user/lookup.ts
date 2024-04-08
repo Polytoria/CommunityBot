@@ -196,7 +196,7 @@ export async function lookUp (interaction: CommandInteraction) {
       })
     } else if (selectedOption === 'wall_posts_option') {
       const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
-      if (wallPostsData.success) {
+      if (wallPostsData.success === undefined) {
         const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData.data)
 
         await interaction.editReply({
