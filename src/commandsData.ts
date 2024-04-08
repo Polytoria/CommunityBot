@@ -8,6 +8,7 @@ import { random } from './commands/random.js'
 import { place } from './commands/place.js'
 import { SlashCommandBuilder } from 'discord.js'
 import { search } from './commands/search/search.js'
+import { blog } from './commands/blog.js'
 
 export default [
   {
@@ -139,6 +140,11 @@ export default [
       .setName('info')
       .setDescription('Information about Polytoria Community Bot'),
     execute: info
+  },
+  {
+    data: new SlashCommandBuilder()
+      .setName('blog')
+      .setDescription('Fetch latest blog posts from the Polytoria Blog'),
+    execute: blog
   }
-
 ]
