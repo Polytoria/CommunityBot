@@ -207,6 +207,8 @@ export async function lookUp (interaction: CommandInteraction) {
   })
 
   const prevButtonCollector = createPrevButtonCollector(reply, interaction, actionRowDropdown, fetchWallPosts, buildWallPostsEmbed, userID, wallPostsPage)
-
   const nextButtonCollector = createNextButtonCollector(reply, interaction, actionRowDropdown, fetchWallPosts, buildWallPostsEmbed, userID, wallPostsPage)
+
+  prevButtonCollector.start()
+  nextButtonCollector.start()
 }
