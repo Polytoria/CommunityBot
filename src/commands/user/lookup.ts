@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType, BaseInteraction, StringSelectMenuBuilder } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, CommandInteraction, BaseInteraction, ComponentType, ButtonBuilder } from 'discord.js'
 import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
@@ -6,6 +6,7 @@ import emojiUtils from '../../utils/emojiUtils.js'
 import { userUtils } from '../../utils/userUtils.js'
 import { buildWallPostsEmbed } from './wallPosts.js'
 import { fetchAvatar, buildAvatarEmbed, buildAvatarComponents } from './avatar.js'
+import { createPrevButtonCollector, createNextButtonCollector, prevButton, nextButton } from '../../utils/buttonlogic.js'
 
 async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
   const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
@@ -139,16 +140,6 @@ export async function lookUp (interaction: CommandInteraction) {
       }
     ])
 
-  const prevButton = new ButtonBuilder()
-    .setLabel('Previous')
-    .setStyle(ButtonStyle.Danger)
-    .setCustomId('prev_button')
-
-  const nextButton = new ButtonBuilder()
-    .setLabel('Next')
-    .setStyle(ButtonStyle.Success)
-    .setCustomId('next_button')
-
   const actionRowDropdown = new ActionRowBuilder<StringSelectMenuBuilder>()
     .addComponents(dropdown)
 
@@ -157,7 +148,7 @@ export async function lookUp (interaction: CommandInteraction) {
     components: [actionRowDropdown]
   })
 
-  let wallPostsPage = 1
+  const wallPostsPage = 1
   let selectedOption: string = 'user_option'
 
   const collector = reply.createMessageComponentCollector({
@@ -215,67 +206,7 @@ export async function lookUp (interaction: CommandInteraction) {
     }
   })
 
-  const prevButtonCollector = reply.createMessageComponentCollector({
-    componentType: ComponentType.Button,
-    filter: (btnInteraction: BaseInteraction) => (
-      btnInteraction.isButton() &&
-      btnInteraction.customId === 'prev_button' &&
-      btnInteraction.user.id === interaction.user.id
-    ),
-    time: 60000
-  })
+  const prevButtonCollector = createPrevButtonCollector(reply, interaction, actionRowDropdown, fetchWallPosts, buildWallPostsEmbed, userID, wallPostsPage)
 
-  prevButtonCollector.on('collect', async (buttonInteraction) => {
-    try {
-      await buttonInteraction.deferUpdate()
-
-      if (selectedOption === 'wall_posts_option' && wallPostsPage > 1) {
-        wallPostsPage--
-        const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
-        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData.data)
-
-        await interaction.editReply({
-          embeds: [newWallPostsEmbed],
-          components: [
-            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-            actionRowDropdown
-          ]
-        })
-      }
-    } catch (error) {
-      console.error('Error handling interaction:', error)
-    }
-  })
-
-  const nextButtonCollector = reply.createMessageComponentCollector({
-    componentType: ComponentType.Button,
-    filter: (btnInteraction: BaseInteraction) => (
-      btnInteraction.isButton() &&
-      btnInteraction.customId === 'next_button' &&
-      btnInteraction.user.id === interaction.user.id
-    ),
-    time: 60000
-  })
-
-  nextButtonCollector.on('collect', async (buttonInteraction) => {
-    try {
-      await buttonInteraction.deferUpdate()
-
-      if (selectedOption === 'wall_posts_option') {
-        wallPostsPage++
-        const wallPostsData = await fetchWallPosts(userID, wallPostsPage)
-        const newWallPostsEmbed = buildWallPostsEmbed(wallPostsData.data)
-
-        await interaction.editReply({
-          embeds: [newWallPostsEmbed],
-          components: [
-            new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton),
-            actionRowDropdown
-          ]
-        })
-      }
-    } catch (error) {
-      console.error('Error handling interaction:', error)
-    }
-  })
+  const nextButtonCollector = createNextButtonCollector(reply, interaction, actionRowDropdown, fetchWallPosts, buildWallPostsEmbed, userID, wallPostsPage)
 }
