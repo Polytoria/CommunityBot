@@ -7,6 +7,7 @@ import { userUtils } from '../../utils/userUtils.js'
 import { buildWallPostsEmbed } from './wallPosts.js'
 import { fetchAvatar, buildAvatarEmbed, buildAvatarComponents } from './avatar.js'
 import { createPrevButtonCollector, createNextButtonCollector, prevButton, nextButton } from '../../utils/buttonlogic.js'
+import { fetchRatelimit } from '../../utils/ratelimitutils.js'
 
 async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
   const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
@@ -44,6 +45,14 @@ export async function lookUp (interaction: CommandInteraction) {
   }
 
   const userID = lookupData.id
+
+  const ratelimitStatus = await fetchRatelimit()
+  if (ratelimitStatus.enabled) {
+    if (interaction.channel) {
+      await interaction.channel.send(ratelimitStatus.reason)
+    }
+    await new Promise(resolve => setTimeout(resolve, ratelimitStatus.time))
+  }
 
   const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, {
     validateStatus: () => true
