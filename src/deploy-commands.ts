@@ -5,8 +5,8 @@ import { REST, Routes } from 'discord.js'
 
 dotenv.config()
 
-// @ts-expect-error
-const rest = new REST().setToken(process.env.TOKEN)
+
+const rest = new REST().setToken(process.env.TOKEN!)
 
 async function deploy () {
   try {
