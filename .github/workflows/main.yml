@@ -1,0 +1,25 @@
+name: Check build & lint errors
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install node@20
+        uses: actions/setup-node@v4.0.2
+      - name: Install dependencies
+        run: npm install
+      - name: Test build
+        run: npm run build
+      - name: Test Lint
+        run: npm run lint
+      - name: Say hi
+        run: echo "hallo!!"
