@@ -2,9 +2,7 @@ name: Check build & lint errors
 
 on:
   push:
-    branches: [ $default-branch ]
-  pull_request:
-    branches: [ $default-branch ]
+    branches: [ main ]
 
 jobs:
   build:
