@@ -1,7 +1,7 @@
 name: Check build & lint errors
 
 on:
-  pull-request:
+  pull_request:
   push:
     branches: [ main ]
 
