@@ -1,6 +1,7 @@
 name: Check build & lint errors
 
 on:
+  pull-request:
   push:
     branches: [ main ]
 
@@ -19,5 +20,3 @@ jobs:
         run: npm run build
       - name: Test Lint
         run: npm run lint
-      - name: Say hi
-        run: echo "hallo!!"

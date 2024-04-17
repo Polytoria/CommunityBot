@@ -5,7 +5,6 @@ import { REST, Routes } from 'discord.js'
 
 dotenv.config()
 
-
 const rest = new REST().setToken(process.env.TOKEN!)
 
 async function deploy () {
