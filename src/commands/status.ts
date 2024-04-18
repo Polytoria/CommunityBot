@@ -81,7 +81,6 @@ export async function status (interaction:CommandInteraction) {
   const embed = new EmbedBuilder({
     title: 'Polytoria Status',
     description: emojiUtils.loading + ' Checking..',
-    url: 'https://status.polytoria.com/',
     color: 0xFF5454
   })
 
