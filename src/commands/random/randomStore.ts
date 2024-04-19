@@ -68,12 +68,12 @@ export async function randomStore (interaction: CommandInteraction): Promise<any
     embed.addFields(
       {
         name: 'Price',
-        value: emojiUtils.brick + ' ' + data.price.toString(),
+        value: emojiUtils.brick + ' ' + data.price.toLocaleString(),
         inline: true
       },
       {
         name: 'Sales',
-        value: data.sales.toString(),
+        value: data.sales.toLocaleString(),
         inline: true
       }
     )

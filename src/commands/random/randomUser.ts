@@ -59,27 +59,27 @@ export async function randomUser (interaction: CommandInteraction): Promise<any>
       },
       {
         name: 'Place Visits',
-        value: data.placeVisits.toString(),
+        value: data.placeVisits.toLocaleString(),
         inline: true
       },
       {
         name: 'Profile Views',
-        value: data.profileViews.toString(),
+        value: data.profileViews.toLocaleString(),
         inline: true
       },
       {
         name: 'Forum Posts',
-        value: data.forumPosts.toString(),
+        value: data.forumPosts.toLocaleString(),
         inline: true
       },
       {
         name: 'Asset Sales',
-        value: data.assetSales.toString(),
+        value: data.assetSales.toLocaleString(),
         inline: true
       },
       {
         name: 'Networth',
-        value: emojiUtils.brick + ' ' + data.netWorth.toString(),
+        value: emojiUtils.brick + ' ' + data.netWorth.toLocaleString(),
         inline: true
       }
     ]

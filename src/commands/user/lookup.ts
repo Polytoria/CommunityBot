@@ -90,22 +90,22 @@ export async function lookUp (interaction: CommandInteraction) {
       },
       {
         name: 'Place Visits',
-        value: data.placeVisits.toString(),
+        value: data.placeVisits.toLocaleString(),
         inline: true
       },
       {
         name: 'Profile Views',
-        value: data.profileViews.toString(),
+        value: data.profileViews.toLocaleString(),
         inline: true
       },
       {
         name: 'Forum Posts',
-        value: data.forumPosts.toString(),
+        value: data.forumPosts.toLocaleString(),
         inline: true
       },
       {
         name: 'Asset Sales',
-        value: data.assetSales.toString(),
+        value: data.assetSales.toLocaleString(),
         inline: true
       },
       {

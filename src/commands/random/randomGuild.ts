@@ -54,7 +54,7 @@ export async function randomGuild (interaction: CommandInteraction): Promise<any
       },
       {
         name: 'Vault',
-        value: emojiUtils.brick + ' ' + data.vaultBalance.toString(),
+        value: emojiUtils.brick + ' ' + data.vaultBalance.toLocaleString(),
         inline: true
       }
     )

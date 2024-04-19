@@ -74,7 +74,7 @@ export async function guild (interaction:CommandInteraction) {
       },
       {
         name: 'Vault',
-        value: emojiUtils.brick + ' ' + data.vaultBalance.toString(),
+        value: emojiUtils.brick + ' ' + data.vaultBalance.toLocaleString(),
         inline: true
       }
     )
