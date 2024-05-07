@@ -14,7 +14,7 @@ async function deploy () {
     const commands: any = []
 
     commandsData.forEach((commandData, index) => {
-      commands.push(commandData.data.toJSON())
+      commands.push({ ...commandData.data.toJSON(), integration_types: [0, 1], contexts: [0, 1, 2] })
     })
 
     const data:any = await rest.put(
