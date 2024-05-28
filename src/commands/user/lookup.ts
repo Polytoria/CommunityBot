@@ -13,6 +13,13 @@ async function fetchWallPosts (userID: number, page: number): Promise<{ success:
   return response.data
 }
 
+async function fetchUserBadges (userID: number): Promise<any[]> {
+  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}/badges`, {
+    validateStatus: () => true
+  })
+  return response.data.badges
+}
+
 export async function lookUp (interaction: CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
@@ -137,6 +144,10 @@ export async function lookUp (interaction: CommandInteraction) {
       {
         label: '📝 Wall Posts',
         value: 'wall_posts_option'
+      },
+      {
+        label: '🏅 Badges',
+        value: 'badges_option'
       }
     ])
 
@@ -202,6 +213,19 @@ export async function lookUp (interaction: CommandInteraction) {
       await interaction.editReply({
         embeds: [avatarEmbed],
         components
+      })
+    } else if (selectedOption === 'badges_option') {
+      const badgesData: any[] = await fetchUserBadges(userID)
+      const badgeNames = badgesData.map((badge) => badge.name).join('\n')
+      const badgesEmbed = new EmbedBuilder({
+        title: 'User Badges',
+        description: badgeNames,
+        color: 0xFF5454
+      })
+
+      await interaction.editReply({
+        embeds: [badgesEmbed],
+        components: [actionRowDropdown]
       })
     }
   })
