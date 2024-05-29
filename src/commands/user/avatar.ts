@@ -27,7 +27,7 @@ export function buildAvatarEmbed (userData: any, avatarData: any) {
 
   const embed = new EmbedBuilder()
     .setTitle(`${userData.username}'s Avatar`)
-    .setURL(`https://polytoria.com/users/${userData.id}`)
+    .setURL(`https://polytoria.com/u/${userData.username}`)
     .setDescription(`**Currently Wearing**\n${assetsList}\n\n**Body Colors**\n${colors}`)
     .setColor('#3498db')
     .setThumbnail(userData.thumbnail?.avatar ?? '')

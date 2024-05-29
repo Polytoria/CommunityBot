@@ -49,7 +49,7 @@ export async function inventory (interaction:CommandInteraction) {
 
   const embed = new EmbedBuilder({
     title: userData.username + "'s Inventory",
-    url: `https://polytoria.com/users/${userData.id}/inventory`,
+    url: `https://polytoria.com/u/${userData.username}/inventory`,
     color: 0xFF5454,
     thumbnail: {
       url: userData.thumbnail.avatar
