@@ -9,12 +9,12 @@ import { fetchAvatar, buildAvatarEmbed, buildAvatarComponents } from './avatar.j
 import { createPrevButtonCollector, createNextButtonCollector, prevButton, nextButton } from '../../utils/buttonlogic.js'
 import { fetchUserBadges, buildBadgesEmbed } from './badges.js'
 
-async function fetchWallPosts(userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
+async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
   const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
   return response.data
 }
 
-function getMembershipBadges(data: any): string {
+function getMembershipBadges (data: any): string {
   let badges = ' '
 
   if (data.membershipType === 'plusDeluxe') {
@@ -27,7 +27,7 @@ function getMembershipBadges(data: any): string {
   return badges
 }
 
-export async function lookUp(interaction: CommandInteraction) {
+export async function lookUp (interaction: CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
   if (!username || username.length === 0) {
