@@ -30,7 +30,7 @@ export function buildAvatarEmbed (userData: any, avatarData: any) {
     .setURL(`https://polytoria.com/users/${userData.id}`)
     .setDescription(`**Currently Wearing**\n${assetsList}\n\n**Body Colors**\n${colors}`)
     .setColor('#3498db')
-    .setThumbnail(userData.thumbnail?.avatar ?? '')
+    .setThumbnail(userData.thumbnail.avatar)
 
   return embed
 }

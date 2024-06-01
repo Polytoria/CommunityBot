@@ -7,20 +7,27 @@ import { userUtils } from '../../utils/userUtils.js'
 import { buildWallPostsEmbed } from './wallPosts.js'
 import { fetchAvatar, buildAvatarEmbed, buildAvatarComponents } from './avatar.js'
 import { createPrevButtonCollector, createNextButtonCollector, prevButton, nextButton } from '../../utils/buttonlogic.js'
+import { fetchUserBadges, buildBadgesEmbed } from './badges.js'
 
-async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
+async function fetchWallPosts(userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
   const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
   return response.data
 }
 
-async function fetchUserBadges (userID: number): Promise<any[]> {
-  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}/badges`, {
-    validateStatus: () => true
-  })
-  return response.data.badges
+function getMembershipBadges(data: any): string {
+  let badges = ' '
+
+  if (data.membershipType === 'plusDeluxe') {
+    badges += emojiUtils.plusdeluxe + ' '
+  }
+  if (data.membershipType === 'plus') {
+    badges += emojiUtils.plus + ' '
+  }
+
+  return badges
 }
 
-export async function lookUp (interaction: CommandInteraction) {
+export async function lookUp(interaction: CommandInteraction) {
   // @ts-expect-error
   const username = interaction.options.getString('username')
   if (!username || username.length === 0) {
@@ -56,7 +63,6 @@ export async function lookUp (interaction: CommandInteraction) {
     validateStatus: () => true
   })
   const data = response.data
-  let badges = ' '
 
   const errResult2 = responseHandler.checkError(response)
 
@@ -64,12 +70,7 @@ export async function lookUp (interaction: CommandInteraction) {
     return await interaction.editReply(errResult2.displayText)
   }
 
-  if (data.membershipType === 'plusDeluxe') {
-    badges += emojiUtils.plusdeluxe + ' '
-  }
-  if (data.membershipType === 'plus') {
-    badges += emojiUtils.plus + ' '
-  }
+  const badges = getMembershipBadges(data)
 
   const embed = new EmbedBuilder({
     title: data.username + badges,
@@ -216,12 +217,7 @@ export async function lookUp (interaction: CommandInteraction) {
       })
     } else if (selectedOption === 'badges_option') {
       const badgesData: any[] = await fetchUserBadges(userID)
-      const badgeNames = badgesData.map((badge) => badge.name).join('\n')
-      const badgesEmbed = new EmbedBuilder({
-        title: 'User Badges',
-        description: badgeNames,
-        color: 0xFF5454
-      })
+      const badgesEmbed = buildBadgesEmbed(userData, badgesData)
 
       await interaction.editReply({
         embeds: [badgesEmbed],
