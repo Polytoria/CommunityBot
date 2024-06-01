@@ -54,7 +54,7 @@ export async function guild (interaction:CommandInteraction) {
     .addFields(
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.com/u/${creator.name})`,
+        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
         inline: true
       },
       {

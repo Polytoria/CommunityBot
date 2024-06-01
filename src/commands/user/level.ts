@@ -28,7 +28,7 @@ export async function level (interaction:CommandInteraction) {
 
   const embed = new EmbedBuilder({
     title: userData.username + "'s level",
-    url: `https://polytoria.com/u/${userData.username}`,
+    url: `https://polytoria.com/users/${userData.id}`,
     description,
     color: 0xFF5454,
     thumbnail: {

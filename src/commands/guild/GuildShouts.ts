@@ -23,7 +23,7 @@ export async function fetchShouts (guildID: number, page: number): Promise<strin
   }
 
   const shouts = allShouts.map((shout: any) => {
-    return `**${shout.title}**\n${shout.content}\n*Posted by [${shout.author.username}](https://polytoria.com/u/${shout.author.username})*`
+    return `**${shout.title}**\n${shout.content}\n*Posted by [${shout.author.username}](https://polytoria.com/users/${shout.author.id})*`
   })
 
   return shouts.join('\n\n')

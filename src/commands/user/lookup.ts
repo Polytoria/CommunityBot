@@ -73,7 +73,7 @@ export async function lookUp (interaction: CommandInteraction) {
 
   const embed = new EmbedBuilder({
     title: data.username + badges,
-    url: `https://polytoria.com/u/${data.username}`,
+    url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
     color: 0xFF5454,
     thumbnail: {
@@ -196,7 +196,7 @@ export async function lookUp (interaction: CommandInteraction) {
       } else {
         const errorEmbed = new EmbedBuilder({
           title: 'Wall Posts',
-          url: `https://polytoria.com/u/${data.username}`,
+          url: `https://polytoria.com/users/${data.id}`,
           description: "This user's wall is either private or restricted to friends-only.",
           color: 0xFF5454
         })
@@ -219,7 +219,6 @@ export async function lookUp (interaction: CommandInteraction) {
       const badgeNames = badgesData.map((badge) => badge.name).join('\n')
       const badgesEmbed = new EmbedBuilder({
         title: 'User Badges',
-        url: `https://polytoria.com/u/${data.username}`,
         description: badgeNames,
         color: 0xFF5454
       })
