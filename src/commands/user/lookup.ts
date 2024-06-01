@@ -216,8 +216,8 @@ export async function lookUp (interaction: CommandInteraction) {
         components
       })
     } else if (selectedOption === 'badges_option') {
-      const badgesData: any[] = await fetchUserBadges(userID)
-      const badgesEmbed = buildBadgesEmbed(userData, badgesData)
+      const { badges: badgesData, total } = await fetchUserBadges(userID)
+      const badgesEmbed = buildBadgesEmbed(userData, badgesData, total)
 
       await interaction.editReply({
         embeds: [badgesEmbed],
