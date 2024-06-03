@@ -121,6 +121,7 @@ export async function store (interaction:CommandInteraction) {
     .setLabel('Previous')
     .setStyle(ButtonStyle.Danger)
     .setCustomId('prev_button')
+    .setDisabled(true)
 
   const nextButton = new ButtonBuilder()
     .setLabel('Next')
@@ -161,6 +162,11 @@ export async function store (interaction:CommandInteraction) {
       const assetOwners = await fetchOwners(assetID, ownersPage)
       const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
 
+      // Disable previous button if on first page
+      prevButton.setDisabled(ownersPage === 1)
+      // Disable next button if on last page
+      nextButton.setDisabled(ownersPage === assetOwners.pages)
+
       await interaction.editReply({
         embeds: [newOwnersEmbed],
         components: [
@@ -189,6 +195,11 @@ export async function store (interaction:CommandInteraction) {
         ownersPage--
         const assetOwners = await fetchOwners(assetID, ownersPage)
         const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
+
+        // Disable previous button if on first page
+        prevButton.setDisabled(ownersPage === 1)
+        // Enable next button
+        nextButton.setDisabled(false)
 
         await interaction.editReply({
           embeds: [newOwnersEmbed],
@@ -221,6 +232,11 @@ export async function store (interaction:CommandInteraction) {
         ownersPage++
         const assetOwners = await fetchOwners(assetID, ownersPage)
         const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
+
+        // Enable previous button
+        prevButton.setDisabled(false)
+        // Disable next button if on last page
+        nextButton.setDisabled(ownersPage === assetOwners.pages)
 
         await interaction.editReply({
           embeds: [newOwnersEmbed],
