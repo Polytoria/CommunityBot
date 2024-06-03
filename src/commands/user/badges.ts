@@ -4,6 +4,15 @@ import { EmbedBuilder } from 'discord.js'
 export async function fetchUserBadges (userID: number): Promise<{ badges: any[], total: number }> {
   const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}/badges?limit=25`, {
     validateStatus: () => true
+
+
+
+
+
+
+
+
+    
   })
   return {
     badges: response.data.badges,
