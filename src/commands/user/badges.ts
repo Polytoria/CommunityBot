@@ -5,14 +5,6 @@ export async function fetchUserBadges (userID: number): Promise<{ badges: any[],
   const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}/badges?limit=25`, {
     validateStatus: () => true
 
-
-
-
-
-
-
-
-    
   })
   return {
     badges: response.data.badges,
