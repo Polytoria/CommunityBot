@@ -12,15 +12,21 @@ export async function fetchUserBadges (userID: number): Promise<{ badges: any[],
 }
 
 export function buildBadgesEmbed (userData: any, badgesData: any[], total: number): EmbedBuilder {
-  const badgesList = badgesData.map(badge => {
-    const levelText = badge.level !== null ? ` (Level ${badge.level})` : ''
-    return `${badge.name}${levelText}`
-  }).join('\n')
+  let description
+  if (total === 0) {
+    description = 'This user has no badges on Polytoria.'
+  } else {
+    const badgesList = badgesData.map(badge => {
+      const levelText = badge.level !== null ? ` (Level ${badge.level})` : ''
+      return `**${badge.name}${levelText}**\n${badge.description}`
+    }).join('\n\n')
+    description = badgesList
+  }
 
   const embed = new EmbedBuilder()
     .setTitle(`${userData.username}'s Badges`)
     .setURL(`https://polytoria.com/users/${userData.id}`)
-    .setDescription(badgesList)
+    .setDescription(description)
     .setColor('#3498db')
     .setThumbnail(userData.thumbnail.avatar)
     .setFooter({ text: `Total badges: ${total}` })
