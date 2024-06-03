@@ -1,33 +1,25 @@
-name: Eslint Format and Commit
+name: Check build & lint errors
 
 on:
+  pull_request:
   push:
-    branches:
-      - main
-      - 'refs/heads/*'
+    branches: [ main ]
 
 jobs:
-  eslint:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'latest'
-
+      - name: Install node@20
+        uses: actions/setup-node@v4.0.2
       - name: Install dependencies
         run: npm install
-
-      - name: Pull latest changes
-        run: git pull
-
-      - name: Run Eslint
+      - name: Test build
+        run: npm run build
+      - name: Test Lint
         run: npx eslint "src/**" --fix
-
       - name: Commit changes
         id: commit
         run: |
@@ -38,7 +30,7 @@ jobs:
             echo "No changes to commit."
             echo "changes_committed=false" >> $GITHUB_ENV
           else
-            git commit -m "chore: format code with eslint"
+            git commit -m "chore: format code with Prettier"
             echo "changes_committed=true" >> $GITHUB_ENV
           fi
         env:
