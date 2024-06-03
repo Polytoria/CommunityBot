@@ -14,14 +14,19 @@ jobs:
 
       - name: Install node@20
         uses: actions/setup-node@v4.0.2
+
       - name: Install dependencies
         run: npm install
+
       - name: Pull latest changes
         run: git pull
+
       - name: Test build
         run: npm run build
+
       - name: Test Lint
         run: npx eslint "src/**" --fix
+        
       - name: Commit changes
         id: commit
         run: |
@@ -32,7 +37,7 @@ jobs:
             echo "No changes to commit."
             echo "changes_committed=false" >> $GITHUB_ENV
           else
-            git commit -m "chore: format code with Prettier"
+            git commit -m "chore: format code with eslint"
             echo "changes_committed=true" >> $GITHUB_ENV
           fi
         env:
