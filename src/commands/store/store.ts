@@ -1,29 +1,11 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, StringSelectMenuBuilder, ComponentType, BaseInteraction } from 'discord.js'
 import axios from 'axios'
-import { responseHandler } from '../utils/responseHandler.js'
-import { dateUtils } from '../utils/dateUtils.js'
-import emojiUtils from '../utils/emojiUtils.js'
+import { responseHandler } from '../../utils/responseHandler.js'
+import { dateUtils } from '../../utils/dateUtils.js'
+import emojiUtils from '../../utils/emojiUtils.js'
+import { fetchOwners, buildOwnersEmbed } from './owners.js'
 
-async function fetchOwners (itemID: number, page: number): Promise<{ total: number, inventories: { serial: number, user: { username: string, id: number } }[], pages: number }> {
-  const response = await axios.get(`https://api.polytoria.com/v1/store/${itemID}/owners?limit=10&page=${page}`)
-  return response.data
-}
-
-function buildOwnersEmbed (ownersData: { total: number, inventories: { serial: number, user: { username: string, id: number } }[], pages: number }, page: number, thumbnail: string): EmbedBuilder {
-  const ownersEmbed = new EmbedBuilder()
-    .setTitle('Item Owners (' + ownersData.total + ')')
-    .setColor('#FF5454')
-    .setThumbnail(thumbnail)
-
-  const ownersContent = ownersData.inventories.map((owner) => {
-    return `Serial #${owner.serial}. [${owner.user.username}](https://polytoria.com/users/${owner.user.id})`
-  })
-
-  ownersEmbed.setDescription(`> **Page ${page}/${ownersData.pages} **\n\n` + ownersContent.join('\n'))
-  return ownersEmbed
-}
-
-export async function store (interaction:CommandInteraction) {
+export async function store(interaction: CommandInteraction) {
   // @ts-expect-error
   const assetID = interaction.options.getInteger('id')
 
