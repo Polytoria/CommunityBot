@@ -5,7 +5,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 import { fetchOwners, buildOwnersEmbed } from './owners.js'
 
-export async function store(interaction: CommandInteraction) {
+export async function store (interaction: CommandInteraction) {
   // @ts-expect-error
   const assetID = interaction.options.getInteger('id')
 
