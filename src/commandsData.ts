@@ -21,7 +21,12 @@ export default [
   {
     data: new SlashCommandBuilder()
       .setName('the-great-divide')
-      .setDescription('View team information regarding the ongoing event - The Great Divide'),
+      .setDescription('View team information regarding the ongoing event - The Great Divide')
+      .addStringOption(option =>
+        option.setName('username')
+          .setDescription('Enter the username of the player you which to seek information about')
+          .setRequired(false)
+      ),
     execute: thegreatdivide
   },
   {
