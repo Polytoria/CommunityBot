@@ -9,6 +9,7 @@ import { place } from './commands/place.js'
 import { SlashCommandBuilder } from 'discord.js'
 import { search } from './commands/search/search.js'
 import { blog } from './commands/blog.js'
+import { thegreatdivide } from './commands/thegreatdivide.js'
 
 export default [
   {
@@ -16,6 +17,12 @@ export default [
       .setName('cookie')
       .setDescription('🍪'),
     execute: cookie
+  },
+  {
+    data: new SlashCommandBuilder()
+      .setName('the-great-divide')
+      .setDescription('View team information regarding the ongoing event - The Great Divide'),
+    execute: thegreatdivide
   },
   {
     data: new SlashCommandBuilder()
