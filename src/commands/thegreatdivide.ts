@@ -16,8 +16,40 @@ export async function thegreatdivide (interaction: CommandInteraction) {
   const roundID = interaction.options.getInteger('id')
   // @ts-expect-error
   const username = interaction.options.getString('username')
+  // @ts-expect-error
+  const isSummary = interaction.options.getSubcommand() === 'summary'
 
-  if (roundID) {
+  if (isSummary) {
+    // Fetch data for the summary command
+    try {
+      const cobrasResponse = await axios.get('https://api.polytoria.com/v1/guilds/641/')
+      const phantomsResponse = await axios.get('https://api.polytoria.com/v1/guilds/642/')
+
+      const cobrasMemberCount = cobrasResponse.data.memberCount
+      const phantomsMemberCount = phantomsResponse.data.memberCount
+
+      const embed = new EmbedBuilder()
+        .setTitle('The Great Divide - Global Statistics')
+        .setThumbnail('https://c0.ptacdn.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
+        .addFields(
+          { name: 'Cobras Statistics', value: `Member Count: ${cobrasMemberCount}`, inline: false },
+          { name: 'Phantoms Statistics', value: `Member Count: ${phantomsMemberCount}`, inline: false }
+        )
+        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
+
+      // Set embed color based on the member count
+      if (cobrasMemberCount > phantomsMemberCount) {
+        embed.setColor(0x59AA76) // Cobras have more members
+      } else {
+        embed.setColor(0x6889FF) // Phantoms have equal or more members
+      }
+
+      await interaction.reply({ embeds: [embed], components: [row] })
+    } catch (error) {
+      console.error('Error fetching guild data:', error)
+      await interaction.reply({ content: 'There was an error fetching the guild data. Please try again later.', ephemeral: true })
+    }
+  } else if (roundID) {
     // Fetch and display specific round information
     try {
       const roundResponse = await axios.get(`https://api.polytoria.com/v1/rounds/${roundID}`)
@@ -110,7 +142,7 @@ export async function thegreatdivide (interaction: CommandInteraction) {
         })
       })
 
-      await interaction.reply({ embeds: [embed], components: [row] })
+      await interaction.reply({ embeds: [embed] })
     } catch (error) {
       console.error('Error fetching rounds data:', error)
       await interaction.reply({ content: 'There was an error fetching the rounds data. Please try again later.', ephemeral: true })
