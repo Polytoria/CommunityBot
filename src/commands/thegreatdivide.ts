@@ -1,27 +1,27 @@
-import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
-import axios from 'axios';
-import { dateUtils } from '../utils/dateUtils.js';
-import emojiUtils from '../utils/emojiUtils.js';
+import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js'
+import axios from 'axios'
+import { dateUtils } from '../utils/dateUtils.js'
+import emojiUtils from '../utils/emojiUtils.js'
 
-export async function thegreatdivide(interaction: CommandInteraction) {
+export async function thegreatdivide (interaction: CommandInteraction) {
   const join = new ButtonBuilder()
     .setLabel('Enroll today!')
     .setURL('https://polytoria.com/event/the-great-divide')
-    .setStyle(ButtonStyle.Link);
+    .setStyle(ButtonStyle.Link)
 
   const row = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(join);
+    .addComponents(join)
 
-    // @ts-expect-error
-  const roundID = interaction.options.getInteger('id');
   // @ts-expect-error
-  const username = interaction.options.getString('username');
+  const roundID = interaction.options.getInteger('id')
+  // @ts-expect-error
+  const username = interaction.options.getString('username')
 
   if (roundID) {
     // Fetch and display specific round information
     try {
-      const roundResponse = await axios.get(`https://api.polytoria.com/v1/rounds/${roundID}`);
-      const roundData = roundResponse.data;
+      const roundResponse = await axios.get(`https://api.polytoria.com/v1/rounds/${roundID}`)
+      const roundData = roundResponse.data
 
       const embed = new EmbedBuilder()
         .setTitle(`Round Information - ID: ${roundData.id}`)
@@ -33,45 +33,45 @@ export async function thegreatdivide(interaction: CommandInteraction) {
           { name: 'Duration', value: `${roundData.duration} seconds`, inline: true },
           { name: 'Created At', value: dateUtils.atomTimeToDisplayTime(roundData.createdAt), inline: true }
         )
-        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' });
+        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
 
-      await interaction.reply({ embeds: [embed] });
+      await interaction.reply({ embeds: [embed] })
     } catch (error) {
-      console.error('Error fetching round data:', error);
-      await interaction.reply({ content: 'There was an error fetching the round data. Please try again later.', ephemeral: true });
+      console.error('Error fetching round data:', error)
+      await interaction.reply({ content: 'There was an error fetching the round data. Please try again later.', ephemeral: true })
     }
   } else if (username) {
     // Look up user by username
-    await interaction.deferReply();
+    await interaction.deferReply()
 
     try {
       const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
         validateStatus: (status) => status === 200
-      });
-      const lookupData = lookupResponse.data;
+      })
+      const lookupData = lookupResponse.data
 
       if (!lookupData) {
-        return await interaction.editReply('User not found!');
+        return await interaction.editReply('User not found!')
       }
 
-      const userID = lookupData.id;
+      const userID = lookupData.id
 
       const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}/greatdivide`, {
         validateStatus: () => true
-      });
-      const data = response.data;
+      })
+      const data = response.data
 
       const getTeamBadge = (team: string): string => {
         if (team === 'phantoms') {
-          return emojiUtils.phantoms;
+          return emojiUtils.phantoms
         } else if (team === 'cobras') {
-          return emojiUtils.cobras;
+          return emojiUtils.cobras
         }
-        return '';
-      };
+        return ''
+      }
 
-      const teamBadge = getTeamBadge(data.team);
-      const embedColor = data.team === 'phantoms' ? 0x6889FF : 0x59AA76;
+      const teamBadge = getTeamBadge(data.team)
+      const embedColor = data.team === 'phantoms' ? 0x6889FF : 0x59AA76
 
       const embed = new EmbedBuilder()
         .setColor(embedColor)
@@ -83,37 +83,37 @@ export async function thegreatdivide(interaction: CommandInteraction) {
           { name: 'Joined', value: dateUtils.atomTimeToDisplayTime(data.joinedAt), inline: true },
           { name: 'Points', value: data.points.toString(), inline: true }
         )
-        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' });
+        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] })
     } catch (error) {
-      console.error('Error fetching user data:', error);
-      await interaction.editReply({ content: 'There was an error fetching the user data. Please try again later.' });
+      console.error('Error fetching user data:', error)
+      await interaction.editReply({ content: 'There was an error fetching the user data. Please try again later.' })
     }
   } else {
     // Fetch and display list of rounds
     try {
-      const roundsResponse = await axios.get('https://api.polytoria.com/v1/rounds/');
-      const roundsData = roundsResponse.data.rounds;
+      const roundsResponse = await axios.get('https://api.polytoria.com/v1/rounds/')
+      const roundsData = roundsResponse.data.rounds
 
       const embed = new EmbedBuilder()
         .setTitle('Recent Rounds')
         .setURL('https://polytoria.com/event/the-great-divide')
         .setThumbnail('https://c0.ptacdn.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
-        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' });
+        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
 
       roundsData.forEach((round: { id: number; place: string; winningTeam: string; duration: number; }) => {
-        embed.addFields({ 
-          name: `Round ${round.id} - ${round.place}`, 
+        embed.addFields({
+          name: `Round ${round.id} - ${round.place}`,
           value: `Winning Team: ${round.winningTeam} - Duration: ${round.duration} seconds`,
-          inline: false 
-        });
-      });
+          inline: false
+        })
+      })
 
-      await interaction.reply({ embeds: [embed], components: [row] });
+      await interaction.reply({ embeds: [embed], components: [row] })
     } catch (error) {
-      console.error('Error fetching rounds data:', error);
-      await interaction.reply({ content: 'There was an error fetching the rounds data. Please try again later.', ephemeral: true });
+      console.error('Error fetching rounds data:', error)
+      await interaction.reply({ content: 'There was an error fetching the rounds data. Please try again later.', ephemeral: true })
     }
   }
 }
