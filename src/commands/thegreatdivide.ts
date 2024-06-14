@@ -54,8 +54,10 @@ export async function thegreatdivide (interaction: CommandInteraction) {
     try {
       const roundResponse = await axios.get(`https://api.polytoria.com/v1/rounds/${roundID}`)
       const roundData = roundResponse.data
+      const embedColor = roundData.winningTeam === 'phantoms' ? 0x6889FF : 0x59AA76
 
       const embed = new EmbedBuilder()
+        .setColor(embedColor)
         .setTitle(`Round Information - ID: ${roundData.id}`)
         .addFields(
           { name: 'Place', value: roundData.place, inline: true },
