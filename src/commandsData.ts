@@ -22,10 +22,31 @@ export default [
     data: new SlashCommandBuilder()
       .setName('the-great-divide')
       .setDescription('View team information regarding the ongoing event - The Great Divide')
-      .addStringOption(option =>
-        option.setName('username')
-          .setDescription('Enter the username of the player you which to seek information about')
-          .setRequired(false)
+      .addSubcommand(subcommand =>
+        subcommand
+          .setName('round')
+          .setDescription('View information about a specific round')
+          .addIntegerOption(option =>
+            option.setName('id')
+              .setDescription('Enter the ID of the round')
+              .setMinValue(65)
+              .setRequired(false)
+          )
+      )
+      .addSubcommand(subcommand =>
+        subcommand
+          .setName('user')
+          .setDescription('View information about a specific user')
+          .addStringOption(option =>
+            option.setName('username')
+              .setDescription('Enter the username of the player you wish to seek information about')
+              .setRequired(true)
+          )
+      )
+      .addSubcommand(subcommand =>
+        subcommand
+          .setName('summary')
+          .setDescription('View a summary of the event')
       ),
     execute: thegreatdivide
   },
