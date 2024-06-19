@@ -18,8 +18,8 @@ export function buildBadgesEmbed (userData: any, badgesData: any[], total: numbe
   } else {
     const badgesList = badgesData.map(badge => {
       const levelText = badge.level !== null ? ` (Level ${badge.level})` : ''
-      return `**${badge.name}${levelText}**\n${badge.description}`
-    }).join('\n\n')
+      return `**${badge.name}${levelText}**`
+    }).join('\n')
     description = badgesList
   }
 
