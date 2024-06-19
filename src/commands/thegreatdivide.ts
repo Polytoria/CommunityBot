@@ -127,7 +127,7 @@ export async function thegreatdivide (interaction: CommandInteraction) {
         .addFields(
           { name: 'Team', value: `${teamBadge} ${data.team}`, inline: true },
           { name: 'Joined', value: dateUtils.atomTimeToDisplayTime(data.joinedAt), inline: true },
-          { name: 'Points', value: data.points.toLocaleString(), inline: true } // Comma formatting
+          { name: 'Points', value: `${emojiUtils.points} ${data.points.toLocaleString()}`, inline: true } // Comma formatting
         )
         .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
 

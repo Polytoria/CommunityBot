@@ -34,5 +34,6 @@ export default {
   cobras: '<:cobras:1249630127042723894>',
   cobrapoints: '<:cobrapoints:1251941489114746890>',
   phantompoints: '<:phantompoints:1251941486153695244>',
-  phantoms: '<:Phantoms:1249629598048583730>'
+  phantoms: '<:Phantoms:1249629598048583730>',
+  points: '<:points:1253103410228760747>'
 }
