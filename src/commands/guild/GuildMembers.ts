@@ -15,7 +15,7 @@ export async function fetchMembers (id: number, page: number) {
       return 'There are no members in this guild.'
     }
 
-    return `> **Total Members: ${totalMembers} - Page ${page}/${totalPages}**\n\n${memberUsernames}`
+    return `> **Total Members: ${totalMembers}\n > Page ${page}/${totalPages}**\n\n${memberUsernames}`
   } catch (error) {
     console.error('Error fetching members:', error)
     return 'An error occurred while fetching the members.'
