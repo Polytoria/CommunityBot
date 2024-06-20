@@ -136,8 +136,7 @@ export async function thegreatdivide (interaction: CommandInteraction) {
         .setURL(`https://polytoria.com/users/${userID}`)
         .setThumbnail(statsData.Thumbnail)
         .addFields(
-          { name: 'Information', value: `> **${statsData.Username} joined the ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },
-          { name: 'Team', value: `${teamBadge} ${statsData.Team}`, inline: true },
+          { name: 'Information', value: `> **${statsData.Username} joined the ${teamBadge} ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },
           { name: 'Kills', value: statsData.Kills.toLocaleString(), inline: true },
           { name: 'Deaths', value: statsData.Deaths.toLocaleString(), inline: true },
           { name: 'Unique Kills', value: statsData.UniqueKills.toLocaleString(), inline: true },
