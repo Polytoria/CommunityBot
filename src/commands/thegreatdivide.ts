@@ -236,7 +236,6 @@ export async function thegreatdivide (interaction: CommandInteraction) {
 const statsOptions = [
   { label: 'Kills', value: 'kills' },
   { label: 'Deaths', value: 'deaths' },
-  { label: 'KDR', value: 'kdr' },
   { label: 'Unique Kills', value: 'uniquekills' },
   { label: 'Points Scored', value: 'pointsscored' },
   { label: 'Cash Earned', value: 'cashearned' },
