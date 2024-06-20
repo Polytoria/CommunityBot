@@ -43,21 +43,10 @@ export async function thegreatdivide (interaction: CommandInteraction) {
         .setTitle('The Great Divide - Global Statistics')
         .setThumbnail('https://c0.ptacdn.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
         .addFields(
-          {
-            name: `${emojiUtils.cobras} Cobras Statistics`,
-            value: `Member Count: ${cobrasMemberCount}\nTeam Points: ${emojiUtils.cobrapoints} ${formattedCobrasPoints}`,
-            inline: false
-          },
-          {
-            name: `${emojiUtils.phantoms} Phantom Statistics`,
-            value: `Member Count: ${phantomsMemberCount}\nTeam Points: ${emojiUtils.phantompoints} ${formattedPhantomsPoints}`,
-            inline: false
-          }
+          { name: `${emojiUtils.cobras} Cobras Statistics`, value: `Member Count: ${cobrasMemberCount}\nTeam Points: ${emojiUtils.cobrapoints} ${formattedCobrasPoints}`, inline: false },
+          { name: `${emojiUtils.phantoms} Phantom Statistics`, value: `Member Count: ${phantomsMemberCount}\nTeam Points: ${emojiUtils.phantompoints} ${formattedPhantomsPoints}`, inline: false }
         )
-        .setFooter({
-          text: 'Not already enrolled in a team? Join the phantoms!',
-          iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png'
-        })
+        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
 
       // Set embed color based on the points
       if (cobrasPoints > phantomsPoints) {
@@ -69,10 +58,7 @@ export async function thegreatdivide (interaction: CommandInteraction) {
       await interaction.reply({ embeds: [embed], components: [row] })
     } catch (error) {
       console.error('Error fetching event statistics:', error)
-      await interaction.reply({
-        content: 'There was an error fetching the event statistics. Please try again later.',
-        ephemeral: true
-      })
+      await interaction.reply({ content: 'There was an error fetching the event statistics. Please try again later.', ephemeral: true })
     }
   } else if (roundID) {
     try {
@@ -91,18 +77,12 @@ export async function thegreatdivide (interaction: CommandInteraction) {
           { name: 'Duration', value: `${roundData.duration} seconds`, inline: true },
           { name: 'Created At', value: dateUtils.atomTimeToDisplayTime(roundData.createdAt), inline: true }
         )
-        .setFooter({
-          text: 'Not already enrolled in a team? Join the phantoms!',
-          iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png'
-        })
+        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
 
       await interaction.reply({ embeds: [embed] })
     } catch (error) {
       console.error('Error fetching round data:', error)
-      await interaction.reply({
-        content: 'There was an error fetching the round data. Please try again later.',
-        ephemeral: true
-      })
+      await interaction.reply({ content: 'There was an error fetching the round data. Please try again later.', ephemeral: true })
     }
   } else if (username) {
     await interaction.deferReply()
@@ -115,10 +95,7 @@ export async function thegreatdivide (interaction: CommandInteraction) {
       const lookupData = lookupResponse.data
 
       if (!lookupData) {
-        return await interaction.editReply({
-          content: 'User not found!',
-          components: []
-        })
+        return await interaction.editReply('User not found!')
       }
 
       const userID = lookupData.id
@@ -130,10 +107,7 @@ export async function thegreatdivide (interaction: CommandInteraction) {
       const statsData = statsResponse.data.results[0]
 
       if (!statsData) {
-        return await interaction.editReply({
-          content: 'No statistics found for this user.',
-          components: []
-        })
+        return await interaction.editReply('No statistics found for this user.')
       }
 
       // Fetch points from Polytoria API
@@ -176,21 +150,12 @@ export async function thegreatdivide (interaction: CommandInteraction) {
           { name: 'Flags Returned', value: statsData.FlagsReturned.toLocaleString(), inline: true },
           { name: 'Airdrops Collected', value: statsData.AirdropsCollected.toLocaleString(), inline: true }
         )
-        .setFooter({
-          text: 'This data has been provided by Dragonism. Thank you for your public API!',
-          iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/609b3d372095b3fa1d7c1ecd6ed41f0eb05ec3f3ba6ba581191b83f17828bf94-icon.png'
-        })
+        .setFooter({ text: 'This data has been provided by Dragonism. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/609b3d372095b3fa1d7c1ecd6ed41f0eb05ec3f3ba6ba581191b83f17828bf94-icon.png' })
 
-      await interaction.editReply({
-        embeds: [embed],
-        components: []
-      })
+        await interaction.editReply({ embeds: [embed] })
     } catch (error) {
-      console.error('Error fetching user stats:', error)
-      await interaction.editReply({
-        content: 'There was an error fetching the user statistics. Please try again later.',
-        components: []
-      })
+      console.error('Error fetching user data:', error)
+      await interaction.editReply({ content: 'There was an error fetching the user data. Please try again later.' })
     }
   } else if (isLeaderboard) {
     try {
