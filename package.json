@@ -13,7 +13,7 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"axios": "^1.6.8",
+		"axios": "^1.7.2",
 		"canvas": "^2.11.2",
 		"chalk": "^5.3.0",
 		"discord.js": "^14.15.3",
@@ -24,8 +24,8 @@
 		"string-progressbar": "^1.0.4",
 		"text-table": "^0.2.0",
 		"timestamp-conv": "^3.0.0",
-		"typescript": "^5.4.3",
-		"uuid": "^9.0.1"
+		"typescript": "^5.5.2",
+		"uuid": "^10.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.14.7",
