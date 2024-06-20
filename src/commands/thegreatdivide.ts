@@ -9,8 +9,7 @@ export async function thegreatdivide (interaction: CommandInteraction) {
     .setURL('https://polytoria.com/event/the-great-divide')
     .setStyle(ButtonStyle.Link)
 
-  const row = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(join)
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(join)
 
   // @ts-expect-error
   const roundID = interaction.options.getInteger('id')
@@ -87,10 +86,11 @@ export async function thegreatdivide (interaction: CommandInteraction) {
       await interaction.reply({ content: 'There was an error fetching the round data. Please try again later.', ephemeral: true })
     }
   } else if (username) {
-    // Look up user by username
+    // Look up user by username and get detailed stats from new API
     await interaction.deferReply()
 
     try {
+      // Fetch user ID
       const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
         validateStatus: (status) => status === 200
       })
@@ -102,10 +102,21 @@ export async function thegreatdivide (interaction: CommandInteraction) {
 
       const userID = lookupData.id
 
-      const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}/greatdivide`, {
+      // Fetch user stats from new API
+      const statsResponse = await axios.get(`https://stats.silly.mom/player_stats?id=${userID}`, {
         validateStatus: () => true
       })
-      const data = response.data
+      const statsData = statsResponse.data.results[0]
+
+      if (!statsData) {
+        return await interaction.editReply('No statistics found for this user.')
+      }
+
+      // Fetch points from Polytoria API
+      const polytoriaPointsResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/greatdivide`, {
+        validateStatus: () => true
+      })
+      const polytoriaData = polytoriaPointsResponse.data
 
       const getTeamBadge = (team: string): string => {
         if (team === 'phantoms') {
@@ -116,20 +127,27 @@ export async function thegreatdivide (interaction: CommandInteraction) {
         return ''
       }
 
-      const teamBadge = getTeamBadge(data.team)
-      const embedColor = data.team === 'phantoms' ? 0x6889FF : 0x59AA76
+      const teamBadge = getTeamBadge(statsData.Team)
+      const embedColor = statsData.Team === 'phantoms' ? 0x6889FF : 0x59AA76
 
       const embed = new EmbedBuilder()
         .setColor(embedColor)
-        .setTitle(`The Great Divide - ${lookupData.username}`)
+        .setTitle(`The Great Divide - ${statsData.Username}`)
         .setURL(`https://polytoria.com/users/${userID}`)
-        .setThumbnail(data.icon)
+        .setThumbnail(statsData.Thumbnail)
         .addFields(
-          { name: 'Team', value: `${teamBadge} ${data.team}`, inline: true },
-          { name: 'Joined', value: dateUtils.atomTimeToDisplayTime(data.joinedAt), inline: true },
-          { name: 'Points', value: `${emojiUtils.points} ${data.points.toLocaleString()}`, inline: true } // Comma formatting
+          { name: 'Information', value: `${statsData.Username} joined the ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}`, inline: false },
+          { name: 'Team', value: `${teamBadge} ${statsData.Team}`, inline: true },
+          { name: 'Kills', value: statsData.Kills.toLocaleString(), inline: true },
+          { name: 'Deaths', value: statsData.Deaths.toLocaleString(), inline: true },
+          { name: 'Unique Kills', value: statsData.UniqueKills.toLocaleString(), inline: true },
+          { name: 'Total Points', value: `${emojiUtils.points} ${polytoriaData.points.toLocaleString()}`, inline: true },
+          { name: 'Cash Earned', value: statsData.CashEarned.toLocaleString(), inline: true },
+          { name: 'Flags Captured', value: statsData.FlagsCaptured.toLocaleString(), inline: true },
+          { name: 'Flags Returned', value: statsData.FlagsReturned.toLocaleString(), inline: true },
+          { name: 'Airdrops Collected', value: statsData.AirdropsCollected.toLocaleString(), inline: true }
         )
-        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
+        .setFooter({ text: 'This data has been provided by Dragonism. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/609b3d372095b3fa1d7c1ecd6ed41f0eb05ec3f3ba6ba581191b83f17828bf94-icon.png' })
 
       await interaction.editReply({ embeds: [embed] })
     } catch (error) {
