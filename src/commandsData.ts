@@ -45,6 +45,11 @@ export default [
       )
       .addSubcommand(subcommand =>
         subcommand
+          .setName('leaderboard')
+          .setDescription('View a leaderboard of the top users participating in The Great Divide')
+      )
+      .addSubcommand(subcommand =>
+        subcommand
           .setName('summary')
           .setDescription('View a summary of the event')
       ),
