@@ -89,20 +89,25 @@ export async function thegreatdivide (interaction: CommandInteraction) {
   } else if (isRound) {
     try {
       const roundsResponse = await axios.get('https://api.polytoria.com/v1/rounds/')
-      const roundsData = roundsResponse.data
+      const roundsData = roundsResponse.data.rounds // Access the 'rounds' array inside the response
 
       const embed = new EmbedBuilder()
-        .setTitle('Rounds Information')
-        .setDescription('List of all rounds')
+        .setTitle('Recent Rounds')
+        .setURL('https://polytoria.com/event/the-great-divide')
+        .setThumbnail('https://c0.ptacdn.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
+        .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
         .setColor(0x0099FF)
 
-      roundsData.forEach((round: { id: number; place: string; winningTeam: string; duration: number; }) => {
-        embed.addFields({
-          name: `Round ${round.id} - ${round.place}`,
-          value: `Winning Team: ${round.winningTeam} - Duration: ${round.duration} seconds`,
-          inline: false
+      // Ensuring roundsData is an array
+      if (Array.isArray(roundsData)) {
+        roundsData.forEach((round: { id: number; place: string; winningTeam: string; duration: number; }) => {
+          embed.addFields({
+            name: `Round ${round.id} - ${round.place}`,
+            value: `Winning Team: ${round.winningTeam} - Duration: ${round.duration} seconds`,
+            inline: false
+          })
         })
-      })
+      }
 
       await interaction.reply({ embeds: [embed] })
     } catch (error) {
