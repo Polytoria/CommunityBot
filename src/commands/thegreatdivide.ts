@@ -130,6 +130,11 @@ export async function thegreatdivide (interaction: CommandInteraction) {
       const teamBadge = getTeamBadge(statsData.Team)
       const embedColor = statsData.Team === 'phantoms' ? 0x6889FF : 0x59AA76
 
+      // Calculate KDR
+      const kills = statsData.Kills
+      const deaths = statsData.Deaths
+      const kdr = deaths > 0 ? (kills / deaths).toFixed(2) : 'N/A' // Protect against division by zero
+
       const embed = new EmbedBuilder()
         .setColor(embedColor)
         .setTitle(`The Great Divide - ${statsData.Username}`)
@@ -137,8 +142,9 @@ export async function thegreatdivide (interaction: CommandInteraction) {
         .setThumbnail(statsData.Thumbnail)
         .addFields(
           { name: 'Information', value: `> **${statsData.Username} joined the ${teamBadge} ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },
-          { name: 'Kills', value: statsData.Kills.toLocaleString(), inline: true },
-          { name: 'Deaths', value: statsData.Deaths.toLocaleString(), inline: true },
+          { name: 'Kills', value: kills.toLocaleString(), inline: true },
+          { name: 'Deaths', value: deaths.toLocaleString(), inline: true },
+          { name: 'KDR', value: kdr, inline: true },
           { name: 'Unique Kills', value: statsData.UniqueKills.toLocaleString(), inline: true },
           { name: 'Total Points', value: `${emojiUtils.points} ${polytoriaData.points.toLocaleString()}`, inline: true },
           { name: 'Cash Earned', value: statsData.CashEarned.toLocaleString(), inline: true },
