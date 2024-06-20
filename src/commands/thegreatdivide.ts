@@ -19,6 +19,8 @@ export async function thegreatdivide (interaction: CommandInteraction) {
   const isSummary = interaction.options.getSubcommand() === 'summary'
   // @ts-expect-error
   const isLeaderboard = interaction.options.getSubcommand() === 'leaderboard'
+  // @ts-expect-error
+  const isRound = interaction.options.getSubcommand() === 'round'
 
   if (isSummary) {
     try {
@@ -83,6 +85,29 @@ export async function thegreatdivide (interaction: CommandInteraction) {
     } catch (error) {
       console.error('Error fetching round data:', error)
       await interaction.reply({ content: 'There was an error fetching the round data. Please try again later.', ephemeral: true })
+    }
+  } else if (isRound) {
+    try {
+      const roundsResponse = await axios.get('https://api.polytoria.com/v1/rounds/')
+      const roundsData = roundsResponse.data
+
+      const embed = new EmbedBuilder()
+        .setTitle('Rounds Information')
+        .setDescription('List of all rounds')
+        .setColor(0x0099FF)
+
+      roundsData.forEach((round: { id: number; place: string; winningTeam: string; duration: number; }) => {
+        embed.addFields({
+          name: `Round ${round.id} - ${round.place}`,
+          value: `Winning Team: ${round.winningTeam} - Duration: ${round.duration} seconds`,
+          inline: false
+        })
+      })
+
+      await interaction.reply({ embeds: [embed] })
+    } catch (error) {
+      console.error('Error fetching rounds data:', error)
+      await interaction.reply({ content: 'There was an error fetching the rounds data. Please try again later.', ephemeral: true })
     }
   } else if (username) {
     await interaction.deferReply()
