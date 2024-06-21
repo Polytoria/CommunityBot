@@ -229,14 +229,14 @@ export async function thegreatdivide (interaction: CommandInteraction) {
 }
 
 const statsOptions = [
-  { label: '⚔️ Kills', value: 'kills' },
-  { label: '☠️ Deaths', value: 'deaths' },
-  { label: '🤺 Unique Kills', value: 'uniquekills' },
-  { label: '🎮 Points Scored', value: 'pointsscored' },
-  { label: '💵 Cash Earned', value: 'cashearned' },
-  { label: '🚩 Flags Captured', value: 'flagscaptured' },
-  { label: '🚩 Flags Returned', value: 'flagsreturned' },
-  { label: '✈️ Airdrops Collected', value: 'airdropscollected' }
+  { label: 'Kills', value: 'kills' },
+  { label: 'Deaths', value: 'deaths' },
+  { label: 'Unique Kills', value: 'uniquekills' },
+  { label: 'Points Scored', value: 'pointsscored' },
+  { label: 'Cash Earned', value: 'cashearned' },
+  { label: 'Flags Captured', value: 'flagscaptured' },
+  { label: 'Flags Returned', value: 'flagsreturned' },
+  { label: 'Airdrops Collected', value: 'airdropscollected' }
 ]
 
 async function handleSelectMenuInteraction (interaction: StringSelectMenuInteraction) {
