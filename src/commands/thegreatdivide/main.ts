@@ -181,8 +181,9 @@ export async function thegreatdivide (interaction: CommandInteraction) {
           { name: 'Flags Returned', value: statsData.FlagsReturned.toLocaleString(), inline: true },
           { name: 'Airdrops Collected', value: statsData.AirdropsCollected.toLocaleString(), inline: true }
         )
+        .setFooter({ text: 'This data has been provided by Dragonism. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/609b3d372095b3fa1d7c1ecd6ed41f0eb05ec3f3ba6ba581191b83f17828bf94-icon.png' })
 
-      await interaction.editReply({ embeds: [embed], components: [row] })
+      await interaction.editReply({ embeds: [embed] })
     } catch (error) {
       console.error('Error fetching user statistics:', error)
       await interaction.editReply({ content: 'There was an error fetching the user statistics. Please try again later.' })
