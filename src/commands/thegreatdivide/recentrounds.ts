@@ -4,7 +4,7 @@ import axios from 'axios'
 export async function handleRecentRounds (interaction: CommandInteraction) {
   try {
     const roundsResponse = await axios.get('https://api.polytoria.com/v1/rounds/')
-    const roundsData = roundsResponse.data.rounds // Access the 'rounds' array inside the response
+    const roundsData = roundsResponse.data.rounds
 
     const embed = new EmbedBuilder()
       .setTitle('Recent Rounds')
