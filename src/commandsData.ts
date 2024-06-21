@@ -9,7 +9,7 @@ import { place } from './commands/place.js'
 import { SlashCommandBuilder } from 'discord.js'
 import { search } from './commands/search/search.js'
 import { blog } from './commands/blog.js'
-import { thegreatdivide } from './commands/thegreatdivide.js'
+import { thegreatdivide } from './commands/thegreatdivide/main.js'
 
 export default [
   {
