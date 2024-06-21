@@ -28,7 +28,7 @@
 		"uuid": "^10.0.0"
 	},
 	"devDependencies": {
-		"@types/node": "^20.11.30",
+		"@types/node": "^20.14.7",
 		"@types/text-table": "^0.2.5",
 		"@types/uuid": "^10.0.0",
 		"@typescript-eslint/eslint-plugin": "^7.4.0",
