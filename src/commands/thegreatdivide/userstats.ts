@@ -58,7 +58,7 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
       .setURL(`https://polytoria.com/users/${userID}`)
       .setThumbnail(statsData.Thumbnail)
       .addFields(
-        { name: 'Information', value: `> **${statsData.Username} joined the ${teamBadge} ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },
+        { name: 'Information', value: `> **${statsData.Username} is currently rank ${polytoriaData.rank} and joined the ${teamBadge} ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },
         { name: 'Kills', value: kills.toLocaleString(), inline: true },
         { name: 'Deaths', value: deaths.toLocaleString(), inline: true },
         { name: 'KDR', value: kdr, inline: true },
