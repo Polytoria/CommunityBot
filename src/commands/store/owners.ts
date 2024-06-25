@@ -3,7 +3,7 @@ import axios from 'axios'
 
 // Function to fetch owners from the API
 export async function fetchOwners (itemID: number, page: number): Promise<{ total: number, inventories: { serial: number, user: { username: string, id: number } }[], pages: number }> {
-  const response = await axios.get(`https://api.polytoria.com/v1/store/${itemID}/owners?limit=10&page=${page}`)
+  const response = await axios.get(`https://api.polytoria.co/v1/store/${itemID}/owners?limit=10&page=${page}`)
   return response.data
 }
 
@@ -15,7 +15,7 @@ export function buildOwnersEmbed (ownersData: { total: number, inventories: { se
     .setThumbnail(thumbnail)
 
   const ownersContent = ownersData.inventories.map((owner) => {
-    return `Serial #${owner.serial}. [${owner.user.username}](https://polytoria.com/users/${owner.user.id})`
+    return `Serial #${owner.serial}. [${owner.user.username}](https://polytoria.co/users/${owner.user.id})`
   })
 
   ownersEmbed.setDescription(`> **Page ${page}/${ownersData.pages} **\n\n` + ownersContent.join('\n'))

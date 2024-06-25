@@ -4,7 +4,7 @@ export async function fetchShouts (guildID: number, page: number): Promise<strin
   let allShouts: any[] = []
 
   async function fetchPage (pageNumber: number) {
-    const response = await axios.get(`https://polytoria.com/api/guilds/${guildID}/shouts?page=${pageNumber}`)
+    const response = await axios.get(`https://polytoria.co/api/guilds/${guildID}/shouts?page=${pageNumber}`)
     const data = response.data
 
     if (data.meta) {
@@ -23,7 +23,7 @@ export async function fetchShouts (guildID: number, page: number): Promise<strin
   }
 
   const shouts = allShouts.map((shout: any) => {
-    return `**${shout.title}**\n${shout.content}\n*Posted by [${shout.author.username}](https://polytoria.com/users/${shout.author.id})*`
+    return `**${shout.title}**\n${shout.content}\n*Posted by [${shout.author.username}](https://polytoria.co/users/${shout.author.id})*`
   })
 
   return shouts.join('\n\n')

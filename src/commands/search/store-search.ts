@@ -15,7 +15,7 @@ export async function storeSearch (interaction:CommandInteraction) {
   await interaction.deferReply()
 
   const response = await axios.get(
-    `https://polytoria.com/api/store/items?types[]=hat&types[]=tool&types[]=face&types[]=shirt&types[]=pants&page=1&search=${searchQuery}&sort=createdAt&order=desc&showOffsale=false&collectiblesOnly=false`,
+    `https://polytoria.co/api/store/items?types[]=hat&types[]=tool&types[]=face&types[]=shirt&types[]=pants&page=1&search=${searchQuery}&sort=createdAt&order=desc&showOffsale=false&collectiblesOnly=false`,
     { params: {}, validateStatus: () => true }
   )
   const data = response.data.data
@@ -35,7 +35,7 @@ export async function storeSearch (interaction:CommandInteraction) {
   let description = ''
 
   for (const item of data) {
-    description += `\`${index}\` [${item.name}](https://polytoria.com/store/${item.id}) ${
+    description += `\`${index}\` [${item.name}](https://polytoria.co/store/${item.id}) ${
     item.isLimited === true ? emojiUtils.star : ''
   }\n`
     index++

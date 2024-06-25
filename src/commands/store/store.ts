@@ -15,7 +15,7 @@ export async function store (interaction: CommandInteraction) {
 
   await interaction.deferReply()
 
-  const response = await axios.get(`https://api.polytoria.com/v1/store/${assetID}`, {
+  const response = await axios.get(`https://api.polytoria.co/v1/store/${assetID}`, {
     validateStatus: () => true
   })
   const data = response.data
@@ -38,13 +38,13 @@ export async function store (interaction: CommandInteraction) {
   }
 
   const creatorLink = creator.type === 'user'
-    ? `https://polytoria.com/users/${creator.id}`
-    : `https://polytoria.com/guilds/${creator.id}`
+    ? `https://polytoria.co/users/${creator.id}`
+    : `https://polytoria.co/guilds/${creator.id}`
 
   const embed = new EmbedBuilder({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
     description: data.description === '' ? 'No description set.' : data.description,
-    url: `https://polytoria.com/store/${data.id}`,
+    url: `https://polytoria.co/store/${data.id}`,
     thumbnail: {
       url: thumbnailURL
     },

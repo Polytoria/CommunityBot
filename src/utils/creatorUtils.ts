@@ -21,7 +21,7 @@ export class creatorUtils {
       }
       result = userData.Username
     } else {
-      const response = await axios.get('https://api.polytoria.com/v1/guild/info', { params: { id: creator.creatorID } })
+      const response = await axios.get('https://api.polytoria.co/v1/guild/info', { params: { id: creator.creatorID } })
       const data = response.data
 
       result = data.Name + ' (Guild)'

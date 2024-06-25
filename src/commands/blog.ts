@@ -8,7 +8,7 @@ export async function blog (interaction: CommandInteraction) {
 
   try {
     const getData = async () => {
-      const response = await axios.get(`https://blog.polytoria.com/ghost/api/content/posts/?key=ac0766ccda2a1b1cc23ab02ebd&fields=title,url,meta_description,feature_image,published_at&include=tags,authors&limit=1&page=${currentPage}`)
+      const response = await axios.get(`https://blog.polytoria.co/ghost/api/content/posts/?key=ac0766ccda2a1b1cc23ab02ebd&fields=title,url,meta_description,feature_image,published_at&include=tags,authors&limit=1&page=${currentPage}`)
       const data = response.data
       const posts = data.posts
       return posts[0]

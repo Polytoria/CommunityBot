@@ -5,7 +5,7 @@ import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function randomPlace (interaction: CommandInteraction): Promise<any> {
   const randomId = randomUtils.randomInt(1, 7940)
-  const apiUrl = `https://api.polytoria.com/v1/places/${randomId}`
+  const apiUrl = `https://api.polytoria.co/v1/places/${randomId}`
 
   const randomData = await randomUtils.randomize(
     apiUrl,
@@ -63,12 +63,12 @@ export async function randomPlace (interaction: CommandInteraction): Promise<any
     thumbnail: {
       url: `${data.thumbnail}`
     },
-    url: `https://polytoria.com/places/${data.id}`,
+    url: `https://polytoria.co/places/${data.id}`,
     color: 0xFF5454,
     fields: [
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
+        value: `[${creator.name}](https://polytoria.co/users/${creator.id})`,
         inline: true
       },
       {

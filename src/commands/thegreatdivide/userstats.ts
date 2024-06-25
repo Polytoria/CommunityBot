@@ -8,7 +8,7 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
 
   try {
     // Fetch user ID
-    const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
+    const lookupResponse = await axios.get(`https://api.polytoria.co/v1/users/find?username=${username}`, {
       validateStatus: (status) => status === 200
     })
     const lookupData = lookupResponse.data
@@ -30,7 +30,7 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
     }
 
     // Fetch points from Polytoria API
-    const polytoriaPointsResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/greatdivide`, {
+    const polytoriaPointsResponse = await axios.get(`https://api.polytoria.co/v1/users/${userID}/greatdivide`, {
       validateStatus: () => true
     })
     const polytoriaData = polytoriaPointsResponse.data
@@ -55,7 +55,7 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
     const embed = new EmbedBuilder()
       .setColor(embedColor)
       .setTitle(`The Great Divide - ${statsData.Username}`)
-      .setURL(`https://polytoria.com/users/${userID}`)
+      .setURL(`https://polytoria.co/users/${userID}`)
       .setThumbnail(statsData.Thumbnail)
       .addFields(
         { name: 'Information', value: `> **${statsData.Username} is currently rank ${polytoriaData.rank} and joined the ${teamBadge} ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },

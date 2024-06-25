@@ -21,7 +21,7 @@ export async function inventory (interaction:CommandInteraction) {
 
   let currentPage = 1
 
-  const apiURL = `https://api.polytoria.com/v1/users/${userData.id.toString()}/inventory`
+  const apiURL = `https://api.polytoria.co/v1/users/${userData.id.toString()}/inventory`
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
 
@@ -33,7 +33,7 @@ export async function inventory (interaction:CommandInteraction) {
 
   // Change Page Function, Fetch current page
   async function changePage (): Promise<string> {
-    const apiURL = `https://api.polytoria.com/v1/users/${userData.id.toString()}/inventory?page=${currentPage}`
+    const apiURL = `https://api.polytoria.co/v1/users/${userData.id.toString()}/inventory?page=${currentPage}`
 
     const response = await axios.get(apiURL, { validateStatus: () => true })
     let resultString: string = ''
@@ -41,7 +41,7 @@ export async function inventory (interaction:CommandInteraction) {
     // @ts-expect-error
     response.data.inventory.forEach((item, index) => {
       const emoji = emojiUtils[item.asset.type as keyof typeof emojiUtils]
-      resultString += `${emoji} [${item.asset.name}](https://polytoria.com/store/${item.asset.id}) - #${item.serial} \n\n`
+      resultString += `${emoji} [${item.asset.name}](https://polytoria.co/store/${item.asset.id}) - #${item.serial} \n\n`
     })
 
     return resultString
@@ -49,7 +49,7 @@ export async function inventory (interaction:CommandInteraction) {
 
   const embed = new EmbedBuilder({
     title: userData.username + "'s Inventory",
-    url: `https://polytoria.com/users/${userData.id}/inventory`,
+    url: `https://polytoria.co/users/${userData.id}/inventory`,
     color: 0xFF5454,
     thumbnail: {
       url: userData.thumbnail.avatar

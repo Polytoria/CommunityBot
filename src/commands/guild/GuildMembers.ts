@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export async function fetchMembers (id: number, page: number) {
   // Fetch the members data from the API
-  const memberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${id}/members?page=${page}&limit=15`)
+  const memberResponse = await axios.get(`https://api.polytoria.co/v1/guilds/${id}/members?page=${page}&limit=15`)
   const memberData = memberResponse.data.members
   const totalMembers = memberResponse.data.total
   const totalPages = memberResponse.data.pages
@@ -14,7 +14,7 @@ export async function fetchMembers (id: number, page: number) {
 
   // Prepare the members' usernames list
   const memberUsernames = memberData
-    .map((member: any) => `[${member.user.username}](https://polytoria.com/users/${member.user.id})`)
+    .map((member: any) => `[${member.user.username}](https://polytoria.co/users/${member.user.id})`)
     .join('\n')
 
   // Format and return the result string

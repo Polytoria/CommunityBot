@@ -12,21 +12,21 @@ export async function friends (message: Message, args: string[]) {
 
   let currentPage = 1
 
-  const apiURL = 'https://api.polytoria.com/v1/users/friends?id=' + userData.ID.toString()
+  const apiURL = 'https://api.polytoria.co/v1/users/friends?id=' + userData.ID.toString()
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const data = response.data
 
   // Change Page Function, Fetch current page
   async function changePage (): Promise<string> {
-    const apiURL = 'https://api.polytoria.com/v1/users/friends?id=' + userData.ID.toString() + '&page=' + currentPage
+    const apiURL = 'https://api.polytoria.co/v1/users/friends?id=' + userData.ID.toString() + '&page=' + currentPage
 
     const response = await axios.get(apiURL, { validateStatus: () => true })
     let resultString: string = ''
 
     // @ts-expect-error
     response.data.Friends.forEach((item) => {
-      resultString += `[${item.Username}](https://polytoria.com/users/${item.ID})\n`
+      resultString += `[${item.Username}](https://polytoria.co/users/${item.ID})\n`
     })
 
     return resultString
@@ -34,10 +34,10 @@ export async function friends (message: Message, args: string[]) {
 
   const embed = new EmbedBuilder({
     title: userData.Username + "'s Friends.",
-    url: `https://polytoria.com/users/${userData.ID}/friends`,
+    url: `https://polytoria.co/users/${userData.ID}/friends`,
     color: 0xFF5454,
     thumbnail: {
-      url: `https://polytoria.com/assets/thumbnails/avatars/${userData.AvatarHash}.png`
+      url: `https://polytoria.co/assets/thumbnails/avatars/${userData.AvatarHash}.png`
     },
     description: ''
   })

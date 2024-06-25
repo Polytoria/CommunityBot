@@ -5,7 +5,7 @@ import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function randomStore (interaction: CommandInteraction): Promise<any> {
   const randomId = randomUtils.randomInt(7674, 30361)
-  const apiUrl = `https://api.polytoria.com/v1/store/${randomId}`
+  const apiUrl = `https://api.polytoria.co/v1/store/${randomId}`
 
   const randomData = await randomUtils.randomize(
     apiUrl,
@@ -33,13 +33,13 @@ export async function randomStore (interaction: CommandInteraction): Promise<any
   }
 
   const creatorLink = creator.type === 'user'
-    ? `https://polytoria.com/users/${creator.id}`
-    : `https://polytoria.com/guilds/${creator.id}`
+    ? `https://polytoria.co/users/${creator.id}`
+    : `https://polytoria.co/guilds/${creator.id}`
 
   const embed = new EmbedBuilder({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
     description: data.description === '' ? 'No description set.' : data.description,
-    url: `https://polytoria.com/store/${data.id}`,
+    url: `https://polytoria.co/store/${data.id}`,
     thumbnail: {
       url: thumbnailURL
     },
@@ -87,7 +87,7 @@ export async function randomStore (interaction: CommandInteraction): Promise<any
   const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
       new ButtonBuilder()
-        .setURL(`https://polytoria.com/store/${data.id}`)
+        .setURL(`https://polytoria.co/store/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle(ButtonStyle.Link),
       redoButton

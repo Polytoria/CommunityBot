@@ -5,7 +5,7 @@ import { randomUtils } from '../../utils/randomUtils.js'
 
 export async function randomGuild (interaction: CommandInteraction): Promise<any> {
   const randomId = randomUtils.randomInt(1, 545)
-  const apiUrl = `https://api.polytoria.com/v1/guilds/${randomId}`
+  const apiUrl = `https://api.polytoria.co/v1/guilds/${randomId}`
 
   const randomData = await randomUtils.randomize(
     apiUrl,
@@ -28,13 +28,13 @@ export async function randomGuild (interaction: CommandInteraction): Promise<any
   const embed = new EmbedBuilder()
     .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setDescription(data.description === '' ? 'No description set.' : data.description)
-    .setURL('https://polytoria.com/guilds/' + data.id.toString())
+    .setURL('https://polytoria.co/guilds/' + data.id.toString())
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .addFields(
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
+        value: `[${creator.name}](https://polytoria.co/users/${creator.id})`,
         inline: true
       },
       {
@@ -71,7 +71,7 @@ export async function randomGuild (interaction: CommandInteraction): Promise<any
   const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
       new ButtonBuilder()
-        .setURL(`https://polytoria.com/guilds/${data.id}`)
+        .setURL(`https://polytoria.co/guilds/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle(ButtonStyle.Link),
       redoButton
