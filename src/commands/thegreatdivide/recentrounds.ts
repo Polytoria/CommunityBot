@@ -15,9 +15,10 @@ export async function handleRecentRounds (interaction: CommandInteraction) {
 
     // Ensuring roundsData is an array
     if (Array.isArray(roundsData)) {
-      roundsData.forEach((round: { id: number; place: string; winningTeam: string; duration: number }) => {
+      roundsData.forEach((round: { id: number; place: string; winningTeam: string; duration: number; map: string | null }) => {
+        const mapInfo = round.map ? `- Map: ${round.map}` : ''
         embed.addFields({
-          name: `Round ${round.id} - ${round.place}`,
+          name: `Round ${round.id} - ${round.place} ${mapInfo}`,
           value: `Winning Team: ${round.winningTeam} - Duration: ${round.duration} seconds`,
           inline: false
         })
