@@ -10,7 +10,11 @@ export const statsOptions = [
   { label: 'Cash Earned', value: 'cashearned' },
   { label: 'Flags Captured', value: 'flagscaptured' },
   { label: 'Flags Returned', value: 'flagsreturned' },
-  { label: 'Airdrops Collected', value: 'airdropscollected' }
+  { label: 'Airdrops Collected', value: 'airdropscollected' },
+  { label: 'Obelisks Destroyed', value: 'obelisksdestroyed' },
+  { label: 'Blocks Placed', value: 'blocksplaced' },
+  { label: 'Blocks Destroyed', value: 'blocksdestroyed' },
+  { label: 'Headshots', value: 'headshots' }
 ]
 
 export async function handleLeaderboard (interaction: CommandInteraction) {
