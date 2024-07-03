@@ -58,7 +58,7 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
       .setURL(`https://polytoria.co/users/${userID}`)
       .setThumbnail(statsData.Thumbnail)
       .addFields(
-        { name: 'Information', value: `> **${statsData.Username} is currently rank ${polytoriaData.rank} and joined the ${teamBadge} ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },
+        { name: 'Information', value: `> **${statsData.Username} was last seen on round ${statsData.LastRoundSeen} is currently rank ${polytoriaData.rank} and joined the ${teamBadge} ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },
         { name: 'Kills', value: kills.toLocaleString(), inline: true },
         { name: 'Deaths', value: deaths.toLocaleString(), inline: true },
         { name: 'KDR', value: kdr, inline: true },
@@ -67,7 +67,11 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
         { name: 'Cash Earned', value: statsData.CashEarned.toLocaleString(), inline: true },
         { name: 'Flags Captured', value: statsData.FlagsCaptured.toLocaleString(), inline: true },
         { name: 'Flags Returned', value: statsData.FlagsReturned.toLocaleString(), inline: true },
-        { name: 'Airdrops Collected', value: statsData.AirdropsCollected.toLocaleString(), inline: true }
+        { name: 'Airdrops Collected', value: statsData.AirdropsCollected.toLocaleString(), inline: true },
+        { name: 'Obelisks Destroyed', value: statsData.ObelisksDestroyed.toLocaleString(), inline: true },
+        { name: 'Blocks Placed', value: statsData.BlocksPlaced.toLocaleString(), inline: true },
+        { name: 'Blocks Destroyed', value: statsData.BlocksDestroyed.toLocaleString(), inline: true },
+        { name: 'Headshots', value: statsData.Headshots.toLocaleString(), inline: true }
       )
       .setFooter({ text: 'This data has been provided by Dragonism. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/609b3d372095b3fa1d7c1ecd6ed41f0eb05ec3f3ba6ba581191b83f17828bf94-icon.png' })
 
