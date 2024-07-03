@@ -39,7 +39,7 @@ export async function inventory (interaction:CommandInteraction) {
     let resultString: string = ''
 
     // @ts-expect-error
-    response.data.inventory.forEach((item, index) => {
+    response.data.inventory.forEach((item) => {
       const emoji = emojiUtils[item.asset.type as keyof typeof emojiUtils]
       resultString += `${emoji} [${item.asset.name}](https://polytoria.co/store/${item.asset.id}) - #${item.serial} \n\n`
     })

@@ -27,6 +27,7 @@ export default {
   face: '😀',
   shirt: '👕',
   pants: '👖',
+  torso: '🦴',
   profileTheme: '🎨',
   gamePass: '🎮',
   achievement: '🎖️',
