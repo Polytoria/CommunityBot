@@ -7,7 +7,7 @@
 		"target": "es2020",
 		"importHelpers": true,
 		"module": "es6",
-		"skipLibCheck": false,
+		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"outDir": "dist",
 		"baseUrl": "src", // This must be specified if "paths" is.
