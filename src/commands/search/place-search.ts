@@ -14,7 +14,7 @@ export async function placeSearch (interaction:CommandInteraction) {
   await interaction.deferReply()
 
   const response = await axios.get(
-    `https://polytoria.co/api/places?page=1&search=${searchQuery}&genre=all&sort=popular`,
+    `https://polytoria.com/api/places?page=1&search=${searchQuery}&genre=all&sort=popular`,
     { params: {}, validateStatus: () => true }
   )
   const data = response.data.data
@@ -35,7 +35,7 @@ export async function placeSearch (interaction:CommandInteraction) {
 
   const topPlaces = data.slice(0, 15)
   for (const place of topPlaces) {
-    description += `\`${index}\` [${place.name}](https://polytoria.co/places/${place.id}) ${
+    description += `\`${index}\` [${place.name}](https://polytoria.com/places/${place.id}) ${
       ''
   }\n`
     index++

@@ -5,7 +5,7 @@ import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function randomUser (interaction: CommandInteraction): Promise<any> {
   const randomId = randomUtils.randomInt(1, 42260)
-  const apiUrl = `https://api.polytoria.co/v1/users/${randomId}`
+  const apiUrl = `https://api.polytoria.com/v1/users/${randomId}`
 
   const randomData = await randomUtils.randomize(
     apiUrl,
@@ -35,7 +35,7 @@ export async function randomUser (interaction: CommandInteraction): Promise<any>
 
   const embed = new EmbedBuilder({
     title: data.username + badges,
-    url: `https://polytoria.co/users/${data.id}`,
+    url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
     color: 0xFF5454,
     thumbnail: {
@@ -86,7 +86,7 @@ export async function randomUser (interaction: CommandInteraction): Promise<any>
   })
 
   if (data.playing && data.playing.name) {
-    const gameLink = `https://polytoria.co/places/${data.playing.placeID}`
+    const gameLink = `https://polytoria.com/places/${data.playing.placeID}`
     const playingMessage = emojiUtils.playing + `** Currently playing [${data.playing.name}](${gameLink})**`
     embed.setDescription(playingMessage + '\n\n' + data.description)
   }
@@ -99,7 +99,7 @@ export async function randomUser (interaction: CommandInteraction): Promise<any>
   const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
       new ButtonBuilder()
-        .setURL(`https://polytoria.co/users/${data.id}`)
+        .setURL(`https://polytoria.com/users/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle(ButtonStyle.Link),
       redoButton

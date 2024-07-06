@@ -15,7 +15,7 @@ export async function userSearch (interaction:CommandInteraction) {
   await interaction.deferReply()
 
   const response = await axios.get(
-    `https://api.polytoria.co/v1/users?search=${searchQuery}&limit=15`,
+    `https://api.polytoria.com/v1/users?search=${searchQuery}&limit=15`,
     { params: {}, validateStatus: () => true }
   )
   const data = response.data.users
@@ -35,7 +35,7 @@ export async function userSearch (interaction:CommandInteraction) {
   let description = ''
 
   for (const user of data) {
-    description += `\`${index}\` [${user.username}](https://polytoria.co/users/${user.id}) ${
+    description += `\`${index}\` [${user.username}](https://polytoria.com/users/${user.id}) ${
     user.isStaff === true ? emojiUtils.polytoria : ''
   }\n`
     index++

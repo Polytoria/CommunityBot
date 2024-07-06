@@ -2,7 +2,7 @@ import axios from 'axios'
 import { EmbedBuilder } from 'discord.js'
 
 export async function fetchUserBadges (userID: number): Promise<{ badges: any[], total: number }> {
-  const response = await axios.get(`https://api.polytoria.co/v1/users/${userID}/badges?limit=25`, {
+  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}/badges?limit=25`, {
     validateStatus: () => true
   })
   return {
@@ -25,7 +25,7 @@ export function buildBadgesEmbed (userData: any, badgesData: any[], total: numbe
 
   const embed = new EmbedBuilder()
     .setTitle(`${userData.username}'s Badges`)
-    .setURL(`https://polytoria.co/users/${userData.id}`)
+    .setURL(`https://polytoria.com/users/${userData.id}`)
     .setDescription(description)
     .setColor('#3498db')
     .setThumbnail(userData.thumbnail.avatar)

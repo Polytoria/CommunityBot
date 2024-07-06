@@ -15,14 +15,14 @@ export async function toolbox (interaction:CommandInteraction) {
 
   await interaction.deferReply()
 
-  const apiURL = 'https://polytoria.co/api/library?page=1' + searchQuery + '&type=model'
+  const apiURL = 'https://polytoria.com/api/library?page=1' + searchQuery + '&type=model'
 
   const response = await axios.get(apiURL, { validateStatus: () => true })
   const meta = response.data.meta
 
   // Change Page Function, Fetch current page
   async function changePage (): Promise<string> {
-    const apiURL = 'https://polytoria.co/api/library' + '?page=' + currentPage + searchQuery + '&type=model'
+    const apiURL = 'https://polytoria.com/api/library' + '?page=' + currentPage + searchQuery + '&type=model'
 
     const response = await axios.get(apiURL, { validateStatus: () => true })
     let resultString: string = ''
@@ -34,7 +34,7 @@ export async function toolbox (interaction:CommandInteraction) {
 
     // @ts-expect-error
     response.data.data.forEach((data) => {
-      resultString += `[${data.name}](https://polytoria.co/models/${data.id})\n`
+      resultString += `[${data.name}](https://polytoria.com/models/${data.id})\n`
     })
 
     return resultString

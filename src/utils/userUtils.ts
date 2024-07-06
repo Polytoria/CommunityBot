@@ -12,7 +12,7 @@ export class userUtils {
  * @returns {Promise<any>} Return User Data
  */
   public static async getUserData (id: number): Promise<any> {
-    const response = await axios.get(`https://api.polytoria.co/v1/users/${id}`, {
+    const response = await axios.get(`https://api.polytoria.com/v1/users/${id}`, {
       validateStatus: () => true
     })
     const data = response.data
@@ -29,7 +29,7 @@ export class userUtils {
  * @returns {Promise<any>} Return User Data
  */
   public static async getUserDataFromUsername (username: string): Promise<any> {
-    const response = await axios.get('https://api.polytoria.co/v1/users/find', {
+    const response = await axios.get('https://api.polytoria.com/v1/users/find', {
       params: { username },
       validateStatus: function (status) {
         return true

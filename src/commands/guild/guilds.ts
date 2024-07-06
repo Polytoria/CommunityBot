@@ -17,7 +17,7 @@ export async function guild (interaction:CommandInteraction) {
 
   await interaction.deferReply()
 
-  const response = await axios.get(`https://api.polytoria.co/v1/guilds/${guildID}`, { validateStatus: () => true })
+  const response = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}`, { validateStatus: () => true })
   const data = response.data
   const creator = data.creator
 
@@ -48,13 +48,13 @@ export async function guild (interaction:CommandInteraction) {
   const embed = new EmbedBuilder()
     .setTitle(data.name + ' ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setDescription(data.description === '' ? 'No description set.' : data.description)
-    .setURL('https://polytoria.co/guilds/' + data.id.toString())
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
     .addFields(
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.co/users/${creator.id})`,
+        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
         inline: true
       },
       {
@@ -87,19 +87,19 @@ export async function guild (interaction:CommandInteraction) {
     .setTitle(data.name + ' - Members ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
-    .setURL('https://polytoria.co/guilds/' + data.id.toString())
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
   const storeEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Store ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
-    .setURL('https://polytoria.co/guilds/' + data.id.toString())
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
   const shoutsEmbed = new EmbedBuilder()
     .setTitle(data.name + ' - Shouts ' + (data.isVerified === true ? emojiUtils.checkmark : ''))
     .setThumbnail(data.thumbnail)
     .setColor(data.color)
-    .setURL('https://polytoria.co/guilds/' + data.id.toString())
+    .setURL('https://polytoria.com/guilds/' + data.id.toString())
 
   const dropdown = new StringSelectMenuBuilder()
     .setCustomId('dropdown_menu')

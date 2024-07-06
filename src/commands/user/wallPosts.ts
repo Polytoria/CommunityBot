@@ -12,7 +12,7 @@ export function buildWallPostsEmbed (wallPostsData: any[]): EmbedBuilder {
     const pinnedMessageText = post.isPinned ? '**Pinned Message**' : ''
     const postedAt = dateUtils.atomTimeToDisplayTime(post.postedAt)
 
-    return ` ${pinnedEmoji} ${pinnedMessageText}\n${post.content}\n*Posted by [${post.author.username}](https://polytoria.co/users/${post.author.id})* at ${postedAt}`
+    return ` ${pinnedEmoji} ${pinnedMessageText}\n${post.content}\n*Posted by [${post.author.username}](https://polytoria.com/users/${post.author.id})* at ${postedAt}`
   })
 
   wallPostsEmbed.setDescription(wallPostsContent.join('\n'))

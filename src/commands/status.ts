@@ -6,23 +6,23 @@ import { IStatus } from '../../types/index.js'
 const urlToCheck = [
   {
     name: 'Main site',
-    url: 'https://polytoria.co'
+    url: 'https://polytoria.com/'
   },
   {
     name: 'Public APIs',
-    url: 'https://api.polytoria.co/v1/users/7348'
+    url: 'https://api.polytoria.com/v1/users/7348'
   },
   {
     name: 'Blog',
-    url: 'https://blog.polytoria.co/'
+    url: 'https://blog.polytoria.com/'
   },
   {
     name: 'Docs',
-    url: 'https://docs.polytoria.co/'
+    url: 'https://docs.polytoria.com/'
   },
   {
     name: 'Helpdesk',
-    url: 'https://help.polytoria.co/'
+    url: 'https://help.polytoria.com/'
   }
 ]
 

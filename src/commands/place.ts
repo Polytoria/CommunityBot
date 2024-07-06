@@ -14,7 +14,7 @@ export async function place (interaction:CommandInteraction) {
 
   await interaction.deferReply()
 
-  const response = await axios.get(`https://api.polytoria.co/v1/places/${placeID}`, { validateStatus: () => true })
+  const response = await axios.get(`https://api.polytoria.com/v1/places/${placeID}`, { validateStatus: () => true })
   const data = response.data
   const rating = data.rating
   const creator = data.creator
@@ -66,12 +66,12 @@ export async function place (interaction:CommandInteraction) {
     thumbnail: {
       url: `${data.thumbnail}`
     },
-    url: `https://polytoria.co/places/${data.id}`,
+    url: `https://polytoria.com/places/${data.id}`,
     color: 0xFF5454,
     fields: [
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.co/users/${creator.id})`,
+        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
         inline: true
       },
       {
@@ -120,7 +120,7 @@ export async function place (interaction:CommandInteraction) {
   const actionRow = new ActionRowBuilder<ButtonBuilder>()
     .addComponents(
       new ButtonBuilder()
-        .setURL(`https://polytoria.co/places/${data.id}`)
+        .setURL(`https://polytoria.com/places/${data.id}`)
         .setLabel('View on Polytoria')
         .setStyle(ButtonStyle.Link)
     )
