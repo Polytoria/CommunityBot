@@ -3,7 +3,7 @@ import axios from 'axios'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function fetchAvatar (userID: number) {
-  const avatarResponse = await axios.get(`https://api.polytoria.co/v1/users/${userID}/avatar`, {
+  const avatarResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/avatar`, {
     validateStatus: () => true
   })
   return avatarResponse.data
@@ -20,14 +20,14 @@ export function buildAvatarEmbed (userData: any, avatarData: any) {
       .map((asset: { type: { toString: () => any }; name: any; id: any }) => {
         const assetType = asset.type.toString()
         const assetTypeEmoji = emojiUtils[assetType as keyof typeof emojiUtils] ?? ''
-        return `${assetTypeEmoji} [${asset.name}](https://polytoria.co/store/${asset.id})`
+        return `${assetTypeEmoji} [${asset.name}](https://polytoria.com/store/${asset.id})`
       })
       .join('\n')
   }
 
   const embed = new EmbedBuilder()
     .setTitle(`${userData.username}'s Avatar`)
-    .setURL(`https://polytoria.co/users/${userData.id}`)
+    .setURL(`https://polytoria.com/users/${userData.id}`)
     .setDescription(`**Currently Wearing**\n${assetsList}\n\n**Body Colors**\n${colors}`)
     .setColor('#3498db')
     .setThumbnail(userData.thumbnail.avatar)

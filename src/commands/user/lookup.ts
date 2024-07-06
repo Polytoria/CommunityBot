@@ -10,7 +10,7 @@ import { createPrevButtonCollector, createNextButtonCollector, prevButton, nextB
 import { fetchUserBadges, buildBadgesEmbed } from './badges.js'
 
 async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
-  const response = await axios.get(`https://polytoria.co/api/wall/${userID}?page=${page}`)
+  const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
   return response.data
 }
 
@@ -42,7 +42,7 @@ export async function lookUp (interaction: CommandInteraction) {
     return await interaction.editReply('User not found!')
   }
 
-  const lookupResponse = await axios.get(`https://api.polytoria.co/v1/users/find?username=${username}`, {
+  const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
     validateStatus: (status) => status === 200
   })
   const lookupData = lookupResponse.data
@@ -59,7 +59,7 @@ export async function lookUp (interaction: CommandInteraction) {
 
   const userID = lookupData.id
 
-  const response = await axios.get(`https://api.polytoria.co/v1/users/${userID}`, {
+  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, {
     validateStatus: () => true
   })
   const data = response.data
@@ -74,7 +74,7 @@ export async function lookUp (interaction: CommandInteraction) {
 
   const embed = new EmbedBuilder({
     title: data.username + badges,
-    url: `https://polytoria.co/users/${data.id}`,
+    url: `https://polytoria.com/users/${data.id}`,
     description: data.description,
     color: 0xFF5454,
     thumbnail: {
@@ -125,7 +125,7 @@ export async function lookUp (interaction: CommandInteraction) {
   })
 
   if (data.playing && data.playing.name) {
-    const gameLink = `https://polytoria.co/places/${data.playing.placeID}`
+    const gameLink = `https://polytoria.com/places/${data.playing.placeID}`
     const playingMessage = emojiUtils.playing + `** Currently playing [${data.playing.name}](${gameLink})**`
     embed.setDescription(playingMessage + '\n\n' + data.description)
   }

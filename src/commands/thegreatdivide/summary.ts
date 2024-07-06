@@ -12,13 +12,13 @@ export async function handleSummary (interaction: CommandInteraction) {
 
   try {
     // Fetching member count from the old API
-    const cobrasResponse = await axios.get('https://api.polytoria.co/v1/guilds/641/')
-    const phantomsResponse = await axios.get('https://api.polytoria.co/v1/guilds/642/')
+    const cobrasResponse = await axios.get('https://api.polytoria.com/v1/guilds/641/')
+    const phantomsResponse = await axios.get('https://api.polytoria.com/v1/guilds/642/')
     const cobrasMemberCount = cobrasResponse.data.memberCount
     const phantomsMemberCount = phantomsResponse.data.memberCount
 
     // Fetching points from the new API
-    const pointsResponse = await axios.get('https://polytoria.co/api/events/stats')
+    const pointsResponse = await axios.get('https://polytoria.com/api/events/stats')
     const teamData = pointsResponse.data.teamData
     const cobrasPoints = teamData.cobras.points
     const phantomsPoints = teamData.phantoms.points

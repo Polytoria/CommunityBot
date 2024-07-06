@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export async function fetchStore (id: number, page: number) {
   // Fetch the store data from the API
-  const storeResponse = await axios.get(`https://api.polytoria.co/v1/guilds/${id}/store?page=${page}&limit=15`)
+  const storeResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${id}/store?page=${page}&limit=15`)
   const storeData = storeResponse.data.assets
   const totalAssets = storeResponse.data.total
   const totalPages = storeResponse.data.pages
@@ -14,7 +14,7 @@ export async function fetchStore (id: number, page: number) {
 
   // Prepare the store assets list
   const storeItems = storeData
-    .map((item: any, index: number) => `\`\`${(index + 1) + (page - 1) * 15}\`\` [${item.name}](https://polytoria.co/store/${item.id})`)
+    .map((item: any, index: number) => `\`\`${(index + 1) + (page - 1) * 15}\`\` [${item.name}](https://polytoria.com/store/${item.id})`)
     .join('\n')
 
   // Format and return the result string

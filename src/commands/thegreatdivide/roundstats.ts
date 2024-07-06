@@ -4,7 +4,7 @@ import { dateUtils } from '../../utils/dateUtils.js'
 
 export async function handleRoundStats (interaction: CommandInteraction, roundID: number) {
   try {
-    const roundResponse = await axios.get(`https://api.polytoria.co/v1/rounds/${roundID}`)
+    const roundResponse = await axios.get(`https://api.polytoria.com/v1/rounds/${roundID}`)
     const roundData = roundResponse.data
     const embedColor = roundData.winningTeam === 'phantoms' ? 0x6889FF : 0x59AA76
 
