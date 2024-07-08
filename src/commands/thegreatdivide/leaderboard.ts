@@ -14,7 +14,8 @@ export const statsOptions = [
   { label: 'Obelisks Destroyed', value: 'obelisksdestroyed' },
   { label: 'Blocks Placed', value: 'blocksplaced' },
   { label: 'Blocks Destroyed', value: 'blocksdestroyed' },
-  { label: 'Headshots', value: 'headshots' }
+  { label: 'Headshots', value: 'headshots' },
+  { label: 'KDR', value: 'kdr' } // Added KDR option
 ]
 
 export async function handleLeaderboard (interaction: CommandInteraction) {
@@ -64,7 +65,15 @@ async function handleSelectMenuInteraction (interaction: StringSelectMenuInterac
   try {
     // Fetch new leaderboard data based on the selected option
     const response = await axios.get(`https://stats.silly.mom/sortPlayers?type=${selectedOption}&sort=DESC&limit=10`)
-    const data = response.data.results
+    let data = response.data.results
+
+    if (selectedOption === 'kdr') {
+      // Calculate KDR for each player and sort by KDR in descending order
+      data = data.map((player: any) => ({
+        ...player,
+        kdr: (player.Kills / (player.Deaths || 1)).toFixed(2) // Avoid division by zero
+      })).sort((a: any, b: any) => parseFloat(b.kdr) - parseFloat(a.kdr))
+    }
 
     // Update the embed with new leaderboard data
     const embed = new EmbedBuilder()
@@ -80,9 +89,9 @@ async function handleSelectMenuInteraction (interaction: StringSelectMenuInterac
 }
 
 function formatLeaderboard (data: any[], statLabel: string): string {
-  return data.map(player => {
+  return data.map((player: any) => {
     const emoji = player.Team === 'cobras' ? emojiUtils.cobras : emojiUtils.phantoms
-    const statValue = player[statLabel.replace(/ /g, '')]
+    const statValue = statLabel === 'KDR' ? player.kdr : player[statLabel.replace(/ /g, '')]
     return `${emoji} **${player.Username}** - ${statLabel}: ${statValue.toLocaleString()}`
   }).join('\n')
 }
