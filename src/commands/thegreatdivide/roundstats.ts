@@ -8,16 +8,21 @@ export async function handleRoundStats (interaction: CommandInteraction, roundID
     const roundData = roundResponse.data
     const embedColor = roundData.winningTeam === 'phantoms' ? 0x6889FF : 0x59AA76
 
+    const cobrasScore = roundData.cobrasScore !== null ? roundData.cobrasScore.toLocaleString() : 'N/A'
+    const phantomsScore = roundData.phantomsScore !== null ? roundData.phantomsScore.toLocaleString() : 'N/A'
+    const map = roundData.map !== null ? roundData.map.toLocaleString() : 'N/A'
+
     const embed = new EmbedBuilder()
       .setColor(embedColor)
       .setTitle(`Round Information - ID: ${roundData.id}`)
       .addFields(
         { name: 'Place', value: roundData.place, inline: true },
         { name: 'Winning Team', value: roundData.winningTeam, inline: true },
-        { name: 'Cobras Score', value: roundData.cobrasScore.toLocaleString(), inline: true },
-        { name: 'Phantoms Score', value: roundData.phantomsScore.toLocaleString(), inline: true },
+        { name: 'Cobras Score', value: cobrasScore, inline: true },
+        { name: 'Phantoms Score', value: phantomsScore, inline: true },
         { name: 'Duration', value: `${roundData.duration} seconds`, inline: true },
-        { name: 'Created At', value: dateUtils.atomTimeToDisplayTime(roundData.createdAt), inline: true }
+        { name: 'Created At', value: dateUtils.atomTimeToDisplayTime(roundData.createdAt), inline: true },
+        { name: 'Map', value: map, inline: true }
       )
       .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
 
