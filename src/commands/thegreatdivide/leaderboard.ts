@@ -5,6 +5,7 @@ import emojiUtils from '../../utils/emojiUtils.js'
 export const statsOptions = [
   { label: 'Kills', value: 'kills' },
   { label: 'Deaths', value: 'deaths' },
+  { label: 'KDR', value: 'kdr' },
   { label: 'Unique Kills', value: 'uniquekills' },
   { label: 'Points Scored', value: 'pointsscored' },
   { label: 'Cash Earned', value: 'cashearned' },
@@ -14,8 +15,7 @@ export const statsOptions = [
   { label: 'Obelisks Destroyed', value: 'obelisksdestroyed' },
   { label: 'Blocks Placed', value: 'blocksplaced' },
   { label: 'Blocks Destroyed', value: 'blocksdestroyed' },
-  { label: 'Headshots', value: 'headshots' },
-  { label: 'KDR', value: 'kdr' } // Added KDR option
+  { label: 'Headshots', value: 'headshots' }
 ]
 
 export async function handleLeaderboard (interaction: CommandInteraction) {
