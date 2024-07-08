@@ -9,6 +9,7 @@ import { place } from './commands/place.js'
 import { SlashCommandBuilder } from 'discord.js'
 import { search } from './commands/search/search.js'
 import { blog } from './commands/blog.js'
+import { friends } from './commands/user/friends.js'
 import { thegreatdivide } from './commands/thegreatdivide/main.js'
 
 export default [
@@ -118,6 +119,17 @@ export default [
           .setRequired(true)
       ),
     execute: lookUp
+  },
+  {
+    data: new SlashCommandBuilder()
+      .setName('friends')
+      .setDescription('Lookup friends of a specified user')
+      .addStringOption(option =>
+        option.setName('username')
+          .setDescription('Username of the persons friends you want to view')
+          .setRequired(true)
+      ),
+    execute: friends
   },
   {
     data: new SlashCommandBuilder()
