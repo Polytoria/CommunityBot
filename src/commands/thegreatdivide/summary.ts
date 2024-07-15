@@ -17,28 +17,18 @@ export async function handleSummary (interaction: CommandInteraction) {
     const cobrasMemberCount = cobrasResponse.data.memberCount
     const phantomsMemberCount = phantomsResponse.data.memberCount
 
-    // Fetching points from the new API
-    const pointsResponse = await axios.get('https://polytoria.com/api/events/stats')
-    const teamData = pointsResponse.data.teamData
-    const cobrasPoints = teamData.cobras.points
-    const phantomsPoints = teamData.phantoms.points
-
-    // Format points with commas
-    const formattedCobrasPoints = cobrasPoints.toLocaleString()
-    const formattedPhantomsPoints = phantomsPoints.toLocaleString()
-
     // Constructing the embed
     const embed = new EmbedBuilder()
       .setTitle('The Great Divide - Global Statistics')
       .setThumbnail('https://c0.ptacdn.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
       .addFields(
-        { name: `${emojiUtils.cobras} Cobras Statistics`, value: `Member Count: ${cobrasMemberCount}\nTeam Points: ${emojiUtils.cobrapoints} ${formattedCobrasPoints}`, inline: false },
-        { name: `${emojiUtils.phantoms} Phantom Statistics`, value: `Member Count: ${phantomsMemberCount}\nTeam Points: ${emojiUtils.phantompoints} ${formattedPhantomsPoints}`, inline: false }
+        { name: `${emojiUtils.cobras} Cobras Statistics`, value: `Member Count: ${cobrasMemberCount}\nTeam Points: ${emojiUtils.cobrapoints} 1,150,913`, inline: false },
+        { name: `${emojiUtils.phantoms} Phantom Statistics`, value: `Member Count: ${phantomsMemberCount}\nTeam Points: ${emojiUtils.phantompoints} 1,056,682`, inline: false }
       )
-      .setFooter({ text: 'Not already enrolled in a team? Join the phantoms!', iconURL: 'https://c0.ptacdn.com/guilds/icons/bbLypENoqMEipAPsPK5h-kLSaysV6VGB.png' })
+      .setFooter({ text: 'The Great Divide has concluded as of July 14, 2024.', iconURL: 'https://c0.ptacdn.com/guilds/icons/zosu3Vgf_MzLmCkJvmgDiUgeSy74AGBy.png' })
 
     // Set embed color based on the points
-    if (cobrasPoints > phantomsPoints) {
+    if (cobrasMemberCount > phantomsMemberCount) {
       embed.setColor(0x59AA76) // Cobras have more points
     } else {
       embed.setColor(0x6889FF) // Phantoms have equal or more points

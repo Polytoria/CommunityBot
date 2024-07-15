@@ -1,6 +1,5 @@
 import { CommandInteraction, EmbedBuilder } from 'discord.js'
 import axios from 'axios'
-import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function handleUserSummary (interaction: CommandInteraction, username: string) {
@@ -29,12 +28,6 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
       return await interaction.editReply('No statistics found for this user.')
     }
 
-    // Fetch points from Polytoria API
-    const polytoriaPointsResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/greatdivide`, {
-      validateStatus: () => true
-    })
-    const polytoriaData = polytoriaPointsResponse.data
-
     const getTeamBadge = (team: string): string => {
       if (team === 'phantoms') {
         return emojiUtils.phantoms
@@ -58,12 +51,12 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
       .setURL(`https://polytoria.com/users/${userID}`)
       .setThumbnail(statsData.Thumbnail)
       .addFields(
-        { name: 'Information', value: `> **${statsData.Username} was last seen on round ${statsData.LastRoundSeen} is currently rank ${polytoriaData.rank} and joined the ${teamBadge} ${statsData.Team} on ${dateUtils.atomTimeToDisplayTime(polytoriaData.joinedAt)}**`, inline: false },
+        { name: 'Information', value: `> **${statsData.Username} is on team ${teamBadge} ${statsData.Team} and was last seen on round ${statsData.LastRoundSeen}**`, inline: false },
         { name: 'Kills', value: kills.toLocaleString(), inline: true },
         { name: 'Deaths', value: deaths.toLocaleString(), inline: true },
         { name: 'KDR', value: kdr, inline: true },
         { name: 'Unique Kills', value: statsData.UniqueKills.toLocaleString(), inline: true },
-        { name: 'Total Points', value: `${emojiUtils.points} ${polytoriaData.points.toLocaleString()}`, inline: true },
+        { name: 'Total Points', value: `${emojiUtils.points} ${statsData.PointsScored.toLocaleString()}`, inline: true },
         { name: 'Cash Earned', value: statsData.CashEarned.toLocaleString(), inline: true },
         { name: 'Flags Captured', value: statsData.FlagsCaptured.toLocaleString(), inline: true },
         { name: 'Flags Returned', value: statsData.FlagsReturned.toLocaleString(), inline: true },
@@ -73,7 +66,7 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
         { name: 'Blocks Destroyed', value: statsData.BlocksDestroyed.toLocaleString(), inline: true },
         { name: 'Headshots', value: statsData.Headshots.toLocaleString(), inline: true }
       )
-      .setFooter({ text: 'This data has been provided by Dragonism. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/609b3d372095b3fa1d7c1ecd6ed41f0eb05ec3f3ba6ba581191b83f17828bf94-icon.png' })
+      .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/9dbe39b3e3aac2017aba9c37fcea63fa87800262911b556487050ecda894ab4f-icon.png' })
 
     await interaction.editReply({ embeds: [embed] })
   } catch (error) {
