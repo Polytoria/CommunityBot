@@ -11,7 +11,6 @@ import { search } from './commands/search/search.js'
 import { blog } from './commands/blog.js'
 import { friends } from './commands/user/friends.js'
 import { thegreatdivide } from './commands/thegreatdivide/main.js'
-import { msg } from './commands/msg.js'
 
 export default [
   {
@@ -62,17 +61,6 @@ export default [
       .setName('status')
       .setDescription('Checks to see if Polytoria is online/offline'),
     execute: status
-  },
-  {
-    data: new SlashCommandBuilder()
-      .setName('msg')
-      .setDescription('Repeats the message you provide (admin-only)')
-      .addStringOption(option =>
-        option.setName('content')
-          .setDescription('The message to repeat')
-          .setRequired(true)
-      ),
-    execute: msg
   },
   {
     data: new SlashCommandBuilder()
