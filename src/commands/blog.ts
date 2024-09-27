@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js'
+import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ActionRowBuilder } from 'discord.js'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -50,7 +50,7 @@ export async function blog (interaction: CommandInteraction) {
       const filter = (i: { customId: string; }) => i.customId.startsWith(`${sessionUuid}`)
       const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 })
 
-      collector.on('collect', async (i) => {
+      collector.on('collect', async (i: ButtonInteraction) => {
         if (i.customId.endsWith('-previous')) {
           if (currentPage > 1) {
             currentPage--

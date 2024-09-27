@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonInteraction, ButtonBuilder, ButtonStyle } from 'discord.js'
 import pages from './helpPages.js'
 import { v4 } from 'uuid'
 
@@ -46,7 +46,7 @@ export async function help (message: Message, args: string[]) {
   const msg = await message.channel.send({ embeds: [embed], components: [row] })
 
   // Listen for Button Interaction
-  collector.on('collect', async (i) => {
+  collector.on('collect', async (i: ButtonInteraction) => {
     if (i.user.id !== message.author.id) {
       await i.reply({ content: ' ', ephemeral: true })
       return

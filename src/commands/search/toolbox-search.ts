@@ -1,8 +1,8 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ButtonInteraction } from 'discord.js'
 import axios from 'axios'
 import { v4 } from 'uuid'
 
-export async function toolbox (interaction:CommandInteraction) {
+export async function toolbox (interaction: CommandInteraction) {
   let currentPage = 1
   let searchQuery = ''
 
@@ -83,7 +83,7 @@ export async function toolbox (interaction:CommandInteraction) {
   const msg = await interaction.editReply({ embeds: [embed], components: [row] })
 
   // Listen for Button Interaction
-  collector.on('collect', async (i) => {
+  collector.on('collect', async (i: ButtonInteraction) => {
     if (i.user.id !== interaction.user.id) {
       await i.reply({ content: ' ', ephemeral: true })
       return
