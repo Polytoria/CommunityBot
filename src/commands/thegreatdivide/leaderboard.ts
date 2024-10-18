@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, ComponentType } from 'discord.js'
+import { CommandInteraction, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, ComponentType, TextChannel } from 'discord.js'
 import axios from 'axios'
 import emojiUtils from '../../utils/emojiUtils.js'
 
@@ -41,17 +41,18 @@ export async function handleLeaderboard (interaction: CommandInteraction) {
     // Send the embed and the dropdown menu
     await interaction.reply({ embeds: [embed], components: [row] })
 
-    // Create a collector to handle dropdown menu interactions
-    const collector = interaction.channel?.createMessageComponentCollector({
-      componentType: ComponentType.StringSelect,
-      time: 60000 // Collector timeout: 60 seconds
-    })
+    if (interaction.channel && interaction.channel instanceof TextChannel) {
+      const collector = interaction.channel.createMessageComponentCollector({
+        componentType: ComponentType.StringSelect,
+        time: 60000 // Collector timeout: 60 seconds
+      })
 
-    collector?.on('collect', async (menuInteraction: StringSelectMenuInteraction) => {
-      if (menuInteraction.customId === 'leaderboard_select') {
-        await handleSelectMenuInteraction(menuInteraction)
-      }
-    })
+      collector.on('collect', async (menuInteraction: StringSelectMenuInteraction) => {
+        if (menuInteraction.customId === 'leaderboard_select') {
+          await handleSelectMenuInteraction(menuInteraction)
+        }
+      })
+    }
   } catch (error) {
     console.error('Error fetching leaderboard data:', error)
     await interaction.reply({ content: 'Error fetching leaderboard data. Please try again later.', ephemeral: true })

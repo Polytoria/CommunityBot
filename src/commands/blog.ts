@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ActionRowBuilder } from 'discord.js'
+import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ActionRowBuilder, TextChannel } from 'discord.js'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -45,9 +45,9 @@ export async function blog (interaction: CommandInteraction) {
 
     const replyOptions = { embeds: [embed], components: [row] }
 
-    if (interaction.channel) {
+    if (interaction.channel && interaction.channel instanceof TextChannel) {
       await interaction.reply(replyOptions)
-      const filter = (i: { customId: string; }) => i.customId.startsWith(`${sessionUuid}`)
+      const filter = (i: { customId: string }) => i.customId.startsWith(`${sessionUuid}`)
       const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 })
 
       collector.on('collect', async (i: ButtonInteraction) => {
@@ -65,7 +65,7 @@ export async function blog (interaction: CommandInteraction) {
       })
 
       collector.on('end', () => {
-        row.components.forEach((c: { setDisabled: (arg0: boolean) => any; }) => c.setDisabled(true))
+        row.components.forEach((c: { setDisabled: (arg0: boolean) => any }) => c.setDisabled(true))
         interaction.editReply({ embeds: [embed], components: [row] })
       })
     }

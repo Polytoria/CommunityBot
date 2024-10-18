@@ -1,4 +1,4 @@
-import { Message, EmbedBuilder, ActionRowBuilder, ButtonInteraction, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { Message, EmbedBuilder, ActionRowBuilder, ButtonInteraction, ButtonBuilder, ButtonStyle, TextChannel } from 'discord.js'
 import pages from './helpPages.js'
 import { v4 } from 'uuid'
 
@@ -23,7 +23,7 @@ export async function help (message: Message, args: string[]) {
 
   embed.addFields(originalHelpData)
 
-  // Generate Button ID base on current time
+  // Generate Button ID based on current time
   const buttonID: string = v4()
   const leftBtnID: string = 'left' + buttonID
   const pageNum: string = 'page' + buttonID
@@ -40,56 +40,63 @@ export async function help (message: Message, args: string[]) {
 
   const filter = () => true
 
-  // Create Interaction event for 2 minutes
-  const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
+  // Ensure message.channel is a TextChannel before proceeding
+  if (message.channel && message.channel instanceof TextChannel) {
+    // Create Interaction event for 2 minutes
+    const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 })
 
-  const msg = await message.channel.send({ embeds: [embed], components: [row] })
+    const msg = await message.channel.send({ embeds: [embed], components: [row] })
 
-  // Listen for Button Interaction
-  collector.on('collect', async (i: ButtonInteraction) => {
-    if (i.user.id !== message.author.id) {
+    // Listen for Button Interaction
+    collector.on('collect', async (i: ButtonInteraction) => {
+      if (i.user.id !== message.author.id) {
+        await i.reply({ content: ' ', ephemeral: true })
+        return
+      }
+      // Change page
+      if (i.customId === rightBtnID) {
+        currentPage++
+      } else if (i.customId === leftBtnID) {
+        currentPage--
+      }
+
+      // Update button state
+      if (currentPage >= pagesCount - 1) {
+        rightBtn.setDisabled(true)
+        currentPage = pagesCount - 1
+      } else {
+        rightBtn.setDisabled(false)
+      }
+
+      if (currentPage <= 0) {
+        leftBtn.setDisabled(true)
+        currentPage = 0
+      } else {
+        leftBtn.setDisabled(false)
+      }
+
+      // Update embed with the current page's content
+      if (currentPage === 0) {
+        embed.data.fields = []
+        embed.addFields(originalHelpData)
+      } else {
+        const helpData: any = changePage()
+        embed.data.fields = []
+        embed.addFields(helpData)
+      }
+
+      // Update page number button
+      pageNumBtn.setLabel(`Page ${currentPage + 1} of ${pagesCount.toString()}`)
+
+      // Update Embed and Buttons
+      const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
+      await msg.edit({ embeds: [embed], components: [updatedRow] })
       await i.reply({ content: ' ', ephemeral: true })
-      return
-    }
-    // Change page
-    if (i.customId === rightBtnID) {
-      currentPage++
-    } else if (i.customId === leftBtnID) {
-      currentPage--
-    }
+    })
 
-    // Update button state
-    if (currentPage >= pagesCount - 1) {
-      rightBtn.setDisabled(true)
-      currentPage = pagesCount - 1
-    } else {
-      rightBtn.setDisabled(false)
-    }
-
-    if (currentPage <= 0) {
-      leftBtn.setDisabled(true)
-      currentPage = 0
-    } else {
-      leftBtn.setDisabled(false)
-    }
-
-    if (currentPage === 0) {
-      embed.data.fields = []
-      embed.addFields(originalHelpData)
-    } else {
-      const helpData: any = changePage()
-      embed.data.fields = []
-      embed.addFields(helpData)
-    }
-
-    // Set Page
-    pageNumBtn.setLabel(`Page ${currentPage + 1} of ${pagesCount.toString()}`)
-
-    // Update Embed and Button
-    const updatedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(leftBtn, pageNumBtn, rightBtn)
-    await msg.edit({ embeds: [embed], components: [updatedRow] })
-    await i.reply({ content: ' ', ephemeral: true })
-  })
-
-  return msg
+    return msg
+  } else {
+    // Handle case where channel is not a TextChannel
+    await message.reply('This command can only be used in text channels.')
+  }
 }
