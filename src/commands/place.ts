@@ -71,7 +71,9 @@ export async function place (interaction:CommandInteraction) {
     fields: [
       {
         name: 'Creator',
-        value: `[${creator.name}](https://polytoria.com/users/${creator.id})`,
+        value: creator.type === 'guild'
+          ? `[${creator.name}](https://polytoria.com/guilds/${creator.id})`
+          : `[${creator.name}](https://polytoria.com/users/${creator.id})`,
         inline: true
       },
       {
