@@ -9,7 +9,7 @@ export async function store (interaction: CommandInteraction) {
   // @ts-expect-error
   const assetID = interaction.options.getInteger('id')
 
-  if (assetID.length === 0) {
+  if (!assetID) {
     return await interaction.reply('Please provide me with a store ID before I can continue!')
   }
 
@@ -41,9 +41,22 @@ export async function store (interaction: CommandInteraction) {
     ? `https://polytoria.com/users/${creator.id}`
     : `https://polytoria.com/guilds/${creator.id}`
 
+  let statusMessage = ''
+
+  if (data.onSaleUntil) {
+    const onSaleUntilDate = new Date(data.onSaleUntil)
+    const currentDate = new Date()
+
+    if (!isNaN(onSaleUntilDate.getTime()) && onSaleUntilDate > currentDate) {
+      statusMessage += `${emojiUtils.shop} **This item will go off-sale on ${onSaleUntilDate.toLocaleString()}.**\n`
+    }
+  }
+
+  const embedDescription = `${statusMessage}\n${data.description === '' ? 'No description set.' : data.description}`
+
   const embed = new EmbedBuilder({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
-    description: data.description === '' ? 'No description set.' : data.description,
+    description: embedDescription,
     url: `https://polytoria.com/store/${data.id}`,
     thumbnail: {
       url: thumbnailURL
@@ -66,9 +79,9 @@ export async function store (interaction: CommandInteraction) {
   const assetType = data.type.toLowerCase()
   if (!['audio', 'decal', 'mesh', 'achievement'].includes(assetType)) {
     if (data.tags && data.tags.length > 0 && data.tags[0] !== '') {
-      embed.setDescription(data.description === '' ? 'No description set.' : data.description + '\n\n**Tags:** ' + (data.tags as string[]).map(tag => `\`${tag}\``).join(', '))
+      embed.setDescription(`${embedDescription}\n\n**Tags:** ${data.tags.map((tag: any) => `\`${tag}\``).join(', ')}`)
     } else {
-      embed.setDescription(data.description === '' ? 'No description set.' : data.description)
+      embed.setDescription(embedDescription)
     }
 
     embed.addFields(
