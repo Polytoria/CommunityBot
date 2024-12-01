@@ -10,6 +10,7 @@ import { SlashCommandBuilder } from 'discord.js'
 import { search } from './commands/search/search.js'
 import { blog } from './commands/blog.js'
 import { friends } from './commands/user/friends.js'
+import { forumpost } from './forums/forum-post.js'
 import { thegreatdivide } from './commands/thegreatdivide/main.js'
 
 export default [
@@ -85,6 +86,18 @@ export default [
           .setRequired(true)
       ),
     execute: place
+  },
+  {
+    data: new SlashCommandBuilder()
+      .setName('forum-post')
+      .setDescription('View the info of a forum post on Polytoria')
+      .addIntegerOption(option =>
+        option.setName('id')
+          .setDescription('ID of the forum post to view')
+          .setMinValue(1)
+          .setRequired(true)
+      ),
+    execute: forumpost
   },
   {
     data: new SlashCommandBuilder()
