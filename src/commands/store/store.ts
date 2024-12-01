@@ -74,7 +74,7 @@ export async function store (interaction: CommandInteraction) {
     embed.addFields(
       {
         name: 'Price',
-        value: emojiUtils.brick + ' ' + data.price.toLocaleString(),
+        value: data.price ? `${emojiUtils.brick} ${data.price.toLocaleString()}` : 'Off-sale',
         inline: true
       },
       {
