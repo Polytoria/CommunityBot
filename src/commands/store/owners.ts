@@ -1,10 +1,10 @@
 import { EmbedBuilder } from 'discord.js'
-import axios from 'axios'
 
-// Function to fetch owners from the API
 export async function fetchOwners (itemID: number, page: number): Promise<{ total: number, inventories: { serial: number, user: { username: string, id: number } }[], pages: number }> {
-  const response = await axios.get(`https://api.polytoria.com/v1/store/${itemID}/owners?limit=10&page=${page}`)
-  return response.data
+  const response = await fetch(`https://api.polytoria.com/v1/store/${itemID}/owners?limit=10&page=${page}`)
+
+  const data = await response.json()
+  return data
 }
 
 // Function to build the owners embed
