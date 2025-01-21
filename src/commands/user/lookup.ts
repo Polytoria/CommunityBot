@@ -1,5 +1,4 @@
 import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, CommandInteraction, BaseInteraction, ComponentType, ButtonBuilder } from 'discord.js'
-import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -8,9 +7,10 @@ import { fetchAvatar, buildAvatarEmbed, buildAvatarComponents } from './avatar.j
 import { createPrevButtonCollector, createNextButtonCollector, prevButton, nextButton } from '../../utils/buttonlogic.js'
 import { fetchUserBadges, buildBadgesEmbed } from './badges.js'
 
-async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
-  const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
-  return response.data
+async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean; data: any[] }> {
+  const response = await fetch(`https://polytoria.com/api/wall/${userID}?page=${page}`)
+  const data = await response.json()
+  return data
 }
 
 function getMembershipBadges (data: any): string {
