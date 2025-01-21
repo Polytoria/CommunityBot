@@ -1,5 +1,4 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
-import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 
@@ -13,18 +12,14 @@ export async function forumpost (interaction: CommandInteraction) {
 
   await interaction.deferReply()
 
-  const response = await axios.get(`https://api.polytoria.com/v1/forum/${forumID}`, { validateStatus: () => true })
-  const data = response.data
+  const response = await fetch(`https://api.polytoria.com/v1/forum/${forumID}`)
+  const errResult = await responseHandler.checkError(response)
 
-  const errResult = responseHandler.checkError(response)
-
-  if (errResult.hasError) {
-    if (errResult.statusCode === 404) {
-      return await interaction.editReply("Couldn't find the requested forum post. Did you type in the correct forum ID?")
-    } else {
-      return await interaction.editReply(errResult.displayText)
-    }
+  if (errResult.hasError && errResult.embed) {
+    return await interaction.editReply({ embeds: [errResult.embed] })
   }
+
+  const data = await response.json()
 
   let statusMessage = ''
 
@@ -80,13 +75,12 @@ export async function forumpost (interaction: CommandInteraction) {
     url: `https://polytoria.com/forum/post/${data.id}`
   })
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/forum/post/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
-    )
+  const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setURL(`https://polytoria.com/forum/post/${data.id}`)
+      .setLabel('View on Polytoria')
+      .setStyle(ButtonStyle.Link)
+  )
 
   return await interaction.editReply({
     embeds: [embed],
