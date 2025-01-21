@@ -1,11 +1,10 @@
-import axios from 'axios'
-
 export async function fetchStore (id: number, page: number) {
-  // Fetch the store data from the API
-  const storeResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${id}/store?page=${page}&limit=15`)
-  const storeData = storeResponse.data.assets
-  const totalAssets = storeResponse.data.total
-  const totalPages = storeResponse.data.pages
+  const response = await fetch(`https://api.polytoria.com/v1/guilds/${id}/store?page=${page}&limit=15`)
+
+  const data = await response.json()
+  const storeData = data.assets
+  const totalAssets = data.total
+  const totalPages = data.pages
 
   // If no store assets are found, return a message
   if (storeData.length === 0) {
