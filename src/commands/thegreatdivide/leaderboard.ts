@@ -1,5 +1,4 @@
 import { CommandInteraction, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, ComponentType, TextChannel } from 'discord.js'
-import axios from 'axios'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export const statsOptions = [
@@ -21,13 +20,13 @@ export const statsOptions = [
 export async function handleLeaderboard (interaction: CommandInteraction) {
   try {
     // Fetch default leaderboard data sorted by "kills"
-    const response = await axios.get('https://stats.silly.mom/sortPlayers?type=kills&sort=DESC&limit=10')
-    const data = response.data.results
+    const response = await fetch('https://stats.silly.mom/sortPlayers?type=kills&sort=DESC&limit=10')
+    const data = await response.json()
 
     // Create an embed for the default leaderboard
     const embed = new EmbedBuilder()
       .setTitle('The Great Divide - Top 10 Players by Kills')
-      .setDescription(formatLeaderboard(data, 'Kills'))
+      .setDescription(formatLeaderboard(data.results, 'Kills'))
       .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/9dbe39b3e3aac2017aba9c37fcea63fa87800262911b556487050ecda894ab4f-icon.png' })
 
     // Create the dropdown menu
@@ -65,12 +64,12 @@ async function handleSelectMenuInteraction (interaction: StringSelectMenuInterac
 
   try {
     // Fetch new leaderboard data based on the selected option
-    const response = await axios.get(`https://stats.silly.mom/sortPlayers?type=${selectedOption}&sort=DESC&limit=10`)
-    let data = response.data.results
+    const response = await fetch(`https://stats.silly.mom/sortPlayers?type=${selectedOption}&sort=DESC&limit=10`)
+    const data = await response.json()
 
     if (selectedOption === 'kdr') {
       // Calculate KDR for each player and sort by KDR in descending order
-      data = data.map((player: any) => ({
+      data.results = data.results.map((player: any) => ({
         ...player,
         kdr: (player.Kills / (player.Deaths || 1)).toFixed(2) // Avoid division by zero
       })).sort((a: any, b: any) => parseFloat(b.kdr) - parseFloat(a.kdr))
@@ -79,7 +78,7 @@ async function handleSelectMenuInteraction (interaction: StringSelectMenuInterac
     // Update the embed with new leaderboard data
     const embed = new EmbedBuilder()
       .setTitle(`The Great Divide - Top 10 Players by ${selectedLabel}`)
-      .setDescription(formatLeaderboard(data, selectedLabel))
+      .setDescription(formatLeaderboard(data.results, selectedLabel))
       .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/9dbe39b3e3aac2017aba9c37fcea63fa87800262911b556487050ecda894ab4f-icon.png' })
 
     await interaction.update({ embeds: [embed] })

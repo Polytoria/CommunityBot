@@ -1,10 +1,9 @@
 import { CommandInteraction, EmbedBuilder } from 'discord.js'
-import axios from 'axios'
 
 export async function handleRoundStats (interaction: CommandInteraction, roundID: number) {
   try {
-    const roundResponse = await axios.get(`https://stats.silly.mom/rounds/${roundID}`)
-    const roundData = roundResponse.data.results[0]
+    const response = await fetch(`https://stats.silly.mom/rounds/${roundID}`)
+    const roundData = (await response.json()).results[0]
     const embedColor = roundData.winner === 'phantoms' ? 0x6889FF : 0x59AA76
 
     const cobrasScore = roundData.cobrasScore !== null ? roundData.cobrasScore.toLocaleString() : 'N/A'

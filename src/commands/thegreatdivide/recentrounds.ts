@@ -1,10 +1,9 @@
 import { CommandInteraction, EmbedBuilder } from 'discord.js'
-import axios from 'axios'
 
 export async function handleRecentRounds (interaction: CommandInteraction) {
   try {
-    const roundsResponse = await axios.get('https://stats.silly.mom/rounds')
-    const roundsData = roundsResponse.data.results
+    const response = await fetch('https://stats.silly.mom/rounds')
+    const roundsData = (await response.json()).results
 
     const embed = new EmbedBuilder()
       .setTitle('Recent Rounds')

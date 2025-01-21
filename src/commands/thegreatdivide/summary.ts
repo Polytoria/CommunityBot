@@ -1,5 +1,4 @@
 import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js'
-import axios from 'axios'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function handleSummary (interaction: CommandInteraction) {
@@ -11,11 +10,20 @@ export async function handleSummary (interaction: CommandInteraction) {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(join)
 
   try {
-    // Fetching member count from the old API
-    const cobrasResponse = await axios.get('https://api.polytoria.com/v1/guilds/641/')
-    const phantomsResponse = await axios.get('https://api.polytoria.com/v1/guilds/642/')
-    const cobrasMemberCount = cobrasResponse.data.memberCount
-    const phantomsMemberCount = phantomsResponse.data.memberCount
+    // Fetching member count from the API using fetch
+    const cobrasResponse = await fetch('https://api.polytoria.com/v1/guilds/641/')
+    const phantomsResponse = await fetch('https://api.polytoria.com/v1/guilds/642/')
+
+    // Check if responses are successful
+    if (!cobrasResponse.ok || !phantomsResponse.ok) {
+      throw new Error('Failed to fetch guild data')
+    }
+
+    const cobrasData = await cobrasResponse.json()
+    const phantomsData = await phantomsResponse.json()
+
+    const cobrasMemberCount = cobrasData.memberCount
+    const phantomsMemberCount = phantomsData.memberCount
 
     // Constructing the embed
     const embed = new EmbedBuilder()
@@ -27,11 +35,11 @@ export async function handleSummary (interaction: CommandInteraction) {
       )
       .setFooter({ text: 'The Great Divide has concluded as of July 14, 2024.', iconURL: 'https://c0.ptacdn.com/guilds/icons/zosu3Vgf_MzLmCkJvmgDiUgeSy74AGBy.png' })
 
-    // Set embed color based on the points
+    // Set embed color based on the member count
     if (cobrasMemberCount > phantomsMemberCount) {
-      embed.setColor(0x59AA76) // Cobras have more points
+      embed.setColor(0x59AA76) // Cobras have more members
     } else {
-      embed.setColor(0x6889FF) // Phantoms have equal or more points
+      embed.setColor(0x6889FF) // Phantoms have more members or equal
     }
 
     // Ensure the row is included in the reply
