@@ -1,25 +1,26 @@
-import axios from 'axios'
 import { EmbedBuilder } from 'discord.js'
 
-export async function fetchUserBadges (userID: number): Promise<{ badges: any[], total: number }> {
-  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}/badges?limit=25`, {
-    validateStatus: () => true
-  })
+export async function fetchUserBadges (userID: number): Promise<{ badges: any[]; total: number }> {
+  const response = await fetch(`https://api.polytoria.com/v1/users/${userID}/badges?limit=25`)
+  const data = await response.json()
   return {
-    badges: response.data.badges,
-    total: response.data.total
+    badges: data.badges,
+    total: data.total
   }
 }
 
 export function buildBadgesEmbed (userData: any, badgesData: any[], total: number): EmbedBuilder {
   let description
+
   if (total === 0) {
     description = 'This user has no badges on Polytoria.'
   } else {
-    const badgesList = badgesData.map(badge => {
-      const levelText = badge.level !== null ? ` (Level ${badge.level})` : ''
-      return `**${badge.name}${levelText}**`
-    }).join('\n')
+    const badgesList = badgesData
+      .map((badge) => {
+        const levelText = badge.level !== null ? ` (Level ${badge.level})` : ''
+        return `**${badge.name}${levelText}**`
+      })
+      .join('\n')
     description = badgesList
   }
 
