@@ -57,6 +57,11 @@ export async function store (interaction: CommandInteraction) {
         name: 'Created At',
         value: dateUtils.atomTimeToDisplayTime(data.createdAt),
         inline: true
+      },
+      {
+        name: 'Favorites',
+        value: `${emojiUtils.star} ${data.favorites.toLocaleString()}`,
+        inline: true
       }
     ]
   })
