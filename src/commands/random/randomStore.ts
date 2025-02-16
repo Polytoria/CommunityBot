@@ -54,6 +54,11 @@ export async function randomStore (interaction: CommandInteraction): Promise<any
         name: 'Created At',
         value: dateUtils.atomTimeToDisplayTime(data.createdAt),
         inline: true
+      },
+      {
+        name: 'Favorites',
+        value: `${emojiUtils.star} ${data.favorites.toLocaleString()}`,
+        inline: true
       }
     ]
   })
