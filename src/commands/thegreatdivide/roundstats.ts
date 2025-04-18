@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export async function handleRoundStats (interaction: CommandInteraction, roundID: number) {
   try {
-    const roundResponse = await axios.get(`https://stats.silly.mom/rounds/${roundID}`)
+    const roundResponse = await axios.get(`https://stats.dargy.party/rounds/${roundID}`)
     const roundData = roundResponse.data.results[0]
     const embedColor = roundData.winner === 'phantoms' ? 0x6889FF : 0x59AA76
 

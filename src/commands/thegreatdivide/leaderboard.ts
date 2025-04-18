@@ -21,7 +21,7 @@ export const statsOptions = [
 export async function handleLeaderboard (interaction: CommandInteraction) {
   try {
     // Fetch default leaderboard data sorted by "kills"
-    const response = await axios.get('https://stats.silly.mom/sortPlayers?type=kills&sort=DESC&limit=10')
+    const response = await axios.get('https://stats.dargy.party/sortPlayers?type=kills&sort=DESC&limit=10')
     const data = response.data.results
 
     // Create an embed for the default leaderboard
@@ -65,7 +65,7 @@ async function handleSelectMenuInteraction (interaction: StringSelectMenuInterac
 
   try {
     // Fetch new leaderboard data based on the selected option
-    const response = await axios.get(`https://stats.silly.mom/sortPlayers?type=${selectedOption}&sort=DESC&limit=10`)
+    const response = await axios.get(`https://stats.dargy.party/sortPlayers?type=${selectedOption}&sort=DESC&limit=10`)
     let data = response.data.results
 
     if (selectedOption === 'kdr') {

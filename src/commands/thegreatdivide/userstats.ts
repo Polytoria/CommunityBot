@@ -19,7 +19,7 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
     const userID = lookupData.id
 
     // Fetch user stats from new API
-    const statsResponse = await axios.get(`https://stats.silly.mom/player_stats?id=${userID}`, {
+    const statsResponse = await axios.get(`https://stats.dargy.party/player_stats?id=${userID}`, {
       validateStatus: () => true
     })
     const statsData = statsResponse.data.results[0]

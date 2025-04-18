@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export async function handleRecentRounds (interaction: CommandInteraction) {
   try {
-    const roundsResponse = await axios.get('https://stats.silly.mom/rounds')
+    const roundsResponse = await axios.get('https://stats.dargy.party/rounds')
     const roundsData = roundsResponse.data.results
 
     const embed = new EmbedBuilder()
