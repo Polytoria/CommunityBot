@@ -20,12 +20,12 @@ export async function handleSummary (interaction: CommandInteraction) {
     // Constructing the embed
     const embed = new EmbedBuilder()
       .setTitle('The Great Divide - Global Statistics')
-      .setThumbnail('https://c0.ptacdn.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
+      .setThumbnail('https://cdn.polytoria.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
       .addFields(
         { name: `${emojiUtils.cobras} Cobras Statistics`, value: `Member Count: ${cobrasMemberCount}\nTeam Points: ${emojiUtils.cobrapoints} 1,150,913`, inline: false },
         { name: `${emojiUtils.phantoms} Phantom Statistics`, value: `Member Count: ${phantomsMemberCount}\nTeam Points: ${emojiUtils.phantompoints} 1,056,682`, inline: false }
       )
-      .setFooter({ text: 'The Great Divide has concluded as of July 14, 2024.', iconURL: 'https://c0.ptacdn.com/guilds/icons/zosu3Vgf_MzLmCkJvmgDiUgeSy74AGBy.png' })
+      .setFooter({ text: 'The Great Divide has concluded as of July 14, 2024.', iconURL: 'https://cdn.polytoria.com/guilds/icons/zosu3Vgf_MzLmCkJvmgDiUgeSy74AGBy.png' })
 
     // Set embed color based on the points
     if (cobrasMemberCount > phantomsMemberCount) {

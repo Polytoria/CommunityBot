@@ -28,7 +28,7 @@ export async function handleLeaderboard (interaction: CommandInteraction) {
     const embed = new EmbedBuilder()
       .setTitle('The Great Divide - Top 10 Players by Kills')
       .setDescription(formatLeaderboard(data, 'Kills'))
-      .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/9dbe39b3e3aac2017aba9c37fcea63fa87800262911b556487050ecda894ab4f-icon.png' })
+      .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://cdn.polytoria.com/thumbnails/avatars/d8b2237d4e2e5b4acfef5885f722cee8d20ae42f15b7027ac6984ea75314a9be-icon.png' })
 
     // Create the dropdown menu
     const selectMenu = new StringSelectMenuBuilder()
@@ -80,7 +80,7 @@ async function handleSelectMenuInteraction (interaction: StringSelectMenuInterac
     const embed = new EmbedBuilder()
       .setTitle(`The Great Divide - Top 10 Players by ${selectedLabel}`)
       .setDescription(formatLeaderboard(data, selectedLabel))
-      .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/9dbe39b3e3aac2017aba9c37fcea63fa87800262911b556487050ecda894ab4f-icon.png' })
+      .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://cdn.polytoria.com/thumbnails/avatars/d8b2237d4e2e5b4acfef5885f722cee8d20ae42f15b7027ac6984ea75314a9be-icon.png' })
 
     await interaction.update({ embeds: [embed] })
   } catch (error) {

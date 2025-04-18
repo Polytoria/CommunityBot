@@ -9,8 +9,8 @@ export async function handleRecentRounds (interaction: CommandInteraction) {
     const embed = new EmbedBuilder()
       .setTitle('Recent Rounds')
       .setURL('https://polytoria.com/event/the-great-divide')
-      .setThumbnail('https://c0.ptacdn.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
-      .setFooter({ text: 'The Great Divide has concluded as of July 14, 2024.', iconURL: 'https://c0.ptacdn.com/guilds/icons/zosu3Vgf_MzLmCkJvmgDiUgeSy74AGBy.png' })
+      .setThumbnail('https://cdn.polytoria.com/static/assets/events/great-divide-assets/logo.d7df4fce.png')
+      .setFooter({ text: 'The Great Divide has concluded as of July 14, 2024.', iconURL: 'https://cdn.polytoria.com/guilds/icons/zosu3Vgf_MzLmCkJvmgDiUgeSy74AGBy.png' })
       .setColor(0x0099FF)
 
     // Ensuring roundsData is an array

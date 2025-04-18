@@ -66,7 +66,7 @@ export async function handleUserSummary (interaction: CommandInteraction, userna
         { name: 'Blocks Destroyed', value: statsData.BlocksDestroyed.toLocaleString(), inline: true },
         { name: 'Headshots', value: statsData.Headshots.toLocaleString(), inline: true }
       )
-      .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://c0.ptacdn.com/thumbnails/avatars/9dbe39b3e3aac2017aba9c37fcea63fa87800262911b556487050ecda894ab4f-icon.png' })
+      .setFooter({ text: 'This data has been provided by dargy. Thank you for your public API!', iconURL: 'https://cdn.polytoria.com/thumbnails/avatars/d8b2237d4e2e5b4acfef5885f722cee8d20ae42f15b7027ac6984ea75314a9be-icon.png' })
 
     await interaction.editReply({ embeds: [embed] })
   } catch (error) {
