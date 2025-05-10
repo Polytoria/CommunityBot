@@ -8,7 +8,7 @@ interface PackageJson {
 
 function getVersion(): string {
   // Use import.meta.url for proper resolution in ES modules
-  const jsonPath = new URL('../package.json', import.meta.url);
+  const jsonPath = new URL('../../package.json', import.meta.url);
   const raw = readFileSync(jsonPath, 'utf-8');
   const pkg: PackageJson = JSON.parse(raw);
   return pkg.version ?? '0';
