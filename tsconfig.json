@@ -6,7 +6,7 @@
 		"noEmit": false,
 		"target": "es2020",
 		"importHelpers": true,
-		"module": "es6",
+		"module": "es2020",
 		"skipLibCheck": false,
 		"esModuleInterop": true,
 		"outDir": "dist",
