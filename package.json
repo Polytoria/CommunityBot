@@ -13,22 +13,22 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"axios": "^1.7.3",
-		"canvas": "^2.11.2",
-		"chalk": "^5.3.0",
-		"discord.js": "^14.16.3",
+		"axios": "^1.10.0",
+		"canvas": "^3.1.1",
+		"chalk": "^5.4.1",
+		"discord.js": "^14.20.0",
 		"dom-parser": "^1.1.5",
-		"dotenv": "^16.4.5",
+		"dotenv": "^16.5.0",
 		"esm": "^3.2.25",
 		"module-alias": "^2.2.3",
 		"string-progressbar": "^1.0.4",
 		"text-table": "^0.2.0",
 		"timestamp-conv": "^3.0.0",
-		"typescript": "^5.5.4",
-		"uuid": "^10.0.0"
+		"typescript": "^5.8.3",
+		"uuid": "^11.1.0"
 	},
 	"devDependencies": {
-		"@types/node": "^22.2.0",
+		"@types/node": "^24.0.3",
 		"@types/text-table": "^0.2.5",
 		"@types/uuid": "^10.0.0",
 		"@typescript-eslint/eslint-plugin": "^8.0.1",
@@ -38,7 +38,7 @@
 		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-promise": "^6.1.1",
-		"prettier": "^3.3.3",
-		"prettier-eslint": "^16.3.0"
+		"prettier": "^3.5.3",
+		"prettier-eslint": "^16.4.2"
 	}
 }
