@@ -1,17 +1,17 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
-import { readFileSync } from 'fs';
+import { readFileSync } from 'fs'
 
 interface PackageJson {
   version?: string;
   [key: string]: any;
 }
 
-function getVersion(): string {
+function getVersion (): string {
   // Use import.meta.url for proper resolution in ES modules
-  const jsonPath = new URL('../../package.json', import.meta.url);
-  const raw = readFileSync(jsonPath, 'utf-8');
-  const pkg: PackageJson = JSON.parse(raw);
-  return pkg.version ?? '0';
+  const jsonPath = new URL('../../package.json', import.meta.url)
+  const raw = readFileSync(jsonPath, 'utf-8')
+  const pkg: PackageJson = JSON.parse(raw)
+  return pkg.version ?? '0'
 }
 
 export async function info (interaction:CommandInteraction) {
