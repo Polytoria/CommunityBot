@@ -16,6 +16,7 @@ function getVersion (): string {
 export async function info (interaction: CommandInteraction) {
   const application = await interaction.client.application?.fetch()
   const approximateUserInstallCount = application?.approximateUserInstallCount ?? null
+  const approximateGuildCount = application?.approximateGuildCount ?? null
 
   const invite = new ButtonBuilder()
     .setLabel('Invite the bot to your server!')
@@ -36,9 +37,10 @@ export async function info (interaction: CommandInteraction) {
     .setURL('https://discord.com/api/oauth2/authorize?client_id=905979909049028649&permissions=414464724032&scope=bot')
     .setThumbnail('https://starmanthegamer.com/icon.png')
     .addFields(
-      { name: 'Version', value: `Currently running version: ${getVersion()}` },
-      { name: 'Installs', value: approximateUserInstallCount ? `${approximateUserInstallCount.toLocaleString()} users` : 'Unknown', inline: true },
-      { name: 'Contributed by:', value: 'baggy, DevPixels, Index, InsertSoda, and many more!', inline: true }
+      { name: 'Version', value: `v${getVersion()}`, inline: true },
+      { name: 'User Installs', value: approximateUserInstallCount ? `${approximateUserInstallCount.toLocaleString()} users` : 'Unknown', inline: true },
+      { name: 'Server Installs', value: approximateGuildCount ? `${approximateGuildCount.toLocaleString()} servers` : 'Unknown', inline: true },
+      { name: 'Contributed by:', value: 'baggy, DevPixels, Index, InsertSoda, and many more!', inline: false }
     )
     .setFooter({ text: 'Thank you for using Polytoria Community Bot!', iconURL: 'https://starmanthegamer.com/icon.png' })
 
