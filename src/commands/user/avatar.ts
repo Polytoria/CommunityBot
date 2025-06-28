@@ -1,12 +1,9 @@
 import { EmbedBuilder, StringSelectMenuBuilder, ActionRowBuilder } from 'discord.js'
-import axios from 'axios'
 import emojiUtils from '../../utils/emojiUtils.js'
 
 export async function fetchAvatar (userID: number) {
-  const avatarResponse = await axios.get(`https://api.polytoria.com/v1/users/${userID}/avatar`, {
-    validateStatus: () => true
-  })
-  return avatarResponse.data
+  const response = await fetch(`https://api.polytoria.com/v1/users/${userID}/avatar`)
+  return await response.json()
 }
 
 export function buildAvatarEmbed (userData: any, avatarData: any) {
@@ -14,16 +11,15 @@ export function buildAvatarEmbed (userData: any, avatarData: any) {
     .map(([part, color]) => `**${part.charAt(0).toUpperCase() + part.slice(1)}**: #${color}`)
     .join('\n')
 
-  let assetsList = ''
-  if (avatarData.assets) {
-    assetsList = avatarData.assets
+  const assetsList = avatarData.assets
+    ? avatarData.assets
       .map((asset: { type: { toString: () => any }; name: any; id: any }) => {
         const assetType = asset.type.toString()
         const assetTypeEmoji = emojiUtils[assetType as keyof typeof emojiUtils] ?? ''
         return `${assetTypeEmoji} [${asset.name}](https://polytoria.com/store/${asset.id})`
       })
       .join('\n')
-  }
+    : ''
 
   const embed = new EmbedBuilder()
     .setTitle(`${userData.username}'s Avatar`)
