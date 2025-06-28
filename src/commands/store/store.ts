@@ -1,5 +1,4 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, StringSelectMenuBuilder, ComponentType, BaseInteraction } from 'discord.js'
-import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -9,37 +8,36 @@ export async function store (interaction: CommandInteraction) {
   // @ts-expect-error
   const assetID = interaction.options.getInteger('id')
 
-  if (assetID.length === 0) {
+  if (!assetID) {
     return await interaction.reply('Please provide me with a store ID before I can continue!')
   }
 
   await interaction.deferReply()
 
-  const response = await axios.get(`https://api.polytoria.com/v1/store/${assetID}`, {
-    validateStatus: () => true
-  })
-  const data = response.data
-  const creator = data.creator
+  // Fetch store data
+  const response = await fetch(`https://api.polytoria.com/v1/store/${assetID}`)
+  const errResult = await responseHandler.checkError(response)
 
-  const errResult = responseHandler.checkError(response)
-
-  if (errResult.hasError === true) {
-    if (errResult.statusCode === 404) {
-      return await interaction.editReply("Couldn't find the requested store item. Did you type in the correct store ID?")
-    } else {
-      return await interaction.editReply(errResult.displayText)
-    }
+  // Handle errors
+  if (errResult.hasError && errResult.embed) {
+    return await interaction.editReply({ embeds: [errResult.embed] })
   }
+
+  // Parse store data
+  const data = await response.json()
+  const creator = data.creator
 
   let thumbnailURL = data.thumbnail
 
+  // Default thumbnail for audio assets
   if (data.type.toLowerCase() === 'audio') {
     thumbnailURL = 'https://c0.ptacdn.com/static/images/placeholders/audio.88cff071.png'
   }
 
-  const creatorLink = creator.type === 'user'
-    ? `https://polytoria.com/users/${creator.id}`
-    : `https://polytoria.com/guilds/${creator.id}`
+  const creatorLink =
+    creator.type === 'user'
+      ? `https://polytoria.com/users/${creator.id}`
+      : `https://polytoria.com/guilds/${creator.id}`
 
   const embed = new EmbedBuilder({
     title: data.name + ' ' + (data.isLimited === true ? emojiUtils.star : ''),
@@ -71,9 +69,11 @@ export async function store (interaction: CommandInteraction) {
   const assetType = data.type.toLowerCase()
   if (!['audio', 'decal', 'mesh', 'achievement'].includes(assetType)) {
     if (data.tags && data.tags.length > 0 && data.tags[0] !== '') {
-      embed.setDescription(data.description === '' ? 'No description set.' : data.description + '\n\n**Tags:** ' + (data.tags as string[]).map(tag => `\`${tag}\``).join(', '))
-    } else {
-      embed.setDescription(data.description === '' ? 'No description set.' : data.description)
+      embed.setDescription(
+        data.description === ''
+          ? 'No description set.'
+          : data.description + '\n\n**Tags:** ' + data.tags.map((tag: string) => `\`${tag}\``).join(', ')
+      )
     }
 
     embed.addFields(
@@ -115,8 +115,7 @@ export async function store (interaction: CommandInteraction) {
     .setStyle(ButtonStyle.Success)
     .setCustomId('next_button')
 
-  const actionRowDropdown = new ActionRowBuilder<StringSelectMenuBuilder>()
-    .addComponents(dropdown)
+  const actionRowDropdown = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(dropdown)
 
   const reply = await interaction.editReply({
     embeds: [embed],
@@ -128,10 +127,10 @@ export async function store (interaction: CommandInteraction) {
 
   const collector = reply.createMessageComponentCollector({
     componentType: ComponentType.SelectMenu,
-    filter: (messageInteraction: BaseInteraction) => (
-      messageInteraction.isStringSelectMenu() && messageInteraction.customId === 'dropdown_menu' &&
-      messageInteraction.user.id === interaction.user.id
-    ),
+    filter: (messageInteraction: BaseInteraction) =>
+      messageInteraction.isStringSelectMenu() &&
+      messageInteraction.customId === 'dropdown_menu' &&
+      messageInteraction.user.id === interaction.user.id,
     time: 60000
   })
 
@@ -166,11 +165,10 @@ export async function store (interaction: CommandInteraction) {
 
   const prevButtonCollector = reply.createMessageComponentCollector({
     componentType: ComponentType.Button,
-    filter: (btnInteraction: BaseInteraction) => (
+    filter: (btnInteraction: BaseInteraction) =>
       btnInteraction.isButton() &&
       btnInteraction.customId === 'prev_button' &&
-      btnInteraction.user.id === interaction.user.id
-    ),
+      btnInteraction.user.id === interaction.user.id,
     time: 60000
   })
 
@@ -183,9 +181,7 @@ export async function store (interaction: CommandInteraction) {
         const assetOwners = await fetchOwners(assetID, ownersPage)
         const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
 
-        // Disable previous button if on first page
         prevButton.setDisabled(ownersPage === 1)
-        // Enable next button
         nextButton.setDisabled(false)
 
         await interaction.editReply({
@@ -203,11 +199,10 @@ export async function store (interaction: CommandInteraction) {
 
   const nextButtonCollector = reply.createMessageComponentCollector({
     componentType: ComponentType.Button,
-    filter: (btnInteraction: BaseInteraction) => (
+    filter: (btnInteraction: BaseInteraction) =>
       btnInteraction.isButton() &&
       btnInteraction.customId === 'next_button' &&
-      btnInteraction.user.id === interaction.user.id
-    ),
+      btnInteraction.user.id === interaction.user.id,
     time: 60000
   })
 
@@ -220,9 +215,7 @@ export async function store (interaction: CommandInteraction) {
         const assetOwners = await fetchOwners(assetID, ownersPage)
         const newOwnersEmbed = buildOwnersEmbed(assetOwners, ownersPage, thumbnailURL)
 
-        // Enable previous button
         prevButton.setDisabled(false)
-        // Disable next button if on last page
         nextButton.setDisabled(ownersPage === assetOwners.pages)
 
         await interaction.editReply({

@@ -1,38 +1,36 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction } from 'discord.js'
-import axios from 'axios'
 import { responseHandler } from '../utils/responseHandler.js'
 import { dateUtils } from '../utils/dateUtils.js'
 import emojiUtils from '../utils/emojiUtils.js'
 
-export async function place (interaction:CommandInteraction) {
+export async function place (interaction: CommandInteraction) {
   // @ts-expect-error
   const placeID = interaction.options.getInteger('id')
 
-  if (placeID.length === 0) {
+  if (!placeID) {
     return await interaction.reply('Please provide me with a place ID before I can continue!')
   }
 
   await interaction.deferReply()
 
-  const response = await axios.get(`https://api.polytoria.com/v1/places/${placeID}`, { validateStatus: () => true })
-  const data = response.data
+  // Fetch data using `fetch`
+  const response = await fetch(`https://api.polytoria.com/v1/places/${placeID}`)
+  const errResult = await responseHandler.checkError(response)
+
+  // Handle errors
+  if (errResult.hasError && errResult.embed) {
+    return await interaction.editReply({ embeds: [errResult.embed] })
+  }
+
+  // Parse JSON response
+  const data = await response.json()
   const rating = data.rating
   const creator = data.creator
-
-  const errResult = responseHandler.checkError(response)
-
-  if (errResult.hasError === true) {
-    if (errResult.statusCode === 404) {
-      return await interaction.editReply("Couldn't find the requested place. Did you type in the correct place ID?")
-    } else {
-      return await interaction.editReply(errResult.displayText)
-    }
-  }
 
   let externalDesc = ''
   let accessMessage = ''
 
-  if (data.isActive === false) {
+  if (!data.isActive) {
     externalDesc += `${emojiUtils.private} **This place is currently private. Only the creator can join it.**\n`
   } else {
     switch (data.accessType) {
@@ -54,14 +52,14 @@ export async function place (interaction:CommandInteraction) {
 
   externalDesc += '\n'
 
-  if (data.description === '') {
+  if (!data.description) {
     externalDesc += '*No description set.*'
   } else {
     externalDesc += data.description
   }
 
   const embed = new EmbedBuilder({
-    title: (data.name + ' ' + (data.isFeatured === true ? emojiUtils.star : '')),
+    title: data.name + (data.isFeatured ? ` ${emojiUtils.star}` : ''),
     description: `${accessMessage}\n${externalDesc}`,
     thumbnail: {
       url: `${data.thumbnail}`
@@ -71,61 +69,29 @@ export async function place (interaction:CommandInteraction) {
     fields: [
       {
         name: 'Creator',
-        value: creator.type === 'guild'
-          ? `[${creator.name}](https://polytoria.com/guilds/${creator.id})`
-          : `[${creator.name}](https://polytoria.com/users/${creator.id})`,
+        value:
+          creator.type === 'guild'
+            ? `[${creator.name}](https://polytoria.com/guilds/${creator.id})`
+            : `[${creator.name}](https://polytoria.com/users/${creator.id})`,
         inline: true
       },
-      {
-        name: 'Visits',
-        value: data.visits.toLocaleString(),
-        inline: true
-      },
-      {
-        name: 'Likes',
-        value: rating.likes.toLocaleString() || 'N/A',
-        inline: true
-      },
-      {
-        name: 'Dislikes',
-        value: rating.dislikes.toLocaleString() || 'N/A',
-        inline: true
-      },
-      {
-        name: 'Genre',
-        value: data.genre.toLocaleString() || 'N/A',
-        inline: true
-      },
-      {
-        name: 'Max Players',
-        value: data.maxPlayers.toLocaleString() || 'N/A',
-        inline: true
-      },
-      {
-        name: 'Playing',
-        value: data.playing.toLocaleString() || 'N/A',
-        inline: true
-      },
-      {
-        name: 'Created At',
-        value: dateUtils.atomTimeToDisplayTime(data.createdAt),
-        inline: true
-      },
-      {
-        name: 'Updated At',
-        value: dateUtils.atomTimeToDisplayTime(data.updatedAt),
-        inline: true
-      }
+      { name: 'Visits', value: data.visits.toLocaleString(), inline: true },
+      { name: 'Likes', value: rating.likes.toLocaleString() || 'N/A', inline: true },
+      { name: 'Dislikes', value: rating.dislikes.toLocaleString() || 'N/A', inline: true },
+      { name: 'Genre', value: data.genre || 'N/A', inline: true },
+      { name: 'Max Players', value: data.maxPlayers.toLocaleString() || 'N/A', inline: true },
+      { name: 'Playing', value: data.playing.toLocaleString() || 'N/A', inline: true },
+      { name: 'Created At', value: dateUtils.atomTimeToDisplayTime(data.createdAt), inline: true },
+      { name: 'Updated At', value: dateUtils.atomTimeToDisplayTime(data.updatedAt), inline: true }
     ]
   })
 
-  const actionRow = new ActionRowBuilder<ButtonBuilder>()
-    .addComponents(
-      new ButtonBuilder()
-        .setURL(`https://polytoria.com/places/${data.id}`)
-        .setLabel('View on Polytoria')
-        .setStyle(ButtonStyle.Link)
-    )
+  const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setURL(`https://polytoria.com/places/${data.id}`)
+      .setLabel('View on Polytoria')
+      .setStyle(ButtonStyle.Link)
+  )
 
   return await interaction.editReply({
     embeds: [embed],

@@ -1,44 +1,58 @@
-import { AxiosResponse } from 'axios'
-import { IApiResponse } from '../../types/index.d.js'
+import { EmbedBuilder } from 'discord.js'
 
-const displayTexts: Record<string, string> = {
-  'Invalid username.': 'I don\'t see the player with that username, maybe try again.. or If you\'re searching using ID, Try type " id" after your targetted user id!',
-  'Invalid user ID.': "I don't see the player with that id, maybe try again.. or If you're searching using username, Try type \" username\" after your targetted user s' username!"
-}
-
-export class responseHandler {
+export const responseHandler = {
   /**
- * Check Error
- * @param { AxiosResponse } The response from Axios request.
- * @returns { IApiResponse }
- */
-  public static checkError (response: AxiosResponse) {
-    const result: IApiResponse = {
-      hasError: false,
-      statusCode: 0,
-      displayText: 'Unknown error.',
-      actualError: 'Unknown error.'
-    }
+   * Check if the response has an error and return a result object.
+   * @param {Response} response - The fetch response object.
+   * @returns {Promise<Object>} - Error status, status code, and embed if an error exists.
+   */
+  async checkError (response: Response) {
+    const hasError = !response.ok // response.ok is true for 200–299 status codes.
+    const statusCode = response.status
 
-    result.statusCode = response.status
+    let embed = null
 
-    if (response.status >= 500) {
-      result.hasError = true
-      result.displayText = 'An unexpected error happen while sending request to Polytoria API. Please try again in a few minutes.'
-      result.actualError = 'API error.'
-    } else if (response.status === 404) {
-      result.hasError = true
-      result.displayText = "Couldn't find it on Polytoria"
-      result.actualError = 'Not found'
-    } else if (response.data.Success === false) {
-      result.hasError = true
-      result.actualError = response.data.Errors[0]
+    if (hasError) {
+      let errorMessage = `An error occurred. HTTP Status: ${statusCode}`
+      let errorCode = 'UNKNOWN_ERROR'
 
-      if (displayTexts[result.actualError]) {
-        result.displayText = displayTexts[result.actualError]
+      // Try to parse the error response body (if available)
+      try {
+        const errorBody = await response.json()
+        if (errorBody.errors && Array.isArray(errorBody.errors) && errorBody.errors.length > 0) {
+          errorCode = errorBody.errors[0].code || errorCode
+          errorMessage = errorBody.errors[0].message || errorMessage
+        }
+      } catch (e) {
+        // Do nothing if parsing fails
+      }
+
+      // Custom handling for 404 and 500 errors
+      if (statusCode === 404) {
+        embed = new EmbedBuilder()
+          .setTitle('404 - Not Found')
+          .setDescription(
+            `The provided place ID couldn't be found. Please double-check the ID.\n\n**Internal Information:**\n**Status Code:** \`${statusCode}\`\n**Error Code:** \`${errorCode}\`\n**Message:** ${errorMessage}`
+          )
+          .setColor(0xFF5454)
+      } else if (statusCode === 500) {
+        embed = new EmbedBuilder()
+          .setTitle('500 - Internal Server Error')
+          .setDescription(
+            `An internal error occurred on the Polytoria website. Please report this to the developers with the following information:\n\n**Status Code:** \`${statusCode}\`\n**Error Code:** \`${errorCode}\`\n**Message:** ${errorMessage}`
+          )
+          .setColor(0xFF5454)
+      } else {
+        // Default error handling
+        embed = new EmbedBuilder()
+          .setTitle('Error Occurred')
+          .setDescription(
+            `An error occurred while processing your request. Please try again later.\n\n**Status Code:** \`${statusCode}\`\n**Error Code:** \`${errorCode}\`\n**Message:** ${errorMessage}`
+          )
+          .setColor(0xFF5454)
       }
     }
 
-    return result
+    return { hasError, statusCode, embed }
   }
 }

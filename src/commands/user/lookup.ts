@@ -1,17 +1,16 @@
 import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, CommandInteraction, BaseInteraction, ComponentType, ButtonBuilder } from 'discord.js'
-import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
-import { userUtils } from '../../utils/userUtils.js'
 import { buildWallPostsEmbed } from './wallPosts.js'
 import { fetchAvatar, buildAvatarEmbed, buildAvatarComponents } from './avatar.js'
 import { createPrevButtonCollector, createNextButtonCollector, prevButton, nextButton } from '../../utils/buttonlogic.js'
 import { fetchUserBadges, buildBadgesEmbed } from './badges.js'
 
-async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean, data: any[] }> {
-  const response = await axios.get(`https://polytoria.com/api/wall/${userID}?page=${page}`)
-  return response.data
+async function fetchWallPosts (userID: number, page: number): Promise<{ success: boolean; data: any[] }> {
+  const response = await fetch(`https://polytoria.com/api/wall/${userID}?page=${page}`)
+  const data = await response.json()
+  return data
 }
 
 function getMembershipBadges (data: any): string {
@@ -36,40 +35,26 @@ export async function lookUp (interaction: CommandInteraction) {
 
   await interaction.deferReply()
 
-  const userData = await userUtils.getUserDataFromUsername(username)
+  // Fetch user data using responseHandler
+  const lookupResponse = await fetch(`https://api.polytoria.com/v1/users/find?username=${username}`)
+  const errResult = await responseHandler.checkError(lookupResponse)
 
-  if (!userData) {
-    return await interaction.editReply('User not found!')
+  if (errResult.hasError && errResult.embed) {
+    return await interaction.editReply({ embeds: [errResult.embed] })
   }
 
-  const lookupResponse = await axios.get(`https://api.polytoria.com/v1/users/find?username=${username}`, {
-    validateStatus: (status) => status === 200
-  })
-  const lookupData = lookupResponse.data
-
-  const errResult = responseHandler.checkError(lookupResponse)
-
-  if (errResult.hasError === true) {
-    if (errResult.statusCode === 404) {
-      return await interaction.editReply("Couldn't find the requested user. Did you type in the correct username?")
-    } else {
-      return await interaction.editReply(errResult.displayText)
-    }
-  }
-
+  const lookupData = await lookupResponse.json()
   const userID = lookupData.id
 
-  const response = await axios.get(`https://api.polytoria.com/v1/users/${userID}`, {
-    validateStatus: () => true
-  })
-  const data = response.data
+  // Fetch detailed user data using responseHandler
+  const response = await fetch(`https://api.polytoria.com/v1/users/${userID}`)
+  const errResult2 = await responseHandler.checkError(response)
 
-  const errResult2 = responseHandler.checkError(response)
-
-  if (errResult2.hasError === true) {
-    return await interaction.editReply(errResult2.displayText)
+  if (errResult2.hasError && errResult2.embed) {
+    return await interaction.editReply({ embeds: [errResult2.embed] })
   }
 
+  const data = await response.json()
   const badges = getMembershipBadges(data)
 
   const embed = new EmbedBuilder({
@@ -208,7 +193,7 @@ export async function lookUp (interaction: CommandInteraction) {
       }
     } else if (selectedOption === 'user_avatar') {
       const avatarData = await fetchAvatar(userID)
-      const avatarEmbed = buildAvatarEmbed(userData, avatarData)
+      const avatarEmbed = buildAvatarEmbed(data, avatarData)
       const components = buildAvatarComponents(actionRowDropdown)
 
       await interaction.editReply({
@@ -217,7 +202,7 @@ export async function lookUp (interaction: CommandInteraction) {
       })
     } else if (selectedOption === 'badges_option') {
       const { badges: badgesData, total } = await fetchUserBadges(userID)
-      const badgesEmbed = buildBadgesEmbed(userData, badgesData, total)
+      const badgesEmbed = buildBadgesEmbed(data, badgesData, total)
 
       await interaction.editReply({
         embeds: [badgesEmbed],
