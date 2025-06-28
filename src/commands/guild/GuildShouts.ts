@@ -1,11 +1,10 @@
-import axios from 'axios'
-
 export async function fetchShouts (guildID: number, page: number): Promise<string> {
   let allShouts: any[] = []
 
   async function fetchPage (pageNumber: number) {
-    const response = await axios.get(`https://polytoria.com/api/guilds/${guildID}/shouts?page=${pageNumber}`)
-    const data = response.data
+    const response = await fetch(`https://polytoria.com/api/guilds/${guildID}/shouts?page=${pageNumber}`)
+
+    const data = await response.json()
 
     if (data.meta) {
       allShouts = allShouts.concat(data.data)

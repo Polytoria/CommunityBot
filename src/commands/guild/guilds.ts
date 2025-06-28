@@ -1,5 +1,4 @@
 import { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle, ComponentType, BaseInteraction, CommandInteraction } from 'discord.js'
-import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import { dateUtils } from '../../utils/dateUtils.js'
 import emojiUtils from '../../utils/emojiUtils.js'
@@ -7,29 +6,25 @@ import { fetchMembers } from './GuildMembers.js'
 import { fetchStore } from './GuildStore.js'
 import { fetchShouts } from './GuildShouts.js'
 
-export async function guild (interaction:CommandInteraction) {
+export async function guild (interaction: CommandInteraction) {
   // @ts-expect-error
   const guildID = interaction.options.getInteger('id')
 
-  if (guildID.length === 0) {
+  if (!guildID) {
     return await interaction.reply('Please provide me with a guild ID before I can continue!')
   }
 
   await interaction.deferReply()
 
-  const response = await axios.get(`https://api.polytoria.com/v1/guilds/${guildID}`, { validateStatus: () => true })
-  const data = response.data
-  const creator = data.creator
+  const response = await fetch(`https://api.polytoria.com/v1/guilds/${guildID}`)
+  const errResult = await responseHandler.checkError(response)
 
-  const errResult = responseHandler.checkError(response)
-
-  if (errResult.hasError === true) {
-    if (errResult.statusCode === 404) {
-      return await interaction.editReply("Couldn't find the requested guild. Did you type in the correct guild ID?")
-    } else {
-      return await interaction.editReply(errResult.displayText)
-    }
+  if (errResult.hasError && errResult.embed) {
+    return await interaction.editReply({ embeds: [errResult.embed] })
   }
+
+  const data = await response.json()
+  const creator = data.creator
 
   let joinType!: string
 

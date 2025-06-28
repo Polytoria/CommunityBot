@@ -1,11 +1,10 @@
-import axios from 'axios'
-
 export async function fetchMembers (id: number, page: number) {
-  // Fetch the members data from the API
-  const memberResponse = await axios.get(`https://api.polytoria.com/v1/guilds/${id}/members?page=${page}&limit=15`)
-  const memberData = memberResponse.data.members
-  const totalMembers = memberResponse.data.total
-  const totalPages = memberResponse.data.pages
+  const response = await fetch(`https://api.polytoria.com/v1/guilds/${id}/members?page=${page}&limit=15`)
+
+  const data = await response.json()
+  const memberData = data.members
+  const totalMembers = data.total
+  const totalPages = data.pages
 
   // If no members are found, return a message
   if (memberData.length === 0) {
