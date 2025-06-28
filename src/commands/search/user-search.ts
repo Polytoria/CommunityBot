@@ -1,9 +1,8 @@
 import { EmbedBuilder, CommandInteraction } from 'discord.js'
-import axios from 'axios'
 import { responseHandler } from '../../utils/responseHandler.js'
 import emojiUtils from '../../utils/emojiUtils.js'
 
-export async function userSearch (interaction:CommandInteraction) {
+export async function userSearch (interaction: CommandInteraction) {
   let searchQuery = ''
   // @ts-expect-error
   const queryInput = interaction.options.getString('query')
@@ -14,17 +13,17 @@ export async function userSearch (interaction:CommandInteraction) {
 
   await interaction.deferReply()
 
-  const response = await axios.get(
-    `https://api.polytoria.com/v1/users?search=${searchQuery}&limit=15`,
-    { params: {}, validateStatus: () => true }
+  const response = await fetch(
+    `https://api.polytoria.com/v1/users?search=${encodeURIComponent(searchQuery)}&limit=15`
   )
-  const data = response.data.users
+  const errResult = await responseHandler.checkError(response)
 
-  const errResult = responseHandler.checkError(response)
-
-  if (errResult.hasError === true) {
-    return await interaction.editReply(errResult.displayText)
+  if (errResult.hasError && errResult.embed) {
+    return await interaction.editReply({ embeds: [errResult.embed] })
   }
+
+  const result = await response.json()
+  const data = result.users
 
   const embed = new EmbedBuilder({
     title: `Search results for "${searchQuery}"`,
@@ -36,12 +35,12 @@ export async function userSearch (interaction:CommandInteraction) {
 
   for (const user of data) {
     description += `\`${index}\` [${user.username}](https://polytoria.com/users/${user.id}) ${
-    user.isStaff === true ? emojiUtils.polytoria : ''
-  }\n`
+      user.isStaff === true ? emojiUtils.polytoria : ''
+    }\n`
     index++
   }
 
-  embed.setDescription(description)
+  embed.setDescription(description || 'No results found.')
 
   return await interaction.editReply({
     embeds: [embed]
